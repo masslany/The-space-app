@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">The Space App</string>
+    <string name="roadster_image">Roadster image</string>
+    <string name="name">Name</string>
+    <string name="launch_date">Launch date</string>
+    <string name="speed">Speed</string>
+    <string name="distance_from_earth">Distance from Earth</string>
+    <string name="distance_from_mars">Distance from Mars</string>
+    <string name="description">Description</string>
 </resources>
