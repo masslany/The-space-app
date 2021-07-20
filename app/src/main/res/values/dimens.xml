@@ -5,4 +5,5 @@
     <dimen name="launch_item_height">150dp</dimen>
     <dimen name="launch_item_margin">8dp</dimen>
     <dimen name="launch_item_elevation">4dp</dimen>
+    <dimen name="launch_cards_image_size">150dp</dimen>
 </resources>
