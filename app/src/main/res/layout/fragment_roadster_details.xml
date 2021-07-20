@@ -9,12 +9,12 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1"
+        android:layout_height="@dimen/roadster_image_height"
         android:contentDescription="@string/roadster_image"
+        android:scaleType="centerCrop"
         android:src="@drawable/tesla"
         app:layout_constraintBottom_toTopOf="@id/nested_scroll_view"
+        app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,21 +38,19 @@
                 android:id="@+id/tv_name_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 android:text="@string/name"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/details_layout" />
 
             <TextView
                 android:id="@+id/tv_name"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Roadster name here"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_name_label"
                 tools:text="@string/name" />
@@ -61,116 +59,112 @@
                 android:id="@+id/tv_launch_date_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:text="@string/launch_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_name" />
 
             <TextView
                 android:id="@+id/tv_launch_date"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="11.11.1111"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_launch_date_label"
-                tools:text="@string/name" />
+                tools:text="@string/tools_launch_date" />
 
             <TextView
                 android:id="@+id/tv_speed_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:text="@string/speed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_launch_date" />
 
             <TextView
                 android:id="@+id/tv_speed"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="3233 km/h"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_speed_label"
-                tools:text="@string/name" />
+                tools:text="@string/tools_speed" />
 
             <TextView
                 android:id="@+id/tv_earth_distance_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:text="@string/distance_from_earth"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_speed" />
 
             <TextView
                 android:id="@+id/tv_earth_distance"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="323232333 km"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_earth_distance_label"
-                tools:text="@string/name" />
+                tools:text="@string/tools_distance" />
 
             <TextView
                 android:id="@+id/tv_mars_distance_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:text="@string/distance_from_mars"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_earth_distance" />
 
             <TextView
                 android:id="@+id/tv_mars_distance"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="6423423424 km"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_mars_distance_label"
-                tools:text="@string/name" />
+                tools:text="@string/tools_distance" />
 
             <TextView
                 android:id="@+id/tv_description_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/large_margin"
                 android:text="@string/description"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_mars_distance" />
 
             <TextView
                 android:id="@+id/tv_description"
+                style="@style/bigger_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="askldjfhaskjdf asdj hlaskjd hflkasd fkjlashd flkasj dfkjash asdhfagsdjhfgsajdhfgsakj hdfasj dfjkas dfkjas ghdjk fashgdfkjas gjkf saghdjkfashdfk askdjf asgkjd fgsajkd hfkjash dfkjash dgfkjhsa gdfkjhg fkjasdg fjkas gdfksah gdfkjas gdf dfkljas dfsajkldf askjd hfklasj dfklasjd hfksajd fksahd fkjashd fkajshd fkash dfkj asdfkhsa gfdksjhf askhd fakshd fsahdk fakjshd fkjsah"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textSize="24sp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/default_margin"
+                android:layout_marginEnd="@dimen/default_margin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_description_label"
-                tools:text="@string/name" />
+                tools:text="@string/tools_description" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/large_margin"
+                app:layout_constraintTop_toBottomOf="@+id/tv_description" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

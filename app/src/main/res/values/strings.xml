@@ -7,4 +7,8 @@
     <string name="distance_from_earth">Distance from Earth</string>
     <string name="distance_from_mars">Distance from Mars</string>
     <string name="description">Description</string>
+    <string name="tools_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="tools_distance">6423423424 km</string>
+    <string name="tools_speed">3233 km/h</string>
+    <string name="tools_launch_date">February 6, 2018</string>
 </resources>
