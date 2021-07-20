@@ -75,11 +75,11 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                layout="@layout/card_rocket_info" />
+            <include layout="@layout/card_rocket_info" />
 
-            <include
-                layout="@layout/card_launchpad_info" />
+            <include layout="@layout/card_launchpad_info" />
+
+            <include layout="@layout/card_payload_info" />
 
 
         </LinearLayout>

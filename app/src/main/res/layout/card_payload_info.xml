@@ -3,7 +3,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_launchpad"
+    android:id="@+id/cv_payload"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/default_margin"
@@ -14,26 +14,25 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_launchpad_label"
+            android:id="@+id/tv_payload_label"
             style="@style/TextAppearance.MaterialComponents.Overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:text="@string/launchpad"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/payload" />
 
         <ImageView
-            android:id="@+id/iv_launchpad"
+            android:id="@+id/iv_payload"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_marginTop="8dp"
             android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_launchpad_label"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payload_label"
             tools:ignore="contentDescription"
             tools:src="@drawable/launch_placeholder" />
 
@@ -44,35 +43,35 @@
             android:background="@color/transparent"
             android:padding="8dp"
             android:src="@drawable/ic_baseline_expand_more_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_launchpad_label"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_payload_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_launchpad_label"
+            app:layout_constraintTop_toTopOf="@+id/tv_payload_label"
             tools:ignore="contentDescription" />
 
         <TextView
-            android:id="@+id/tv_launchpad_name"
+            android:id="@+id/tv_payload_name"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/default_margin"
-            app:layout_constraintStart_toEndOf="@+id/iv_launchpad"
-            app:layout_constraintTop_toTopOf="@+id/iv_launchpad"
-            tools:text="CCSFS SLC 40" />
+            android:layout_marginStart="8dp"
+            app:layout_constraintStart_toEndOf="@+id/iv_payload"
+            app:layout_constraintTop_toTopOf="@+id/iv_payload"
+            tools:text="SARah 1" />
 
         <TextView
-            android:id="@+id/tv_launchpad_full_name"
+            android:id="@+id/tv_payload_type"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_launchpad"
-            app:layout_constraintTop_toBottomOf="@+id/tv_launchpad_name"
-            tools:text="Cape Canaveral Space Force Station Space Launch Complex 40" />
+            app:layout_constraintStart_toEndOf="@+id/iv_payload"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payload_name"
+            tools:text="Satellite" />
 
         <TextView
-            android:id="@+id/tv_launchpad_details"
+            android:id="@+id/tv_payload_details"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -84,9 +83,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_launchpad"
-            tools:text="SpaceX's primary Falcon 9 pad, where all east coast Falcon 9s launched prior to the AMOS-6 anomaly. Previously used alongside SLC-41 to launch Titan rockets for the US Air Force, the pad was heavily damaged by the AMOS-6 anomaly in September 2016. It returned to flight with CRS-13 on December 15, 2017, boasting an upgraded throwback-style Transporter-Erector modeled after that at LC-39A."
+            app:layout_constraintTop_toBottomOf="@+id/iv_payload"
+            tools:text="Company: SpaceX\nCountry: United States\nStages: 2\nHeight: 70m\nDiameter: 3.7m\nMass: 549054kg\nFirst stage thrust:\n\t- sea level: 7607kN\n\t- vacuum: 8227kN"
             tools:visibility="visible" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
