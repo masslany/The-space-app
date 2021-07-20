@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">The Space App</string>
+    <string name="launchpad">Launchpad</string>
+    <string name="rocket">Rocket</string>
+    <string name="payload">Payload</string>
     <string name="roadster_image">Roadster image</string>
     <string name="name">Name</string>
     <string name="launch_date">Launch date</string>
