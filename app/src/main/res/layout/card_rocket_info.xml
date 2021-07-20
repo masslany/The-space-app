@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_rocket"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_margin"
+    android:elevation="4dp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_countdown">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_rocket"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="contentDescription"
+            tools:src="@drawable/launch_placeholder" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:padding="8dp"
+            android:src="@drawable/ic_baseline_expand_more_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rocket_name"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            app:layout_constraintStart_toEndOf="@+id/iv_rocket"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Falcon 9" />
+
+        <TextView
+            android:id="@+id/textView"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_rocket"
+            app:layout_constraintTop_toBottomOf="@+id/tv_rocket_name"
+            android:text="Falcon 9 is a two-stage rocket designed and manufactured by SpaceX for the reliable and safe transport of satellites and the Dragon spacecraft into orbit." />
+
+        <TextView
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_rocket"
+            android:text="Company: SpaceX\nCountry: United States\nStages: 2\nHeight: 70m\nDiameter: 3.7m\nMass: 549054kg\nFirst stage thrust:\n\t- sea level: 7607kN\n\t- vacuum: 8227kNaaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\naaa\n"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
