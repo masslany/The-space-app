@@ -11,4 +11,8 @@
     <string name="tools_distance">6423423424 km</string>
     <string name="tools_speed">3233 km/h</string>
     <string name="tools_launch_date">February 6, 2018</string>
+    <string name="launches">Launches</string>
+    <string name="capsules">Capsules</string>
+    <string name="rockets">Rockets</string>
+    <string name="roadster">Roadster</string>
 </resources>
