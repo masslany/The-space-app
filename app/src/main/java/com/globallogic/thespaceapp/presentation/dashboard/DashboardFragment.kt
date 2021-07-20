@@ -1,4 +1,4 @@
-package com.globallogic.thespaceapp
+package com.globallogic.thespaceapp.presentation.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
