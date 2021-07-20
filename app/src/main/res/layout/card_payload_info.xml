@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_payload"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/default_margin">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_payload_label"
+            style="@style/TextAppearance.MaterialComponents.Overline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/default_margin"
+            android:text="@string/payload"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_payload"
+            android:layout_width="@dimen/launch_cards_image_size"
+            android:layout_height="@dimen/launch_cards_image_size"
+            android:layout_marginTop="@dimen/default_margin"
+            android:scaleType="fitCenter"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payload_label"
+            tools:ignore="contentDescription"
+            tools:src="@drawable/launch_placeholder" />
+
+        <ImageButton
+            android:id="@+id/btn_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:padding="@dimen/default_margin"
+            android:src="@drawable/ic_baseline_expand_more_24"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_payload_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_payload_label"
+            tools:ignore="contentDescription" />
+
+        <TextView
+            android:id="@+id/tv_payload_name"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            app:layout_constraintStart_toEndOf="@+id/iv_payload"
+            app:layout_constraintTop_toTopOf="@+id/iv_payload"
+            tools:text="SARah 1" />
+
+        <TextView
+            android:id="@+id/tv_payload_type"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_payload"
+            app:layout_constraintTop_toBottomOf="@+id/tv_payload_name"
+            tools:text="Satellite" />
+
+        <TextView
+            android:id="@+id/tv_payload_details"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_payload"
+            tools:text="Company: SpaceX\nCountry: United States\nStages: 2\nHeight: 70m\nDiameter: 3.7m\nMass: 549054kg\nFirst stage thrust:\n\t- sea level: 7607kN\n\t- vacuum: 8227kN"
+            tools:visibility="visible" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

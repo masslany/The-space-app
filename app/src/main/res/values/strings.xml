@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">The Space App</string>
+    <string name="launchpad">Launchpad</string>
+    <string name="rocket">Rocket</string>
+    <string name="payload">Payload</string>
     <string name="roadster_image">Roadster image</string>
     <string name="name">Name</string>
     <string name="launch_date">Launch date</string>
@@ -11,4 +14,8 @@
     <string name="tools_distance">6423423424 km</string>
     <string name="tools_speed">3233 km/h</string>
     <string name="tools_launch_date">February 6, 2018</string>
+    <string name="launches">Launches</string>
+    <string name="capsules">Capsules</string>
+    <string name="rockets">Rockets</string>
+    <string name="roadster">Roadster</string>
 </resources>
