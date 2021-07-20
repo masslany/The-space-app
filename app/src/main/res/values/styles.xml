@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="bigger_text_view" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="dashboard_text_view" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textSize">28sp</item>
+    </style>
+</resources>

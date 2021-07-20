@@ -6,4 +6,7 @@
     <dimen name="launch_item_margin">8dp</dimen>
     <dimen name="launch_item_elevation">4dp</dimen>
     <dimen name="launch_cards_image_size">150dp</dimen>
+    <dimen name="roadster_image_height">400dp</dimen>
+    <dimen name="dashboard_image_size">150dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
 </resources>
