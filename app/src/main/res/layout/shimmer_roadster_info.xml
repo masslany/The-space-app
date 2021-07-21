@@ -5,16 +5,16 @@
     android:orientation="vertical">
 
     <View
-        android:layout_width="50dp"
-        android:layout_height="10dp"
+        android:layout_width="@dimen/shimmer_text_width_small"
+        android:layout_height="@dimen/shimmer_text_height_small"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/large_margin"
         android:background="#dddddd" />
 
     <View
         style="@style/bigger_text_view"
-        android:layout_width="100dp"
-        android:layout_height="20dp"
+        android:layout_width="@dimen/shimmer_text_width_large"
+        android:layout_height="@dimen/shimmer_text_height_large"
         android:layout_marginStart="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginEnd="@dimen/default_margin"

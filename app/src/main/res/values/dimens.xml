@@ -9,4 +9,8 @@
     <dimen name="roadster_image_height">400dp</dimen>
     <dimen name="dashboard_image_size">150dp</dimen>
     <dimen name="small_margin">4dp</dimen>
+    <dimen name="shimmer_text_width_small">50dp</dimen>
+    <dimen name="shimmer_text_height_small">10dp</dimen>
+    <dimen name="shimmer_text_width_large">100dp</dimen>
+    <dimen name="shimmer_text_height_large">20dp</dimen>
 </resources>
