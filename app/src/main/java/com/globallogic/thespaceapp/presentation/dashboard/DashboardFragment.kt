@@ -28,6 +28,12 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
 
+        binding.cvLaunches.setOnClickListener {
+            navController.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToUpcomingLaunchesFragment()
+            )
+        }
+
         binding.cvRoadster.setOnClickListener {
             navController.navigate(
                 DashboardFragmentDirections.actionDashboardFragmentToRoadsterDetailsFragment()
