@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentRoadsterDetailsBinding
+import com.globallogic.thespaceapp.utils.makeGone
+import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,13 +41,28 @@ class RoadsterDetailsFragment : Fragment() {
         viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Error -> {
-
+                    binding.shimmerViewContainer.makeGone()
                 }
                 RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
+                    with(binding) {
+                        ivRoadster.makeGone()
+                        nestedScrollView.makeGone()
+                        detailsLayout.makeGone()
 
+                        shimmerViewContainer.makeVisible()
+                        shimmerViewContainer.startShimmer()
+                    }
                 }
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Success -> {
                     with(binding) {
+                        ivRoadster.makeVisible()
+                        nestedScrollView.makeVisible()
+                        detailsLayout.makeVisible()
+
+                        shimmerViewContainer.makeGone()
+                        shimmerViewContainer.stopShimmer()
+
+
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
                         tvSpeed.text = state.data.speed
@@ -60,8 +77,19 @@ class RoadsterDetailsFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.shimmerViewContainer.stopShimmer()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.shimmerViewContainer.stopShimmer()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.shimmerViewContainer.stopShimmer()
         _binding = null
     }
 }
