@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:layout_marginTop="@dimen/large_margin"
-        android:text="Falcon Heavy"
+        tools:text="Falcon Heavy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_rocket_details" />
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
-        android:text="rocket"
+        tools:text="rocket"
         app:layout_constraintEnd_toEndOf="@+id/tv_rocket_details_headline"
         app:layout_constraintStart_toStartOf="@+id/tv_rocket_details_headline"
         app:layout_constraintTop_toBottomOf="@+id/tv_rocket_details_headline" />
