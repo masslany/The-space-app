@@ -18,4 +18,6 @@
     <string name="capsules">Capsules</string>
     <string name="rockets">Rockets</string>
     <string name="roadster">Roadster</string>
+    <string name="an_error_occurred">An error occurred</string>
+    <string name="retry">Retry</string>
 </resources>
