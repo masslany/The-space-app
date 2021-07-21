@@ -17,20 +17,31 @@ class RoadsterDetailsViewModel @Inject constructor(
     private val fetchRoadsterDataUseCase: FetchRoadsterDataUseCase
 ) : ViewModel() {
 
+
     private val _roadsterEntity = MutableLiveData<RoadsterDetailsState>()
     val roadsterEntity: LiveData<RoadsterDetailsState> = _roadsterEntity
 
     init {
-        viewModelScope.launch() {
-            _roadsterEntity.value = Loading
+        viewModelScope.launch {
+            fetchRoadsterData()
+        }
+    }
 
-            when (val response = fetchRoadsterDataUseCase.execute()) {
-                is Result.Success<RoadsterEntity> -> {
-                    _roadsterEntity.value = Success(response.data)
-                }
-                is Result.Error<*> -> {
-                    _roadsterEntity.value = Error(response.exception)
-                }
+    fun onRetryClicked() {
+        viewModelScope.launch {
+            fetchRoadsterData()
+        }
+    }
+
+    private suspend fun fetchRoadsterData() {
+        _roadsterEntity.value = Loading
+
+        when (val response = fetchRoadsterDataUseCase.execute()) {
+            is Result.Success<RoadsterEntity> -> {
+                _roadsterEntity.value = Success(response.data)
+            }
+            is Result.Error<*> -> {
+                _roadsterEntity.value = Error(response.exception)
             }
         }
     }

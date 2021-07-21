@@ -35,19 +35,26 @@ class RoadsterDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-
         super.onViewCreated(view, savedInstanceState)
+
         viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Error -> {
-                    binding.shimmerViewContainer.makeGone()
+                    with(binding) {
+                        shimmerViewContainer.makeGone()
+                        shimmerViewContainer.stopShimmer()
+                        tvError.makeVisible()
+                        btnRetry.makeVisible()
+                    }
                 }
                 RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
                     with(binding) {
                         ivRoadster.makeGone()
                         nestedScrollView.makeGone()
                         detailsLayout.makeGone()
+
+                        binding.tvError.makeGone()
+                        binding.btnRetry.makeGone()
 
                         shimmerViewContainer.makeVisible()
                         shimmerViewContainer.startShimmer()
@@ -62,6 +69,8 @@ class RoadsterDetailsFragment : Fragment() {
                         shimmerViewContainer.makeGone()
                         shimmerViewContainer.stopShimmer()
 
+                        binding.tvError.makeGone()
+                        binding.btnRetry.makeGone()
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
@@ -72,8 +81,11 @@ class RoadsterDetailsFragment : Fragment() {
                         glide.load(state.data.image).into(ivRoadster)
                     }
                 }
-
             }
+        }
+
+        binding.btnRetry.setOnClickListener {
+            viewModel.onRetryClicked()
         }
     }
 
