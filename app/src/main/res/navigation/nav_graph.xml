@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.globallogic.thespaceapp.DashboardFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dashboard.DashboardFragment"
         android:label="DashboardFragment"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
-        android:name="com.globallogic.thespaceapp.RoadsterDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
         android:label="RoadsterDetailsFragment"
         tools:layout="@layout/fragment_roadster_details" />
 </navigation>

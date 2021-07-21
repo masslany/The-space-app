@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     app:layoutDescription="@xml/fragment_roadster_details_scene">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/iv_roadster"
         android:layout_width="match_parent"
         android:layout_height="@dimen/roadster_image_height"
         android:contentDescription="@string/roadster_image"
         android:scaleType="centerCrop"
-        android:src="@drawable/tesla"
         app:layout_constraintBottom_toTopOf="@id/nested_scroll_view"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,11 +23,11 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView">
+        app:layout_constraintTop_toBottomOf="@id/iv_roadster">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/details_layout"
@@ -168,6 +168,47 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shimmer_auto_start="true"
+        shimmer:duration="800"
+        tools:visibility="visible">
+
+        <include layout="@layout/fragment_roadster_shimmer" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <TextView
+        android:id="@+id/tv_error"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/an_error_occurred"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/tv_error"
+        app:layout_constraintStart_toStartOf="@id/tv_error"
+        app:layout_constraintTop_toBottomOf="@id/tv_error"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>
 
