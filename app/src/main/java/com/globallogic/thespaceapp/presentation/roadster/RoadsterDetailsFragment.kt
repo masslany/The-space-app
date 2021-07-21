@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.RequestManager
-import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRoadsterDetailsBinding
 import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
@@ -46,8 +45,8 @@ class RoadsterDetailsFragment : Fragment() {
                         shimmerViewContainer.stopShimmer()
                         tvError.makeVisible()
                         btnRetry.makeVisible()
+                        errorLayout.makeVisible()
 
-                        motionLayout.enableTransition(R.id.roadster_transition, false)
                     }
                 }
                 RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
@@ -58,11 +57,11 @@ class RoadsterDetailsFragment : Fragment() {
 
                         binding.tvError.makeGone()
                         binding.btnRetry.makeGone()
+                        errorLayout.makeGone()
 
                         shimmerViewContainer.makeVisible()
                         shimmerViewContainer.startShimmer()
 
-                        motionLayout.setTransition(R.id.start, R.id.start)
                     }
                 }
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Success -> {
@@ -76,8 +75,7 @@ class RoadsterDetailsFragment : Fragment() {
 
                         binding.tvError.makeGone()
                         binding.btnRetry.makeGone()
-
-                        motionLayout.enableTransition(R.id.roadster_transition, true)
+                        errorLayout.makeGone()
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
