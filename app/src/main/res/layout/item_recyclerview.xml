@@ -3,7 +3,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_launch"
+    android:id="@+id/item_recyclerview"
     android:layout_width="match_parent"
     android:layout_height="@dimen/launch_item_height"
     android:layout_margin="@dimen/launch_item_margin"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/iv_launch_item"
+            android:id="@+id/iv_item"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:scaleType="fitCenter"
@@ -23,26 +23,26 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.5"
             tools:ignore="contentDescription"
-            tools:src="@drawable/launch_placeholder" />
+            tools:src="@drawable/rocket_placeholder" />
 
         <TextView
-            android:id="@+id/tv_launch_item_headline"
+            android:id="@+id/tv_item_headline"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_margin"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_launch_item"
+            app:layout_constraintStart_toEndOf="@+id/iv_item"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Starlink-29 (v1.0)" />
 
         <TextView
-            android:id="@+id/tv_launch_item_date"
+            android:id="@+id/tv_item_caption"
             style="@style/TextAppearance.MaterialComponents.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="@+id/tv_launch_item_headline"
-            app:layout_constraintTop_toBottomOf="@+id/tv_launch_item_headline"
+            app:layout_constraintStart_toStartOf="@+id/tv_item_headline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_item_headline"
             tools:text="2021-08-12, 4:00 AM" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
