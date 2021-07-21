@@ -30,7 +30,7 @@ class LaunchesAdapter constructor(
                 binding.tvItemCaption.text = this.date
                 glide
                     .load(this.image)
-                    .placeholder(R.drawable.launch_placeholder)
+                    .placeholder(R.drawable.ic_launch_placeholder)
                     .into(binding.ivItem)
             }
         }
