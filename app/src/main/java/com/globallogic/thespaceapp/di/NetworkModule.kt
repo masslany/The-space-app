@@ -7,6 +7,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -16,6 +17,7 @@ class NetworkModule {
         private const val BASE_URL = "https://api.spacexdata.com"
     }
 
+    @Singleton
     @Provides
     fun provideSpacexApi(): SpacexApiService {
         return Retrofit.Builder()
