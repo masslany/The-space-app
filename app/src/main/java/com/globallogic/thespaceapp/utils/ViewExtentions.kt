@@ -9,3 +9,11 @@ fun View.makeGone() {
 fun View.makeVisible() {
     this.visibility = View.VISIBLE
 }
+
+fun View.enable() {
+    this.isEnabled = true
+}
+
+fun View.disable() {
+    this.isEnabled = false
+}
