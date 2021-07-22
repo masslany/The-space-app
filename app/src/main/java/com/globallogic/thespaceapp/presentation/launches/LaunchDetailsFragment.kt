@@ -52,12 +52,12 @@ class LaunchDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val launchEntity = viewModel.getLaunchByName(args.launchName)
-        launchEntity?.let {
+
+        if (launchEntity != null) {
             fillUi(launchEntity)
-        } ?: run {
+        } else {
             throw RuntimeException("LaunchEntity is null in LaunchDetailsFragment!")
         }
-
     }
 
     private fun fillUi(launchEntity: LaunchEntity) {
