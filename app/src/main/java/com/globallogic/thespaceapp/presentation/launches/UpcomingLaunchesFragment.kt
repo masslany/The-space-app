@@ -13,6 +13,7 @@ import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentLaunchesBinding
 import com.globallogic.thespaceapp.domain.model.LaunchesEntity
 import com.globallogic.thespaceapp.utils.State
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,9 +44,6 @@ class UpcomingLaunchesFragment : Fragment() {
         binding.rvLaunches.adapter = launchesAdapter
 
         when (resources.configuration.orientation) {
-            Configuration.ORIENTATION_PORTRAIT -> {
-                binding.rvLaunches.layoutManager = LinearLayoutManager(requireContext())
-            }
             Configuration.ORIENTATION_LANDSCAPE -> {
                 binding.rvLaunches.layoutManager = GridLayoutManager(requireContext(), 2)
             }
@@ -58,14 +56,23 @@ class UpcomingLaunchesFragment : Fragment() {
                 is State.Success<List<LaunchesEntity>> -> {
                     launchesAdapter.launches = state.data
                     launchesAdapter.notifyDataSetChanged()
+                    binding.srlLaunches.isRefreshing = false
                 }
                 is State.Error -> {
-                    // TODO
+                    Snackbar.make(
+                        binding.srlLaunches,
+                        state.throwable.message ?: "Error!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    binding.srlLaunches.isRefreshing = false
                 }
                 is State.Loading -> {
-                    // TODO
+                    binding.srlLaunches.isRefreshing = true
                 }
             }
+        }
+        binding.srlLaunches.setOnRefreshListener {
+            viewModel.fetchUpcomingLaunchesData()
         }
     }
 }

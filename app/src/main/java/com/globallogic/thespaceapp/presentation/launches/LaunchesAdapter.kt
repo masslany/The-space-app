@@ -11,6 +11,7 @@ import com.globallogic.thespaceapp.domain.model.LaunchesEntity
 class LaunchesAdapter constructor(
     private val glide: RequestManager
 ) : RecyclerView.Adapter<LaunchesAdapter.LaunchViewHolder>() {
+
     inner class LaunchViewHolder(val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
