@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.RoadsterEntity
 import com.globallogic.thespaceapp.domain.usecase.FetchRoadsterDataUseCase
-import com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsViewModel.RoadsterDetailsState.*
 import com.globallogic.thespaceapp.utils.Result
+import com.globallogic.thespaceapp.utils.State
+import com.globallogic.thespaceapp.utils.State.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,8 +19,8 @@ class RoadsterDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _roadsterEntity = MutableLiveData<RoadsterDetailsState>()
-    val roadsterEntity: LiveData<RoadsterDetailsState> = _roadsterEntity
+    private val _roadsterEntity = MutableLiveData<State<RoadsterEntity>>()
+    val roadsterEntity: LiveData<State<RoadsterEntity>> = _roadsterEntity
 
     init {
         viewModelScope.launch {
@@ -44,12 +45,6 @@ class RoadsterDetailsViewModel @Inject constructor(
                 _roadsterEntity.value = Error(response.exception)
             }
         }
-    }
-
-    sealed class RoadsterDetailsState {
-        data class Success(val data: RoadsterEntity) : RoadsterDetailsState()
-        data class Error(val exception: Exception) : RoadsterDetailsState()
-        object Loading : RoadsterDetailsState()
     }
 }
 

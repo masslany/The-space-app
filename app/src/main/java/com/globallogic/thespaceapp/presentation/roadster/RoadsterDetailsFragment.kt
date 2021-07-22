@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentRoadsterDetailsBinding
+import com.globallogic.thespaceapp.utils.State.*
 import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,7 +40,7 @@ class RoadsterDetailsFragment : Fragment() {
 
         viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is RoadsterDetailsViewModel.RoadsterDetailsState.Error -> {
+                is Error -> {
                     with(binding) {
                         lottieLoading.makeGone()
 
@@ -48,7 +49,7 @@ class RoadsterDetailsFragment : Fragment() {
                         errorLayout.makeVisible()
                     }
                 }
-                RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
+                Loading -> {
                     with(binding) {
                         ivRoadster.makeGone()
                         nestedScrollView.makeGone()
@@ -62,7 +63,7 @@ class RoadsterDetailsFragment : Fragment() {
                         lottieLoading.makeVisible()
                     }
                 }
-                is RoadsterDetailsViewModel.RoadsterDetailsState.Success -> {
+                is Success -> {
                     with(binding) {
                         ivRoadster.makeVisible()
                         nestedScrollView.makeVisible()
