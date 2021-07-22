@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Height(
     @SerializedName("feet")
-    val feet: Int,
+    val feet: Double,
     @SerializedName("meters")
-    val meters: Int
+    val meters: Double
 )

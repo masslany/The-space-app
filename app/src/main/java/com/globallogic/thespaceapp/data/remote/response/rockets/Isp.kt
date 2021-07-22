@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Isp(
     @SerializedName("sea_level")
-    val seaLevel: Int,
+    val seaLevel: Double,
     @SerializedName("vacuum")
-    val vacuum: Int
+    val vacuum: Double
 )

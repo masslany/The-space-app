@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class ThrustSeaLevel(
     @SerializedName("kN")
-    val kN: Int,
+    val kN: Double,
     @SerializedName("lbf")
-    val lbf: Int
+    val lbf: Double
 )

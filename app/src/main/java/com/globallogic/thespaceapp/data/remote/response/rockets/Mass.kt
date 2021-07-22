@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Mass(
     @SerializedName("kg")
-    val kg: Int,
+    val kg: Double,
     @SerializedName("lb")
-    val lb: Int
+    val lb: Double
 )
