@@ -16,4 +16,5 @@
     <dimen name="shimmer_text_height_small">10dp</dimen>
     <dimen name="shimmer_text_width_large">100dp</dimen>
     <dimen name="shimmer_text_height_large">20dp</dimen>
+    <dimen name="error_image_size">300dp</dimen>
 </resources>
