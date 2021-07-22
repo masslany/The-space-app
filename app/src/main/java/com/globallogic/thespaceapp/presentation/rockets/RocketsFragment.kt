@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRocketsBinding
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.material.snackbar.Snackbar
@@ -52,11 +53,16 @@ class RocketsFragment : Fragment() {
                     binding.srlLaunches.isRefreshing = false
                 }
                 is State.Error -> {
-                    Snackbar.make(
+                    val snackbar = Snackbar.make(
                         binding.srlLaunches,
                         state.throwable.message ?: "Error!",
                         Snackbar.LENGTH_LONG
-                    ).show()
+                    )
+                    snackbar.setAction(
+                        R.string.retry
+                    ) { viewModel.onRetryClicked() }
+                    snackbar.show()
+
                     binding.srlLaunches.isRefreshing = false
                 }
             }
