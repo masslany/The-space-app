@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentRocketsBinding
 import com.globallogic.thespaceapp.utils.State
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -43,14 +44,26 @@ class RocketsFragment : Fragment() {
         viewModel.rockets.observe(viewLifecycleOwner) { state ->
             println(state)
             when (state) {
-                is State.Error -> {
-                }
                 State.Loading -> {
+                    binding.srlLaunches.isRefreshing = true
                 }
                 is State.Success -> {
                     adapter.rockets = state.data
+                    binding.srlLaunches.isRefreshing = false
+                }
+                is State.Error -> {
+                    Snackbar.make(
+                        binding.srlLaunches,
+                        state.throwable.message ?: "Error!",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                    binding.srlLaunches.isRefreshing = false
                 }
             }
+        }
+
+        binding.srlLaunches.setOnRefreshListener {
+            viewModel.onRetryClicked()
         }
     }
 }
