@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
-import com.globallogic.thespaceapp.domain.model.LaunchesEntity
+import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -50,38 +50,38 @@ class LaunchDetailsFragment : Fragment() {
 
     }
 
-    private fun fillUi(launchesEntity: LaunchesEntity) {
-        binding.tvLaunchDetailsHeadline.text = launchesEntity.name
-        binding.tvLaunchDetailsDate.text = launchesEntity.date
+    private fun fillUi(launchEntity: LaunchEntity) {
+        binding.tvLaunchDetailsHeadline.text = launchEntity.name
+        binding.tvLaunchDetailsDate.text = launchEntity.date
 
 //        TODO: Implement countdown
 //        binding.tvLaunchDetailsCountdown.text =
 
-        launchesEntity.details?.let { details ->
+        launchEntity.details?.let { details ->
             binding.tvLaunchDetailsDescription.text = details
             binding.cvLaunchDetailsDescription.makeVisible()
         }
 
-        launchesEntity.rocketId?.let { rocketId ->
+        launchEntity.rocketId?.let { rocketId ->
             binding.cardRocketInfo.cvRocket.makeVisible()
 //            TODO: Fill with rocket info
 //            binding.cardRocketInfo.tvRocketName.text = rocketId
         }
 
-        launchesEntity.launchpadId?.let { launchpadId ->
+        launchEntity.launchpadId?.let { launchpadId ->
             binding.cardLaunchpadInfo.cvLaunchpad.makeVisible()
 //            TODO: Fill with launchpad info
 //            binding.cardLaunchpadInfo.tvLaunchpadName.text = launchpadId
         }
 
-        if (launchesEntity.payloadsIds.isNotEmpty()) {
+        if (launchEntity.payloadsIds.isNotEmpty()) {
             binding.cardPayloadInfo.cvPayload.makeVisible()
 //            TODO: Fill with payloads info
-//            binding.cardPayloadInfo.tvPayloadName.text = launchesEntity.payloadsIds.first()
+//            binding.cardPayloadInfo.tvPayloadName.text = launchEntity.payloadsIds.first()
         }
 
         glide
-            .load(launchesEntity.image)
+            .load(launchEntity.image)
             .placeholder(R.drawable.ic_launch_placeholder)
             .into(binding.ivLaunchDetails)
     }

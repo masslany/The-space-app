@@ -3,7 +3,7 @@ package com.globallogic.thespaceapp.domain.model
 import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.Core
 
-data class LaunchesEntity(
+data class LaunchEntity(
     val name: String,
     val details: String?,
     val date: String,

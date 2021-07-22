@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.ItemRecyclerviewBinding
-import com.globallogic.thespaceapp.domain.model.LaunchesEntity
+import com.globallogic.thespaceapp.domain.model.LaunchEntity
 
 class LaunchesAdapter constructor(
     private val glide: RequestManager,
-    private val onItemClick: (LaunchesEntity) -> Unit
+    private val onItemClick: (LaunchEntity) -> Unit
 ) : RecyclerView.Adapter<LaunchesAdapter.LaunchViewHolder>() {
 
     inner class LaunchViewHolder(val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
-    var launches: List<LaunchesEntity> = listOf()
+    var launches: List<LaunchEntity> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaunchViewHolder {
         val binding = ItemRecyclerviewBinding
