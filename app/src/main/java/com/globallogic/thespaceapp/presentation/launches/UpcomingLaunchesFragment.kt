@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentLaunchesBinding
-import com.globallogic.thespaceapp.domain.model.LaunchesEntity
+import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,7 +41,13 @@ class UpcomingLaunchesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val launchesAdapter = LaunchesAdapter(glide)
+        val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
+            findNavController().navigate(
+                UpcomingLaunchesFragmentDirections.actionUpcomingLaunchesFragmentToLaunchDetailsFragment(
+                    it.name
+                )
+            )
+        })
         binding.rvLaunches.adapter = launchesAdapter
 
         when (resources.configuration.orientation) {
@@ -53,7 +60,7 @@ class UpcomingLaunchesFragment : Fragment() {
         }
         viewModel.upcomingLaunches.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Success<List<LaunchesEntity>> -> {
+                is State.Success<List<LaunchEntity>> -> {
                     launchesAdapter.launches = state.data
                     launchesAdapter.notifyDataSetChanged()
                     binding.srlLaunches.isRefreshing = false

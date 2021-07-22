@@ -3,7 +3,7 @@ package com.globallogic.thespaceapp.domain.repository
 import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
 import com.globallogic.thespaceapp.di.IoDispatcher
-import com.globallogic.thespaceapp.domain.model.LaunchesEntity
+import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.toDateSting
 import kotlinx.coroutines.CoroutineDispatcher
@@ -14,15 +14,15 @@ class LaunchesRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : LaunchesRepository {
-    override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchesEntity>> {
+    override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchEntity>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchUpcomingLaunchesData()
-                val launches: List<LaunchesEntity> = response.map {
-                    LaunchesEntity(
+                val launches: List<LaunchEntity> = response.map {
+                    LaunchEntity(
                         name = it.name,
                         details = it.details,
-                        date = it.dateUnix.toDateSting(),
+                        date = it.dateUnix,
                         image = it.links.patch.small,
                         crewIds = it.crew,
                         cores = it.cores,

@@ -29,7 +29,20 @@
         android:id="@+id/upcomingLaunchesFragment"
         android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
         android:label="UpcomingLaunchesFragment"
-        tools:layout="@layout/fragment_launches" />
+        tools:layout="@layout/fragment_launches">
+        <action
+            android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
+            app:destination="@id/launchDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/launchDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
+        android:label="LaunchDetailsFragment"
+        tools:layout="@layout/fragment_launch_details" >
+        <argument
+            android:name="launchName"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.globallogic.thespaceapp.domain.model.LaunchesEntity
+import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
@@ -17,8 +17,8 @@ class LaunchesSharedViewModel @Inject constructor(
     private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase
 ) : ViewModel() {
 
-    private val _upcomingLaunches = MutableLiveData<State<List<LaunchesEntity>>>()
-    val upcomingLaunches: LiveData<State<List<LaunchesEntity>>> = _upcomingLaunches
+    private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
+    val upcomingLaunches: LiveData<State<List<LaunchEntity>>> = _upcomingLaunches
 
     init {
         fetchUpcomingLaunchesData()
@@ -26,6 +26,12 @@ class LaunchesSharedViewModel @Inject constructor(
 
     fun onRetryClicked() {
         fetchUpcomingLaunchesData()
+    }
+
+    fun getLaunchByName(name: String): LaunchEntity? {
+        return (upcomingLaunches.value as State.Success<List<LaunchEntity>>).data.findLast {
+            it.name == name
+        }
     }
 
     fun fetchUpcomingLaunchesData() {
