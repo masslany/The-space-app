@@ -13,10 +13,18 @@
         <action
             android:id="@+id/action_dashboardFragment_to_roadsterDetailsFragment"
             app:destination="@id/roadsterDetailsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_upcomingLaunchesFragment"
+            app:destination="@id/upcomingLaunchesFragment" />
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
         android:label="RoadsterDetailsFragment"
         tools:layout="@layout/fragment_roadster_details" />
+    <fragment
+        android:id="@+id/upcomingLaunchesFragment"
+        android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
+        android:label="UpcomingLaunchesFragment"
+        tools:layout="@layout/fragment_launches" />
 </navigation>
