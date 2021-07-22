@@ -11,6 +11,8 @@ import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRocketsBinding
 import com.globallogic.thespaceapp.utils.State
+import com.globallogic.thespaceapp.utils.makeGone
+import com.globallogic.thespaceapp.utils.makeVisible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -47,10 +49,15 @@ class RocketsFragment : Fragment() {
             when (state) {
                 State.Loading -> {
                     binding.srlLaunches.isRefreshing = true
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.rvRockets.makeGone()
                 }
                 is State.Success -> {
                     adapter.rockets = state.data
+                    binding.rvRockets.makeVisible()
+
                     binding.srlLaunches.isRefreshing = false
+                    binding.errorLayout.errorConstraintLayout.makeGone()
                 }
                 is State.Error -> {
                     val snackbar = Snackbar.make(
@@ -64,6 +71,8 @@ class RocketsFragment : Fragment() {
                     snackbar.show()
 
                     binding.srlLaunches.isRefreshing = false
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
+                    binding.rvRockets.makeGone()
                 }
             }
         }
