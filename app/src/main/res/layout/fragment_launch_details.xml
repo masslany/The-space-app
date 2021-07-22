@@ -71,6 +71,60 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <TextView
+        android:id="@+id/tv_article_label"
+        android:layout_width="@dimen/media_link_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:enabled="false"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/article"
+        app:drawableTopCompat="@drawable/ic_outline_article_24"
+        app:layout_constraintEnd_toStartOf="@+id/iv_webcast"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+        tools:enabled="true"
+        tools:ignore="contentDescription" />
+
+    <TextView
+        android:id="@+id/iv_webcast"
+        android:layout_width="@dimen/media_link_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:enabled="false"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/webcast"
+        app:drawableTopCompat="@drawable/ic_outline_article_24"
+        app:layout_constraintEnd_toStartOf="@+id/iv_wikipedia"
+        app:layout_constraintStart_toEndOf="@+id/tv_article_label"
+        app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+        tools:enabled="true"
+        tools:ignore="contentDescription" />
+
+    <TextView
+        android:id="@+id/iv_wikipedia"
+        android:layout_width="@dimen/media_link_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
+        android:background="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:enabled="false"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/wikipedia"
+        app:drawableTopCompat="@drawable/ic_outline_article_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_webcast"
+        app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+        tools:enabled="true"
+        tools:ignore="contentDescription" />
+
     <View
         android:id="@+id/v_separator"
         android:layout_width="match_parent"
@@ -78,7 +132,7 @@
         android:layout_marginTop="@dimen/large_margin"
         android:layout_marginBottom="@dimen/large_margin"
         android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description" />
+        app:layout_constraintTop_toBottomOf="@id/tv_article_label" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_launch"
@@ -106,13 +160,13 @@
                 android:id="@+id/card_launchpad_info"
                 layout="@layout/card_launchpad_info"
                 android:visibility="gone"
-                tools:visibility="visible"  />
+                tools:visibility="visible" />
 
             <include
                 android:id="@+id/card_payload_info"
                 layout="@layout/card_payload_info"
                 android:visibility="gone"
-                tools:visibility="visible"  />
+                tools:visibility="visible" />
 
         </LinearLayout>
 

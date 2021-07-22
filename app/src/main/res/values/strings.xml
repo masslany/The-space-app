@@ -20,4 +20,7 @@
     <string name="roadster">Roadster</string>
     <string name="an_error_occurred">An error occurred</string>
     <string name="retry">Retry</string>
+    <string name="article">Article</string>
+    <string name="webcast">Webcast</string>
+    <string name="wikipedia">Wikipedia</string>
 </resources>
