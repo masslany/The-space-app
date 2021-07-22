@@ -3,16 +3,16 @@ package com.globallogic.thespaceapp.data.remote.response.upcominglaunches
 
 import com.google.gson.annotations.SerializedName
 
-// TODO: Handle 'Any' type
 data class UpcomingLaunchesResponseItem(
-    @SerializedName("auto_update")
-    val autoUpdate: Boolean,
-    @SerializedName("capsules")
-    val capsules: List<String>,
-    @SerializedName("cores")
-    val cores: List<Core>,
-    @SerializedName("crew")
-    val crew: List<Any>,
+    // Non-null:
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("flight_number")
+    val flightNumber: Int,
+    @SerializedName("upcoming")
+    val upcoming: Boolean,
     @SerializedName("date_local")
     val dateLocal: String,
     @SerializedName("date_precision")
@@ -21,42 +21,44 @@ data class UpcomingLaunchesResponseItem(
     val dateUnix: Long,
     @SerializedName("date_utc")
     val dateUtc: String,
+    @SerializedName("auto_update")
+    val autoUpdate: Boolean,
+    @SerializedName("net")
+    val net: Boolean,
+    @SerializedName("tbd")
+    val tbd: Boolean,
+
+    // Nullable:
+    @SerializedName("capsules")
+    val capsules: List<String>,
+    @SerializedName("cores")
+    val cores: List<Core>,
+    @SerializedName("crew")
+    val crew: List<String>,
     @SerializedName("details")
     val details: String?,
     @SerializedName("failures")
-    val failures: List<Any>,
+    val failures: List<Failure>,
     @SerializedName("fairings")
     val fairings: Fairings,
-    @SerializedName("flight_number")
-    val flightNumber: Int,
-    @SerializedName("id")
-    val id: String,
     @SerializedName("launch_library_id")
-    val launchLibraryId: String,
+    val launchLibraryId: String?,
     @SerializedName("launchpad")
-    val launchpad: String,
+    val launchpad: String?,
     @SerializedName("links")
     val links: Links,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("net")
-    val net: Boolean,
     @SerializedName("payloads")
     val payloads: List<String>,
     @SerializedName("rocket")
-    val rocket: String,
+    val rocket: String?,
     @SerializedName("ships")
-    val ships: List<Any>,
+    val ships: List<String>,
     @SerializedName("static_fire_date_unix")
-    val staticFireDateUnix: Any,
+    val staticFireDateUnix: String?,
     @SerializedName("static_fire_date_utc")
-    val staticFireDateUtc: Any,
+    val staticFireDateUtc: String?,
     @SerializedName("success")
-    val success: Any,
-    @SerializedName("tbd")
-    val tbd: Boolean,
-    @SerializedName("upcoming")
-    val upcoming: Boolean,
+    val success: Boolean?,
     @SerializedName("window")
-    val window: Int
+    val window: Int?
 )

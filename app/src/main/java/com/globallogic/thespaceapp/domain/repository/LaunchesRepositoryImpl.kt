@@ -18,14 +18,13 @@ class LaunchesRepositoryImpl @Inject constructor(
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchUpcomingLaunchesData()
-                // TODO: Handle nullable values baseod on schema
                 val launches: List<LaunchesEntity> = response.map {
                     LaunchesEntity(
                         name = it.name,
-                        details = it.details.toString(),
+                        details = it.details,
                         date = it.dateUnix.toDateSting(),
                         image = it.links.patch.small,
-                        crew = it.crew,
+                        crewIds = it.crew,
                         cores = it.cores,
                         rocketId = it.rocket,
                         launchpadId = it.launchpad,
