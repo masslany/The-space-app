@@ -1,5 +1,6 @@
 package com.globallogic.thespaceapp.domain.repository
 
+import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
 import com.globallogic.thespaceapp.di.IoDispatcher
 import com.globallogic.thespaceapp.domain.model.RocketEntity
@@ -39,7 +40,7 @@ class RocketsRepositoryImp @Inject constructor(
                         stages = data.stages,
                         successRatePct = data.successRatePct,
                         type = data.type,
-                        wikipedia = data.wikipedia
+                        wikipedia = Uri.parse(data.wikipedia)
                     )
                 }
                 Result.Success(rockets)

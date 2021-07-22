@@ -1,5 +1,6 @@
 package com.globallogic.thespaceapp.domain.model
 
+import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.response.rockets.*
 
 data class RocketEntity(
@@ -24,5 +25,5 @@ data class RocketEntity(
     val stages: Int,
     val successRatePct: Int,
     val type: String,
-    val wikipedia: String
+    val wikipedia: Uri
 )
