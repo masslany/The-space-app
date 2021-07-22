@@ -45,6 +45,8 @@ class RoadsterDetailsFragment : Fragment() {
                         shimmerViewContainer.stopShimmer()
                         tvError.makeVisible()
                         btnRetry.makeVisible()
+                        errorLayout.makeVisible()
+
                     }
                 }
                 RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
@@ -55,9 +57,11 @@ class RoadsterDetailsFragment : Fragment() {
 
                         binding.tvError.makeGone()
                         binding.btnRetry.makeGone()
+                        errorLayout.makeGone()
 
                         shimmerViewContainer.makeVisible()
                         shimmerViewContainer.startShimmer()
+
                     }
                 }
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Success -> {
@@ -71,6 +75,7 @@ class RoadsterDetailsFragment : Fragment() {
 
                         binding.tvError.makeGone()
                         binding.btnRetry.makeGone()
+                        errorLayout.makeGone()
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate

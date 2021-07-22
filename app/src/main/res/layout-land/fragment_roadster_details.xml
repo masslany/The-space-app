@@ -1,33 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:shimmer="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragment_roadster_details_scene">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/iv_roadster"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="@dimen/roadster_image_height"
         android:contentDescription="@string/roadster_image"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@id/nested_scroll_view"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/nested_scroll_view"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/backgrounds/scenic" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_roadster">
+        app:layout_constraintStart_toEndOf="@id/iv_roadster"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/details_layout"
@@ -178,10 +176,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shimmer_auto_start="true"
-        shimmer:duration="800"
-        tools:visibility="visible">
+        shimmer:duration="800">
 
-        <include layout="@layout/fragment_roadster_shimmer" />
+        <include layout="@layout/fragment_roadster_shimmer"  />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
@@ -189,10 +186,11 @@
         android:id="@+id/error_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
         <TextView
             android:id="@+id/tv_error"
             style="@style/TextAppearance.MaterialComponents.Headline5"
@@ -204,8 +202,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_retry"
@@ -215,10 +212,7 @@
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="@id/tv_error"
             app:layout_constraintStart_toStartOf="@id/tv_error"
-            app:layout_constraintTop_toBottomOf="@id/tv_error"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toBottomOf="@id/tv_error" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</androidx.constraintlayout.motion.widget.MotionLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>

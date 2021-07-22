@@ -8,12 +8,7 @@
                 app:applyMotionScene="false"
                 app:visibilityMode="ignore" />
         </Constraint>
-        <Constraint android:id="@id/tv_error">
-            <PropertySet
-                app:applyMotionScene="false"
-                app:visibilityMode="ignore" />
-        </Constraint>
-        <Constraint android:id="@id/btn_retry">
+        <Constraint android:id="@id/error_layout">
             <PropertySet
                 app:applyMotionScene="false"
                 app:visibilityMode="ignore" />
@@ -31,6 +26,7 @@
     </ConstraintSet>
 
     <Transition
+        android:id="@+id/roadster_transition"
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
         app:duration="1000">
