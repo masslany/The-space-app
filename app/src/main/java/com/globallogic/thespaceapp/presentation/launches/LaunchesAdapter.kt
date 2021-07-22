@@ -9,7 +9,8 @@ import com.globallogic.thespaceapp.databinding.ItemRecyclerviewBinding
 import com.globallogic.thespaceapp.domain.model.LaunchesEntity
 
 class LaunchesAdapter constructor(
-    private val glide: RequestManager
+    private val glide: RequestManager,
+    private val onItemClick: (LaunchesEntity) -> Unit
 ) : RecyclerView.Adapter<LaunchesAdapter.LaunchViewHolder>() {
 
     inner class LaunchViewHolder(val binding: ItemRecyclerviewBinding) :
@@ -33,6 +34,8 @@ class LaunchesAdapter constructor(
                     .load(this.image)
                     .placeholder(R.drawable.ic_launch_placeholder)
                     .into(binding.ivItem)
+
+                binding.itemRecyclerview.setOnClickListener { onItemClick(this) }
             }
         }
     }

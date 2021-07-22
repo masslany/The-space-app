@@ -40,7 +40,9 @@ class UpcomingLaunchesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val launchesAdapter = LaunchesAdapter(glide)
+        val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
+            // TODO: Navigate to details fragment
+        })
         binding.rvLaunches.adapter = launchesAdapter
 
         when (resources.configuration.orientation) {
