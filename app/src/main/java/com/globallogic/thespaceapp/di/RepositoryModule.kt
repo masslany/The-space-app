@@ -1,10 +1,7 @@
 package com.globallogic.thespaceapp.di
 
 import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
-import com.globallogic.thespaceapp.domain.repository.LaunchesRepository
-import com.globallogic.thespaceapp.domain.repository.LaunchesRepositoryImpl
-import com.globallogic.thespaceapp.domain.repository.RoadsterRepository
-import com.globallogic.thespaceapp.domain.repository.RoadsterRepositoryImpl
+import com.globallogic.thespaceapp.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +32,18 @@ class RepositoryModule {
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): LaunchesRepository {
         return LaunchesRepositoryImpl(
+            apiService,
+            ioDispatcher
+        )
+    }
+
+    @Singleton
+    @Provides
+    fun provideRocketsRepository(
+        apiService: SpacexApiService,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): RocketsRepository {
+        return RocketsRepositoryImp(
             apiService,
             ioDispatcher
         )

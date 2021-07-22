@@ -20,4 +20,7 @@
     <string name="roadster">Roadster</string>
     <string name="an_error_occurred">An error occurred</string>
     <string name="retry">Retry</string>
+    <string name="first_launched">First launch: %1$s </string>
+    <string name="swipe_to_refresh">Swipe to refresh</string>
+    <string name="error_cloud_logo">Error cloud logo</string>
 </resources>
