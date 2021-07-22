@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@id/shimmer_view_container">
+        <Constraint android:id="@id/lottie_loading">
             <PropertySet
                 app:applyMotionScene="false"
                 app:visibilityMode="ignore" />

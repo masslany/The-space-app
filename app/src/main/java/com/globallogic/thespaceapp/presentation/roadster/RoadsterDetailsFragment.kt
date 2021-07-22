@@ -41,12 +41,11 @@ class RoadsterDetailsFragment : Fragment() {
             when (state) {
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Error -> {
                     with(binding) {
-                        shimmerViewContainer.makeGone()
-                        shimmerViewContainer.stopShimmer()
+                        lottieLoading.makeGone()
+
                         tvError.makeVisible()
                         btnRetry.makeVisible()
                         errorLayout.makeVisible()
-
                     }
                 }
                 RoadsterDetailsViewModel.RoadsterDetailsState.Loading -> {
@@ -59,9 +58,8 @@ class RoadsterDetailsFragment : Fragment() {
                         binding.btnRetry.makeGone()
                         errorLayout.makeGone()
 
-                        shimmerViewContainer.makeVisible()
-                        shimmerViewContainer.startShimmer()
 
+                        lottieLoading.makeVisible()
                     }
                 }
                 is RoadsterDetailsViewModel.RoadsterDetailsState.Success -> {
@@ -70,11 +68,10 @@ class RoadsterDetailsFragment : Fragment() {
                         nestedScrollView.makeVisible()
                         detailsLayout.makeVisible()
 
-                        shimmerViewContainer.makeGone()
-                        shimmerViewContainer.stopShimmer()
+                        lottieLoading.makeGone()
 
-                        binding.tvError.makeGone()
-                        binding.btnRetry.makeGone()
+                        tvError.makeGone()
+                        btnRetry.makeGone()
                         errorLayout.makeGone()
 
                         tvName.text = state.data.name
@@ -94,19 +91,8 @@ class RoadsterDetailsFragment : Fragment() {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        binding.shimmerViewContainer.stopShimmer()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        binding.shimmerViewContainer.stopShimmer()
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.shimmerViewContainer.stopShimmer()
         _binding = null
     }
 }
