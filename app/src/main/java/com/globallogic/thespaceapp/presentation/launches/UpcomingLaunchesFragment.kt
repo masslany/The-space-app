@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
@@ -41,7 +42,11 @@ class UpcomingLaunchesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
-            // TODO: Navigate to details fragment
+            findNavController().navigate(
+                UpcomingLaunchesFragmentDirections.actionUpcomingLaunchesFragmentToLaunchDetailsFragment(
+                    it.name
+                )
+            )
         })
         binding.rvLaunches.adapter = launchesAdapter
 
