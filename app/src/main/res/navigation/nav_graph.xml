@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_upcomingLaunchesFragment"
             app:destination="@id/upcomingLaunchesFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_rocketsFragment"
+            app:destination="@id/rocketsFragment" />
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
@@ -27,4 +30,9 @@
         android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
         android:label="UpcomingLaunchesFragment"
         tools:layout="@layout/fragment_launches" />
+    <fragment
+        android:id="@+id/rocketsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
+        android:label="RocketsFragment"
+        tools:layout="@layout/fragment_rockets"/>
 </navigation>

@@ -34,6 +34,12 @@ class DashboardFragment : Fragment() {
             )
         }
 
+        binding.cvRockets.setOnClickListener {
+            navController.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToRocketsFragment()
+            )
+        }
+
         binding.cvRoadster.setOnClickListener {
             navController.navigate(
                 DashboardFragmentDirections.actionDashboardFragmentToRoadsterDetailsFragment()
