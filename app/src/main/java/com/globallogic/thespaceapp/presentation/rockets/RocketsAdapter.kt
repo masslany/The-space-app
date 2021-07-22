@@ -37,6 +37,7 @@ class RocketsAdapter(
                     itemView.context.getString(R.string.first_launched, this.firstFlight)
                 glide
                     .load(this.flickrImages.first())
+                    .placeholder(R.drawable.rocket_placeholder)
                     .into(binding.ivItem)
             }
         }
