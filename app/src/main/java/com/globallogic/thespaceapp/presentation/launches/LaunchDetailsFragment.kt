@@ -14,16 +14,14 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
+import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.enable
 import com.globallogic.thespaceapp.utils.makeVisible
 import com.globallogic.thespaceapp.utils.toCountdownString
 import com.globallogic.thespaceapp.utils.toDateSting
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -35,6 +33,10 @@ class LaunchDetailsFragment : Fragment() {
     private val args: LaunchDetailsFragmentArgs by navArgs()
 
     private val viewModel: LaunchesSharedViewModel by activityViewModels()
+
+    @Inject
+    @DefaultDispatcher
+    lateinit var defaultDispatcher: CoroutineDispatcher
 
     @Inject
     lateinit var glide: RequestManager
@@ -65,7 +67,7 @@ class LaunchDetailsFragment : Fragment() {
         binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
 
         // Countdown
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch(defaultDispatcher) {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 while (true) {
                     withContext(Dispatchers.Main) {
