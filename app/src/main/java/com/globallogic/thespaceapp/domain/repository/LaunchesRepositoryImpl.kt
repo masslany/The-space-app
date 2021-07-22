@@ -31,17 +31,17 @@ class LaunchesRepositoryImpl @Inject constructor(
                         payloadsIds = it.payloads,
                         webcast = try {
                             Uri.parse(it.links.webcast)
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                             null
                         },
                         article = try {
                             Uri.parse(it.links.article)
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                             null
                         },
                         wikipedia = try {
                             Uri.parse(it.links.wikipedia)
-                        } catch (e: java.lang.Exception) {
+                        } catch (e: Exception) {
                             null
                         }
                     )
