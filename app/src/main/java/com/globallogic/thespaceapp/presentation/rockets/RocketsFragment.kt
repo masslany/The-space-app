@@ -62,7 +62,7 @@ class RocketsFragment : Fragment() {
                 is State.Error -> {
                     val snackbar = Snackbar.make(
                         binding.srlLaunches,
-                        state.throwable.message ?: "Error!",
+                        state.throwable.message ?: getString(R.string.an_error_occurred),
                         Snackbar.LENGTH_LONG
                     )
                     snackbar.setAction(
