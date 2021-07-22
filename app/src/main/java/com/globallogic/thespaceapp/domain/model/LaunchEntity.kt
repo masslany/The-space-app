@@ -6,7 +6,7 @@ import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.Core
 data class LaunchEntity(
     val name: String,
     val details: String?,
-    val date: String,
+    val date: Long,
     val image: String?,
     val rocketId: String?,
     val launchpadId: String?,

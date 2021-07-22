@@ -7,6 +7,7 @@ import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.ItemRecyclerviewBinding
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
+import com.globallogic.thespaceapp.utils.toDateSting
 
 class LaunchesAdapter constructor(
     private val glide: RequestManager,
@@ -29,7 +30,7 @@ class LaunchesAdapter constructor(
         with(holder) {
             with(launches[position]) {
                 binding.tvItemHeadline.text = this.name
-                binding.tvItemCaption.text = this.date
+                binding.tvItemCaption.text = this.date.toDateSting()
                 glide
                     .load(this.image)
                     .placeholder(R.drawable.ic_launch_placeholder)

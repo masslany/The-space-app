@@ -22,7 +22,7 @@ class LaunchesRepositoryImpl @Inject constructor(
                     LaunchEntity(
                         name = it.name,
                         details = it.details,
-                        date = it.dateUnix.toDateSting(),
+                        date = it.dateUnix,
                         image = it.links.patch.small,
                         crewIds = it.crew,
                         cores = it.cores,
