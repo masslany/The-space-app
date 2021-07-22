@@ -12,4 +12,5 @@
     <color name="red">#ff0000</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="backgroundColor">#151515</color>
+    <color name="errorTextColor">#A2A2A2</color>
 </resources>

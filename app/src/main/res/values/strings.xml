@@ -23,4 +23,7 @@
     <string name="article">Article</string>
     <string name="webcast">Webcast</string>
     <string name="wikipedia">Wikipedia</string>
+    <string name="first_launched">First launch: %1$s </string>
+    <string name="swipe_to_refresh">Swipe to refresh</string>
+    <string name="error_cloud_logo">Error cloud logo</string>
 </resources>

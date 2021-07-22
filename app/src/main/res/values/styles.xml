@@ -8,4 +8,8 @@
     <style name="dashboard_text_view" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textSize">28sp</item>
     </style>
+
+    <style name="error_text_view" parent="bigger_text_view">
+        <item name="android:textColor">@color/errorTextColor</item>
+    </style>
 </resources>
