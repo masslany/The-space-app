@@ -50,7 +50,6 @@ class RocketsFragment : Fragment() {
                 State.Loading -> {
                     binding.srlLaunches.isRefreshing = true
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.rvRockets.makeGone()
                 }
                 is State.Success -> {
                     adapter.rockets = state.data
