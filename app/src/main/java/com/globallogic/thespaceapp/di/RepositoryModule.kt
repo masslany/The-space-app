@@ -60,4 +60,16 @@ class RepositoryModule {
             ioDispatcher
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideStarlinksRepository(
+        apiService: SpacexApiService,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): StarlinkRepository {
+        return StarlinksRepositoryImpl(
+            apiService,
+            ioDispatcher
+        )
+    }
 }
