@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRoadsterDetailsBinding
 import com.globallogic.thespaceapp.utils.State.*
 import com.globallogic.thespaceapp.utils.makeGone
@@ -77,9 +78,11 @@ class RoadsterDetailsFragment : Fragment() {
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
-                        tvSpeed.text = state.data.speed
-                        tvEarthDistance.text = state.data.distanceFromEarth
-                        tvMarsDistance.text = state.data.distanceFromMars
+                        tvSpeed.text = getString(R.string.speed_per_hour, state.data.speed)
+                        tvEarthDistance.text =
+                            getString(R.string.distance, state.data.distanceFromEarth)
+                        tvMarsDistance.text =
+                            getString(R.string.distance, state.data.distanceFromMars)
                         tvDescription.text = state.data.description
                         glide.load(state.data.image).into(ivRoadster)
                     }

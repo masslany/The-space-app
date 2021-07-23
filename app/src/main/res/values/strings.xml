@@ -27,4 +27,6 @@
     <string name="swipe_to_refresh">Swipe to refresh</string>
     <string name="error_cloud_logo">Error cloud logo</string>
     <string name="dragons">Dragons</string>
+    <string name="speed_per_hour">%1$s km/h</string>
+    <string name="distance">%1$s km</string>
 </resources>
