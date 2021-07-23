@@ -48,4 +48,16 @@ class RepositoryModule {
             ioDispatcher
         )
     }
+
+    @Singleton
+    @Provides
+    fun provideDragonsRepository(
+        apiService: SpacexApiService,
+        @IoDispatcher ioDispatcher: CoroutineDispatcher
+    ): DragonsRepository {
+        return DragonsRepositoryImpl(
+            apiService,
+            ioDispatcher
+        )
+    }
 }
