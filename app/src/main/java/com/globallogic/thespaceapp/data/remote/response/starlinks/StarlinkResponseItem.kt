@@ -9,11 +9,11 @@ data class StarlinkResponseItem(
     @SerializedName("id")
     val id: String,
     @SerializedName("latitude")
-    val latitude: Any,
+    val latitude: Double?,
     @SerializedName("launch")
     val launch: String,
     @SerializedName("longitude")
-    val longitude: Any,
+    val longitude: Double?,
     @SerializedName("spaceTrack")
     val spaceTrack: SpaceTrack,
     @SerializedName("velocity_kms")

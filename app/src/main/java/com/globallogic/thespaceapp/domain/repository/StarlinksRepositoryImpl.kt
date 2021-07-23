@@ -16,16 +16,20 @@ class StarlinksRepositoryImpl @Inject constructor(
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchStarlinksData()
-                val starlinks = response.map { data ->
-                    StarlinkEntity(
-                        id = data.id,
-                        objectName = data.spaceTrack.oBJECTNAME,
-                        launchDate = data.launch,
-                        TLELine0 = data.spaceTrack.tLELINE0,
-                        TLELine1 = data.spaceTrack.tLELINE1,
-                        TLELine2 = data.spaceTrack.tLELINE2,
-                    )
-                }
+                val starlinks = response
+                    .filter { data ->
+                        data.latitude != null && data.longitude != null
+                    }
+                    .map { data ->
+                        StarlinkEntity(
+                            id = data.id,
+                            objectName = data.spaceTrack.oBJECTNAME,
+                            launchDate = data.launch,
+                            TLELine0 = data.spaceTrack.tLELINE0,
+                            TLELine1 = data.spaceTrack.tLELINE1,
+                            TLELine2 = data.spaceTrack.tLELINE2,
+                        )
+                    }
                 Result.Success(starlinks)
             } catch (e: Exception) {
                 Result.Error<Any>(e)
