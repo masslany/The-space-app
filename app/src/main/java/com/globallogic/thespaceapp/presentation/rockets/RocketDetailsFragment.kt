@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RocketDetailsFragment : Fragment(R.layout.fragment_rocket_details) {
+class RocketDetailsFragment : Fragment() {
 
     private var _binding: FragmentRocketDetailsBinding? = null
     private val binding get() = _binding!!
@@ -41,7 +41,7 @@ class RocketDetailsFragment : Fragment(R.layout.fragment_rocket_details) {
 
         observeUi()
 
-        viewModel.getRocketByIt(args.rocketId)
+        viewModel.getRocketById(args.rocketId)
     }
 
     private fun observeUi() {

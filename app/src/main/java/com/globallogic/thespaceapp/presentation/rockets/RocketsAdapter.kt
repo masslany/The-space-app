@@ -10,7 +10,8 @@ import com.globallogic.thespaceapp.domain.model.RocketEntity
 import com.globallogic.thespaceapp.presentation.rockets.RocketsAdapter.RocketsViewHolder
 
 class RocketsAdapter(
-    private val glide: RequestManager
+    private val glide: RequestManager,
+    private val onItemClick: (RocketEntity) -> Unit
 ) : RecyclerView.Adapter<RocketsViewHolder>() {
 
     inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
@@ -39,6 +40,8 @@ class RocketsAdapter(
                     .load(this.flickrImages.first())
                     .placeholder(R.drawable.rocket_placeholder)
                     .into(binding.ivItem)
+
+                binding.itemRecyclerview.setOnClickListener { onItemClick(this) }
             }
         }
     }
