@@ -56,36 +56,6 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        val markers = mutableMapOf<String, Marker?>()
-
-        viewModel.markersMap.observe(viewLifecycleOwner) { data ->
-            data.forEach { (id, marker) ->
-                val m = googleMap.addMarker(
-                    MarkerOptions()
-                        .position(marker?.latLong!!)
-                        .title(marker.objectName)
-                )
-                markers[id] = m
-            }
-
-        }
-
-        viewModel.starlinks.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is State.Error -> {
-                }
-                State.Loading -> {
-                }
-                is State.Success -> {
-                    state.data.forEach {
-                        markers[it.id]?.position = it.latLong
-                    }
-                }
-            }
-        }
-
-        viewModel.predictPosition()
-
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -104,6 +74,36 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             }
         } catch (e: Resources.NotFoundException) {
             Log.e("TAG", "Can't find style. Error: ", e)
+        }
+
+        val markers = mutableMapOf<String, Marker?>()
+
+        viewModel.markersMap.observe(viewLifecycleOwner) { data ->
+            data.forEach { (id, marker) ->
+                val m = googleMap.addMarker(
+                    MarkerOptions()
+                        .position(marker?.latLong!!)
+                        .title(marker.objectName)
+                )
+                markers[id] = m
+            }
+
+            viewModel.predictPosition()
+        }
+
+
+        viewModel.starlinks.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is State.Error -> {
+                }
+                State.Loading -> {
+                }
+                is State.Success -> {
+                    state.data.forEach {
+                        markers[it.id]?.position = it.latLong
+                    }
+                }
+            }
         }
     }
 
