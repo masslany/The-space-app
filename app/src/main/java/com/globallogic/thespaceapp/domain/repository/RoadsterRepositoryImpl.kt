@@ -4,6 +4,7 @@ import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
 import com.globallogic.thespaceapp.di.IoDispatcher
 import com.globallogic.thespaceapp.domain.model.RoadsterEntity
 import com.globallogic.thespaceapp.utils.Result
+import com.globallogic.thespaceapp.utils.toDateSting
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class RoadsterRepositoryImpl @Inject constructor(
                 val response = apiService.fetchRoadsterData()
                 val entity = RoadsterEntity(
                     name = response.name,
-                    launchDate = response.launchDateUtc,
+                    launchDate = response.launchDateUnix.toDateSting(),
                     speed = response.speedKph.toString(),
                     distanceFromEarth = response.earthDistanceKm.toString(),
                     distanceFromMars = response.marsDistanceKm.toString(),
