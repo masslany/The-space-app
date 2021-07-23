@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_rocketsFragment"
             app:destination="@id/rocketsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_dragonsFragment"
+            app:destination="@id/dragonsFragment" />
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
@@ -38,7 +41,7 @@
         android:id="@+id/launchDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
         android:label="LaunchDetailsFragment"
-        tools:layout="@layout/fragment_launch_details" >
+        tools:layout="@layout/fragment_launch_details">
         <argument
             android:name="launchName"
             app:argType="string" />
@@ -47,5 +50,10 @@
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
         android:label="RocketsFragment"
-        tools:layout="@layout/fragment_rockets"/>
+        tools:layout="@layout/fragment_rockets" />
+    <fragment
+        android:id="@+id/dragonsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
+        android:label="DragonsFragment"
+        tools:layout="@layout/fragment_dragons" />
 </navigation>
