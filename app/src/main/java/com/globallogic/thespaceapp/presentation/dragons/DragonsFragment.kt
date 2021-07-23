@@ -1,17 +1,22 @@
 package com.globallogic.thespaceapp.presentation.dragons
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.databinding.FragmentDragonsBinding
 import com.globallogic.thespaceapp.domain.model.DragonEntity
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class DragonsFragment : Fragment() {
@@ -21,6 +26,8 @@ class DragonsFragment : Fragment() {
 
     private val viewModel: DragonsSharedViewModel by activityViewModels()
 
+    @Inject
+    lateinit var glide: RequestManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +41,20 @@ class DragonsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val dragonsAdapter = DragonsAdapter(glide) {
+            // TODO: Proceed to dragon details fragment
+        }
+        binding.rvDragons.adapter = dragonsAdapter
+
+        when (resources.configuration.orientation) {
+            Configuration.ORIENTATION_LANDSCAPE -> {
+                binding.rvDragons.layoutManager = GridLayoutManager(requireContext(), 2)
+            }
+            else -> {
+                binding.rvDragons.layoutManager = LinearLayoutManager(requireContext())
+            }
+        }
+
         viewModel.dragons.observe(viewLifecycleOwner) { state ->
             when (state) {
                 State.Loading -> {
@@ -43,8 +64,7 @@ class DragonsFragment : Fragment() {
                 is State.Success -> {
                     binding.srlDragons.isRefreshing = false
                     binding.errorLayout.errorConstraintLayout.makeGone()
-
-                    fillUi(state.data)
+                    dragonsAdapter.dragons = state.data
                 }
                 is State.Error -> {
                     binding.srlDragons.isRefreshing = false
@@ -56,9 +76,5 @@ class DragonsFragment : Fragment() {
         binding.srlDragons.setOnRefreshListener {
             viewModel.onRetryClicked()
         }
-    }
-
-    private fun fillUi(dragons: List<DragonEntity>) {
-        // TODO
     }
 }
