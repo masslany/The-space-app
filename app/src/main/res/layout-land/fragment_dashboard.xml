@@ -213,7 +213,7 @@
                     android:layout_height="@dimen/dashboard_image_size"
                     android:contentDescription="@string/roadster"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/roadster_crop"
+                    android:src="@drawable/starlink"
                     app:layout_constraintDimensionRatio="1"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
