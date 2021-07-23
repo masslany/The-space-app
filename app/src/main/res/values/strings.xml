@@ -26,4 +26,9 @@
     <string name="first_launched">First launch: %1$s </string>
     <string name="swipe_to_refresh">Swipe to refresh</string>
     <string name="error_cloud_logo">Error cloud logo</string>
+    <string name="size">Size</string>
+    <string name="height_label">Height</string>
+    <string name="diameter_label">Diameter</string>
+    <string name="mass_label">Mass</string>
+    <string name="first_stage">First stage</string>
 </resources>
