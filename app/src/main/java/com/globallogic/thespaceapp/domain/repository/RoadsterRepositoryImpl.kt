@@ -8,6 +8,7 @@ import com.globallogic.thespaceapp.utils.toDateSting
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 class RoadsterRepositoryImpl @Inject constructor(
@@ -21,11 +22,11 @@ class RoadsterRepositoryImpl @Inject constructor(
                 val entity = RoadsterEntity(
                     name = response.name,
                     launchDate = response.launchDateUnix.toDateSting(),
-                    speed = response.speedKph.toString(),
-                    distanceFromEarth = response.earthDistanceKm.toString(),
-                    distanceFromMars = response.marsDistanceKm.toString(),
+                    speed = response.speedKph.roundToInt().toString(),
+                    distanceFromEarth = response.earthDistanceKm.roundToInt().toString(),
+                    distanceFromMars = response.marsDistanceKm.roundToInt().toString(),
                     description = response.details,
-                    image = response.flickrImages[Random.nextInt(0,3)]
+                    image = response.flickrImages[Random.nextInt(0, 3)]
                 )
                 Result.Success(entity)
             } catch (e: Exception) {
