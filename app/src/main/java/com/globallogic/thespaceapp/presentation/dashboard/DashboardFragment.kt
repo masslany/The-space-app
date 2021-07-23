@@ -40,6 +40,12 @@ class DashboardFragment : Fragment() {
             )
         }
 
+        binding.cvDragons.setOnClickListener {
+            navController.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToDragonsFragment()
+            )
+        }
+
         binding.cvRoadster.setOnClickListener {
             navController.navigate(
                 DashboardFragmentDirections.actionDashboardFragmentToRoadsterDetailsFragment()
