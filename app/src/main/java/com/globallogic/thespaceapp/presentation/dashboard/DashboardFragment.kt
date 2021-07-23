@@ -51,6 +51,12 @@ class DashboardFragment : Fragment() {
                 DashboardFragmentDirections.actionDashboardFragmentToRoadsterDetailsFragment()
             )
         }
+
+        binding.cvStarlink.setOnClickListener {
+            navController.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToStarlinkMapFragment()
+            )
+        }
     }
 
     override fun onDestroyView() {
