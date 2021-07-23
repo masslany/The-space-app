@@ -10,11 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentDragonsBinding
-import com.globallogic.thespaceapp.domain.model.DragonEntity
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -63,11 +64,23 @@ class DragonsFragment : Fragment() {
                 }
                 is State.Success -> {
                     binding.srlDragons.isRefreshing = false
+                    binding.rvDragons.makeVisible()
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     dragonsAdapter.dragons = state.data
                 }
                 is State.Error -> {
+                    val snackbar = Snackbar.make(
+                        binding.srlDragons,
+                        state.throwable.message ?: getString(R.string.an_error_occurred),
+                        Snackbar.LENGTH_LONG
+                    )
+                    snackbar.setAction(
+                        R.string.retry
+                    ) { viewModel.onRetryClicked() }
+                    snackbar.show()
+
                     binding.srlDragons.isRefreshing = false
+                    binding.rvDragons.makeGone()
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                 }
             }
