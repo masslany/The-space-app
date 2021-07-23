@@ -16,9 +16,7 @@ import com.globallogic.thespaceapp.utils.State
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -40,6 +38,10 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     @MainDispatcher
     lateinit var mainDispatcher: CoroutineDispatcher
 
+    private lateinit var currentIcon: BitmapDescriptor
+    private lateinit var iconSmall: BitmapDescriptor
+    private lateinit var iconMedium: BitmapDescriptor
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -52,10 +54,14 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        iconSmall = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_20)
+        iconMedium = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_50)
+
+        currentIcon = iconSmall
+
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -84,6 +90,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                     MarkerOptions()
                         .position(marker?.latLong!!)
                         .title(marker.objectName)
+                        .icon(currentIcon)
                 )
                 markers[id] = m
             }
@@ -96,16 +103,23 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             when (state) {
                 is State.Error -> {
                 }
+
                 State.Loading -> {
                 }
+
                 is State.Success -> {
+                    currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
+                        iconSmall
+                    } else {
+                        iconMedium
+                    }
+
                     state.data.forEach {
                         markers[it.id]?.position = it.latLong
+                        markers[it.id]?.setIcon(currentIcon)
                     }
                 }
             }
         }
     }
-
-
 }

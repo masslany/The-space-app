@@ -14,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -71,14 +70,6 @@ class StarlinkViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun predictPositionOnce(starlinks: List<StarlinkEntity>): List<StarlinkMarker> {
-        val markers = mutableListOf<StarlinkMarker>()
-        viewModelScope.launch(defaultDispatcher) {
-
-        }
-        return markers
     }
 
     fun predictPosition() = viewModelScope.launch(defaultDispatcher) {
