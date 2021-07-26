@@ -43,10 +43,11 @@ class StarlinkViewModel @Inject constructor(
 
     private fun fetchStarlinks() {
         _starlinks.value = Loading
-        viewModelScope.launch {
+
+        viewModelScope.launch(defaultDispatcher) {
             when (val result = fetchStarlinksUseCase.execute()) {
                 is Result.Success -> {
-                    _starlinkEntities.value = result.data
+                    _starlinkEntities.postValue(result.data)
                     val tempMap = mutableMapOf<String, StarlinkMarker>()
 
                     result.data.forEach { starlink ->
@@ -63,10 +64,10 @@ class StarlinkViewModel @Inject constructor(
                                 launchDate = starlink.launchDate,
                             )
                     }
-                    _markersMap.value = tempMap
+                    _markersMap.postValue(tempMap)
                 }
                 is Result.Error<*> -> {
-                    _starlinks.value = Error(result.exception)
+                    _starlinks.postValue(Error(result.exception))
                 }
             }
         }
@@ -91,7 +92,7 @@ class StarlinkViewModel @Inject constructor(
                 )
             }
             _starlinks.postValue(Success(markers))
-            delay(100L)
+            delay(200L)
         }
     }
 }
