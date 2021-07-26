@@ -28,12 +28,20 @@
     <string name="error_cloud_logo">Error cloud logo</string>
     <string name="size">Size</string>
     <string name="height_label">Height</string>
+    <string name="height">%1$s m</string>
     <string name="diameter_label">Diameter</string>
+    <string name="diameter">%1$s m</string>
     <string name="mass_label">Mass</string>
-    <string name="first_stage">First stage</string>
-    <string name="burn_time">Burn time</string>
+    <string name="mass">%1$s kg</string>
+    <string name="first_stage_label">First stage</string>
+    <string name="burn_time_label">Burn time</string>
+    <string name="burn_time">%1$s s</string>
     <string name="engines_label">Engines</string>
-    <string name="fuel_amount_tones">Fuel amount (Tones)</string>
+    <string name="fuel_amount_tones_label">Fuel amount (Tones)</string>
+    <string name="fuel_amount_tones">%1$s T</string>
     <string name="thrust_sea_level_label">Thrust at sea level</string>
+    <string name="thrust_sea_level">%1$s kN</string>
     <string name="thrust_vacuum_label">Trust in vacuum</string>
+    <string name="thrust_vacuum">%1$s kN</string>
+    <string name="second_stage_label">Second stage</string>
 </resources>
