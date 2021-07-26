@@ -55,5 +55,18 @@
         android:id="@+id/dragonsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
         android:label="DragonsFragment"
-        tools:layout="@layout/fragment_dragons" />
+        tools:layout="@layout/fragment_dragons">
+        <action
+            android:id="@+id/action_dragonsFragment_to_dragonDetailsFragment"
+            app:destination="@id/dragonDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dragonDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonDetailsFragment"
+        android:label="DragonDetailsFragment"
+        tools:layout="@layout/fragment_dragon_details" >
+        <argument
+            android:name="dragonName"
+            app:argType="string" />
+    </fragment>
 </navigation>
