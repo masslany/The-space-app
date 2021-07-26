@@ -13,7 +13,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/tv_rocket_label"
+            android:id="@+id/tv_first_stage_label"
             style="@style/TextAppearance.MaterialComponents.Overline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,80 +31,125 @@
             android:background="@color/transparent"
             android:padding="@dimen/default_margin"
             android:src="@drawable/ic_baseline_expand_more_24"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_rocket_label"
+            app:layout_constraintBottom_toBottomOf="@id/tv_first_stage_label"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_rocket_label"
+            app:layout_constraintTop_toTopOf="@id/tv_first_stage_label"
             tools:ignore="contentDescription" />
 
         <TextView
-            android:id="@+id/tv_height_label"
+            android:id="@+id/tv_burn_time_label"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/height_label"
+            android:text="@string/burn_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_rocket_label"
+            app:layout_constraintTop_toBottomOf="@id/tv_first_stage_label"
             tools:layout_editor_absoluteY="43dp"
             tools:text="Height" />
 
         <TextView
-            android:id="@+id/tv_height"
+            android:id="@+id/tv_burn_time"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_height_label"
-            tools:text="70 m" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_burn_time_label"
+            tools:text="133.7 s" />
 
         <TextView
-            android:id="@+id/tv_diameter_label"
+            android:id="@+id/tv_engines_label"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/diameter_label"
+            android:text="@string/engines_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_height"
+            app:layout_constraintTop_toBottomOf="@id/tv_burn_time"
             tools:layout_editor_absoluteY="43dp"
-            tools:text="Diameter" />
+            tools:text="Engines" />
 
         <TextView
-            android:id="@+id/tv_diameter"
+            android:id="@+id/tv_engines"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_diameter_label"
-            tools:text="12.2 m" />
+            app:layout_constraintTop_toBottomOf="@id/tv_engines_label"
+            tools:text="7" />
 
         <TextView
-            android:id="@+id/tv_mass_label"
+            android:id="@+id/tv_fuel_amount_label"
             style="@style/TextAppearance.MaterialComponents.Headline6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="@dimen/large_margin"
-            android:text="@string/mass_label"
+            android:text="@string/fuel_amount_tones"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_diameter"
-            tools:layout_editor_absoluteY="43dp"
-            tools:text="Mass" />
+            app:layout_constraintTop_toBottomOf="@id/tv_engines"
+            tools:text="Fuel amount (Tones)" />
 
         <TextView
-            android:id="@+id/tv_mass"
+            android:id="@+id/tv_fuel_amount"
             style="@style/TextAppearance.MaterialComponents.Body1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginBottom="@dimen/default_margin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mass_label"
-            tools:text="1420788 kg" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_fuel_amount_label"
+            tools:text="13323 T" />
+
+        <TextView
+            android:id="@+id/tv_thrust_sea_level_label"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/thrust_sea_level_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_fuel_amount"
+            tools:text="@string/thrust_sea_level_label" />
+
+        <TextView
+            android:id="@+id/tv_thrust_sea_level"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_thrust_sea_level_label"
+            tools:text="321313 kN" />
+
+        <TextView
+            android:id="@+id/tv_thrust_vacuum_label"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:text="@string/thrust_vacuum_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_thrust_sea_level"
+            tools:text="@string/thrust_vacuum_label" />
+
+        <TextView
+            android:id="@+id/tv_thrust_vacuum"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginBottom="@dimen/default_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_thrust_vacuum_label"
+            tools:text="343443 kN" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

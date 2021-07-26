@@ -61,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_separator">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_rocket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -80,10 +80,21 @@
 
             <include
                 android:id="@+id/card_rocket_size"
-                layout="@layout/card_rocket_size_info" />
+                layout="@layout/card_rocket_size_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_rocket_details_description"
+                />
+
+            <include
+                android:id="@+id/card_first_stage"
+                layout="@layout/card_rocket_first_stage_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/card_rocket_size"/>
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

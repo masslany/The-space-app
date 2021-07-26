@@ -70,6 +70,20 @@ class RocketDetailsFragment : Fragment() {
                         cardRocketSize.tvDiameter.text = rocketInfo.diameter.meters.toString()
                         cardRocketSize.tvMass.text = rocketInfo.mass.kg.toString()
 
+                        // First stage card
+                        cardFirstStage.tvBurnTime.text =
+                            rocketInfo.firstStage.burnTimeSec.toString()
+                        cardFirstStage.tvEngines.text = rocketInfo.firstStage.engines.toString()
+                        cardFirstStage.tvFuelAmount.text =
+                            rocketInfo.firstStage.fuelAmountTons.toString()
+                        cardFirstStage.tvThrustSeaLevel.text =
+                            rocketInfo.firstStage.thrustSeaLevel.kN.toString() + " kN"
+                        cardFirstStage.tvThrustVacuum.text =
+                            rocketInfo.firstStage.thrustVacuum.kN.toString() + " kN"
+
+
+
+
                     }
                 }
             }

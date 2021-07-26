@@ -31,4 +31,9 @@
     <string name="diameter_label">Diameter</string>
     <string name="mass_label">Mass</string>
     <string name="first_stage">First stage</string>
+    <string name="burn_time">Burn time</string>
+    <string name="engines_label">Engines</string>
+    <string name="fuel_amount_tones">Fuel amount (Tones)</string>
+    <string name="thrust_sea_level_label">Thrust at sea level</string>
+    <string name="thrust_vacuum_label">Trust in vacuum</string>
 </resources>
