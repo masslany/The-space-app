@@ -1,11 +1,11 @@
 package com.globallogic.thespaceapp.presentation.dragons
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.DragonEntity
-import com.globallogic.thespaceapp.domain.usecase.FetchDragonByIdUseCase
 import com.globallogic.thespaceapp.domain.usecase.FetchDragonsUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DragonsSharedViewModel @Inject constructor(
-    private val fetchDragonsUseCase: FetchDragonsUseCase,
-    private val fetchDragonByIdUseCase: FetchDragonByIdUseCase
+    private val fetchDragonsUseCase: FetchDragonsUseCase
 ) : ViewModel() {
 
     private val _dragons = MutableLiveData<State<List<DragonEntity>>>()
@@ -45,9 +44,10 @@ class DragonsSharedViewModel @Inject constructor(
         }
     }
 
-//    fun getDragonById(id: String): DragonEntity {
-//        return (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
-//            it.id == id
-////        } ?: fetchDragonByIdUseCase(id).execute()
-//    }
+    fun getDragonById(id: String): DragonEntity? {
+        Log.e("TAG", dragons.value.toString())
+        return (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
+            it.id == id
+        }
+    }
 }

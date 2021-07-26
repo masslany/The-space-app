@@ -45,7 +45,7 @@ class DragonsFragment : Fragment() {
 
         val dragonsAdapter = DragonsAdapter(glide) { dragon ->
             findNavController().navigate(
-                DragonsFragmentDirections.actionDragonsFragmentToDragonDetailsFragment(dragon.name)
+                DragonsFragmentDirections.actionDragonsFragmentToDragonDetailsFragment(dragon.id)
             )
         }
         binding.rvDragons.adapter = dragonsAdapter

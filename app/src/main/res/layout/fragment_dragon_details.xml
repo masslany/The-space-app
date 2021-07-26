@@ -27,7 +27,7 @@
         android:layout_marginTop="@dimen/large_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_rocket_details"
+        app:layout_constraintTop_toBottomOf="@id/iv_dragon_details"
         tools:text="Falcon Heavy" />
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_marginTop="@dimen/large_margin"
         android:layout_marginBottom="@dimen/large_margin"
         android:background="@android:color/darker_gray"
-        app:layout_constraintTop_toBottomOf="@id/tv_rocket_details_type" />
+        app:layout_constraintTop_toBottomOf="@id/tv_dragon_details_type" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_dragon"

@@ -36,6 +36,11 @@ class DragonDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getDragonById(args.dragonId)?.let { dragon ->
+            binding.tvDragonDetailsHeadline.text = dragon.name
+            binding.tvDragonDetailsDescription.text = dragon.description
 
+            glide.load(dragon.flickrImages.first()).into(binding.ivDragonDetails)
+        }
     }
 }
