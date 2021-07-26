@@ -30,7 +30,7 @@ class StarlinkViewModel @Inject constructor(
     private val _markersMap = MutableLiveData<Map<String, StarlinkMarker?>>()
     val markersMap: LiveData<Map<String, StarlinkMarker?>> = _markersMap
 
-    val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
+    private val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
 
     init {
         fetchStarlinks()
