@@ -27,11 +27,10 @@ class StarlinkViewModel @Inject constructor(
     private val _starlinks = MutableLiveData<State<List<StarlinkMarker>>>()
     val starlinks: LiveData<State<List<StarlinkMarker>>> = _starlinks
 
-    private val _starlinkEntities = MutableLiveData(emptyList<StarlinkEntity>())
-    val starlinkEntities: LiveData<List<StarlinkEntity>> = _starlinkEntities
-
     private val _markersMap = MutableLiveData<Map<String, StarlinkMarker?>>()
     val markersMap: LiveData<Map<String, StarlinkMarker?>> = _markersMap
+
+    val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
 
     init {
         fetchStarlinks()
@@ -41,42 +40,48 @@ class StarlinkViewModel @Inject constructor(
         fetchStarlinks()
     }
 
-    private fun fetchStarlinks() {
+    private fun fetchStarlinks() = viewModelScope.launch() {
         _starlinks.value = Loading
 
-        viewModelScope.launch(defaultDispatcher) {
-            when (val result = fetchStarlinksUseCase.execute()) {
-                is Result.Success -> {
-                    _starlinkEntities.postValue(result.data)
-                    val tempMap = mutableMapOf<String, StarlinkMarker>()
+        when (val result = fetchStarlinksUseCase.execute()) {
+            is Result.Success -> {
+                starlinkEntities.clear()
+                starlinkEntities.addAll(result.data)
 
-                    result.data.forEach { starlink ->
-                        val predicted = TlePredictionEngine.getSatellitePosition(
-                            starlink.TLELine1,
-                            starlink.TLELine2,
-                            true
-                        )
-                        tempMap[starlink.id] =
-                            StarlinkMarker(
-                                latLong = LatLng(predicted[0], predicted[1]),
-                                id = starlink.id,
-                                objectName = starlink.objectName,
-                                launchDate = starlink.launchDate,
-                            )
-                    }
-                    _markersMap.postValue(tempMap)
-                }
-                is Result.Error<*> -> {
-                    _starlinks.postValue(Error(result.exception))
-                }
+                convertToStarlinkMarkerMap(result.data)
+            }
+            is Result.Error<*> -> {
+                _starlinks.value = Error(result.exception)
             }
         }
     }
 
+
+    private fun convertToStarlinkMarkerMap(data: List<StarlinkEntity>) =
+        viewModelScope.launch(defaultDispatcher) {
+            val tempMap = mutableMapOf<String, StarlinkMarker>()
+
+            data.forEach { starlink ->
+                val predicted = TlePredictionEngine.getSatellitePosition(
+                    starlink.TLELine1,
+                    starlink.TLELine2,
+                    true
+                )
+                tempMap[starlink.id] =
+                    StarlinkMarker(
+                        latLong = LatLng(predicted[0], predicted[1]),
+                        id = starlink.id,
+                        objectName = starlink.objectName,
+                        launchDate = starlink.launchDate,
+                    )
+            }
+            _markersMap.postValue(tempMap)
+        }
+
     fun predictPosition() = viewModelScope.launch(defaultDispatcher) {
         while (true) {
             val markers = mutableListOf<StarlinkMarker>()
-            _starlinkEntities.value?.forEach { starlink ->
+            starlinkEntities.forEach { starlink ->
                 val predicted = TlePredictionEngine.getSatellitePosition(
                     starlink.TLELine1,
                     starlink.TLELine2,
