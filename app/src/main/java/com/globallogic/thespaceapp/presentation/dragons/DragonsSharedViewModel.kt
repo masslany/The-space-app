@@ -1,6 +1,5 @@
 package com.globallogic.thespaceapp.presentation.dragons
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,6 +19,10 @@ class DragonsSharedViewModel @Inject constructor(
 
     private val _dragons = MutableLiveData<State<List<DragonEntity>>>()
     val dragons: LiveData<State<List<DragonEntity>>> = _dragons
+
+    private val _dragon = MutableLiveData<State<DragonEntity>>()
+    val dragon: LiveData<State<DragonEntity>> = _dragon
+
 
     init {
         fetchDragons()
@@ -44,10 +47,15 @@ class DragonsSharedViewModel @Inject constructor(
         }
     }
 
-    fun getDragonById(id: String): DragonEntity? {
-        Log.e("TAG", dragons.value.toString())
-        return (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
+    fun getDragonById(id: String) {
+        val dragon = (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
             it.id == id
+        }
+
+        if (dragon != null) {
+            _dragon.value = State.Success(dragon)
+        } else {
+            _dragon.value = State.Error(NullPointerException())
         }
     }
 }

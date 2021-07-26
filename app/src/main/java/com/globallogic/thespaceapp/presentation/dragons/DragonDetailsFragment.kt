@@ -8,7 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentDragonDetailsBinding
+import com.globallogic.thespaceapp.utils.State
+import com.globallogic.thespaceapp.utils.makeGone
+import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -36,11 +40,70 @@ class DragonDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getDragonById(args.dragonId)?.let { dragon ->
-            binding.tvDragonDetailsHeadline.text = dragon.name
-            binding.tvDragonDetailsDescription.text = dragon.description
+        observeUi()
 
-            glide.load(dragon.flickrImages.first()).into(binding.ivDragonDetails)
+        viewModel.getDragonById(args.dragonId)
+    }
+
+    private fun observeUi() {
+        viewModel.dragon.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is State.Error -> {
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
+                }
+                State.Loading -> {
+
+                }
+                is State.Success -> {
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+
+                    val dragon = state.data
+
+                    with(binding) {
+                        tvDragonDetailsHeadline.text = dragon.name
+                        tvDragonDetailsDescription.text = dragon.description
+                        glide.load(dragon.flickrImages.first()).into(ivDragonDetails)
+
+                        // Basic info card
+                        cardInfo.tvFirstFlight.text = dragon.firstFlight
+                        cardInfo.tvActive.text = dragon.active.toString()
+                        cardInfo.tvCrewCapacity.text = dragon.crewCapacity.toString()
+
+                        // Size info card
+                        cardSize.tvHeight.text =
+                            getString(R.string.height, dragon.heightWTrunk.toString())
+                        cardSize.tvDiameter.text =
+                            getString(R.string.diameter, dragon.diameter.toString())
+                        cardSize.tvMass.text =
+                            getString(R.string.mass, dragon.dryMass.toString())
+
+                        // Heat shield info card
+                        cardHeatShield.tvMaterial.text = dragon.heatShield.material
+                        cardHeatShield.tvSize.text =
+                            getString(R.string.size_meters, dragon.heatShield.sizeMeters.toString())
+                        cardHeatShield.tvTemperature.text =
+                            getString(
+                                R.string.temp_degrees,
+                                dragon.heatShield.tempDegrees.toString()
+                            )
+                        cardHeatShield.tvDevPartner.text = dragon.heatShield.devPartner
+
+                        // Payload info card
+                        cardPayload.tvLaunchMass.text =
+                            getString(R.string.mass, dragon.payloadInfo.launchMass.toString())
+                        cardPayload.tvLaunchVolume.text = getString(
+                            R.string.volume_cubic_meters,
+                            dragon.payloadInfo.launchVolume.toString()
+                        )
+                        cardPayload.tvReturnMass.text =
+                            getString(R.string.mass, dragon.payloadInfo.returnMass.toString())
+                        cardPayload.tvReturnVolume.text = getString(
+                            R.string.volume_cubic_meters, dragon.payloadInfo.returnVolume.toString()
+                        )
+                    }
+                }
+
+            }
         }
     }
 }

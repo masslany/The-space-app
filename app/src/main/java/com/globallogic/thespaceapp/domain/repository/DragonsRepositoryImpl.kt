@@ -2,6 +2,7 @@ package com.globallogic.thespaceapp.domain.repository
 
 import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
+import com.globallogic.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.globallogic.thespaceapp.di.IoDispatcher
 import com.globallogic.thespaceapp.domain.model.DragonEntity
 import com.globallogic.thespaceapp.utils.Result
@@ -30,6 +31,13 @@ class DragonsRepositoryImpl @Inject constructor(
                         id = it.id,
                         wikipedia = Uri.parse(it.wikipedia),
                         heightWTrunk = it.heightWTrunk.meters,
+                        payloadInfo = PayloadInfo(
+                            launchMass = it.launchPayloadMass.kg,
+                            launchVolume = it.launchPayloadVol.cubicMeters,
+                            returnMass = it.returnPayloadMass.kg,
+                            returnVolume = it.returnPayloadVol.cubicMeters
+                        ),
+                        heatShield = it.heatShield,
                         thrusters = it.thrusters
                     )
                 }
@@ -57,6 +65,13 @@ class DragonsRepositoryImpl @Inject constructor(
                     id = response.id,
                     wikipedia = Uri.parse(response.wikipedia),
                     heightWTrunk = response.heightWTrunk.meters,
+                    payloadInfo = PayloadInfo(
+                        launchMass = response.launchPayloadMass.kg,
+                        launchVolume = response.launchPayloadVol.cubicMeters,
+                        returnMass = response.returnPayloadMass.kg,
+                        returnVolume = response.returnPayloadVol.cubicMeters
+                    ),
+                    heatShield = response.heatShield,
                     thrusters = response.thrusters
                 )
 

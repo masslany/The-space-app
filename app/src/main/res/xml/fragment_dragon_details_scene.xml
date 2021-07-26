@@ -12,23 +12,22 @@
             app:layout_constraintStart_toStartOf="@+id/tv_dragon_details_headline"
             app:layout_constraintTop_toBottomOf="@+id/tv_dragon_details_headline" />
         <Constraint
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/tv_dragon_details_headline"
             android:layout_width="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/iv_dragon_details"
-            android:id="@+id/tv_dragon_details_headline" />
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_dragon_details" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
             android:id="@+id/iv_dragon_details"
-            android:layout_height="wrap_content"
-            android:maxHeight="@dimen/dragon_details_image_min_height"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.75" />
+            app:layout_constraintTop_toTopOf="parent" />
     </ConstraintSet>
 
     <Transition
