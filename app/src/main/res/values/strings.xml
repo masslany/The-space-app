@@ -44,4 +44,8 @@
     <string name="thrust_vacuum_label">Trust in vacuum</string>
     <string name="thrust_vacuum">%1$s kN</string>
     <string name="second_stage_label">Second stage</string>
+    <string name="dragons">Dragons</string>
+    <string name="speed_per_hour">%1$s km/h</string>
+    <string name="distance">%1$s km</string>
+    <string name="starlink">Starlink</string>
 </resources>

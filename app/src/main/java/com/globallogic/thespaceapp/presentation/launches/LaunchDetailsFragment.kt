@@ -109,20 +109,17 @@ class LaunchDetailsFragment : Fragment() {
 
         launchEntity.rocketId?.let { rocketId ->
             binding.cardRocketInfo.cvRocket.makeVisible()
-//            TODO: Fill with rocket info
-//            binding.cardRocketInfo.tvRocketName.text = rocketId
+            // TODO: Navigate to RocketDetailsFragment
         }
 
         launchEntity.launchpadId?.let { launchpadId ->
             binding.cardLaunchpadInfo.cvLaunchpad.makeVisible()
-//            TODO: Fill with launchpad info
-//            binding.cardLaunchpadInfo.tvLaunchpadName.text = launchpadId
+            // TODO: Navigate to LaunchpadDetailsFragment
         }
 
         if (launchEntity.payloadsIds.isNotEmpty()) {
             binding.cardPayloadInfo.cvPayload.makeVisible()
-//            TODO: Fill with payloads info
-//            binding.cardPayloadInfo.tvPayloadName.text = launchEntity.payloadsIds.first()
+            // TODO: Navigate to PayloadDetailsFragment
         }
 
         glide
