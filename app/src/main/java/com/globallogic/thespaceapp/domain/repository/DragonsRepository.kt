@@ -5,4 +5,5 @@ import com.globallogic.thespaceapp.utils.Result
 
 interface DragonsRepository {
     suspend fun fetchDragonsData(): Result<List<DragonEntity>>
+    suspend fun fetchDragonById(id: String): Result<DragonEntity>
 }

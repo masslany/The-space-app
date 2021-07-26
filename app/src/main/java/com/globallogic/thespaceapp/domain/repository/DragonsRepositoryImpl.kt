@@ -40,4 +40,30 @@ class DragonsRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun fetchDragonById(id: String): Result<DragonEntity> {
+        return withContext(ioDispatcher) {
+            try {
+                val response = apiService.fetchDragonById(id)
+                val dragons = DragonEntity(
+                    name = response.name,
+                    active = response.active,
+                    crewCapacity = response.crewCapacity,
+                    description = response.description,
+                    diameter = response.diameter.meters,
+                    dryMass = response.dryMassKg,
+                    firstFlight = response.firstFlight,
+                    flickrImages = response.flickrImages,
+                    id = response.id,
+                    wikipedia = Uri.parse(response.wikipedia),
+                    heightWTrunk = response.heightWTrunk.meters,
+                    thrusters = response.thrusters
+                )
+
+                Result.Success(dragons)
+            } catch (e: Exception) {
+                Result.Error<Any>(e)
+            }
+        }
+    }
 }
