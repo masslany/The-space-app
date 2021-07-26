@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRocketsBinding
+import com.globallogic.thespaceapp.domain.model.RocketEntity
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
@@ -40,7 +42,9 @@ class RocketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RocketsAdapter(glide)
+        val adapter = RocketsAdapter(glide) { rocket ->
+            onItemClicked(rocket)
+        }
         binding.rvRockets.adapter = adapter
         binding.rvRockets.layoutManager = LinearLayoutManager(requireContext())
 
@@ -79,5 +83,13 @@ class RocketsFragment : Fragment() {
         binding.srlLaunches.setOnRefreshListener {
             viewModel.onRetryClicked()
         }
+    }
+
+    private fun onItemClicked(rocket: RocketEntity) {
+        findNavController().navigate(
+            RocketsFragmentDirections.actionRocketsFragmentToRocketDetailsFragment(
+                rocketId = rocket.id
+            )
+        )
     }
 }

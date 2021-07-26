@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_dragonsFragment"
             app:destination="@id/dragonsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_starlinkMapFragment"
+            app:destination="@id/starlinkMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
@@ -50,7 +53,20 @@
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
         android:label="RocketsFragment"
-        tools:layout="@layout/fragment_rockets" />
+        tools:layout="@layout/fragment_rockets">
+        <action
+            android:id="@+id/action_rocketsFragment_to_rocketDetailsFragment"
+            app:destination="@id/rocketDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rocketDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketDetailsFragment"
+        android:label="RocketDetailsFragment"
+        tools:layout="@layout/fragment_rocket_details">
+        <argument
+            android:name="rocketId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/dragonsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
@@ -60,6 +76,12 @@
             android:id="@+id/action_dragonsFragment_to_dragonDetailsFragment"
             app:destination="@id/dragonDetailsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/starlinkMapFragment"
+        android:name="com.globallogic.thespaceapp.presentation.starlink.StarlinkMapFragment"
+        android:label="StarlinkMapFragment"
+        tools:layout="@layout/fragment_map_starlink" />
     <fragment
         android:id="@+id/dragonDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonDetailsFragment"
