@@ -1,10 +1,14 @@
 package com.globallogic.thespaceapp.presentation.launches
 
+import android.app.NotificationManager
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -16,6 +20,7 @@ import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
+import com.globallogic.thespaceapp.presentation.notification.SpaceNotificationManager
 import com.globallogic.thespaceapp.utils.enable
 import com.globallogic.thespaceapp.utils.makeVisible
 import com.globallogic.thespaceapp.utils.toCountdownString
@@ -63,6 +68,24 @@ class LaunchDetailsFragment : Fragment() {
     }
 
     private fun fillUi(launchEntity: LaunchEntity) {
+
+        binding.btnFavourite.setOnClickListener {
+//            viewModel.onRemainderClicked()
+            val notification =
+                SpaceNotificationManager(requireContext()).createNotification(launchEntity)
+
+            val notificationManager =
+                ContextCompat.getSystemService(
+                    requireContext(),
+                    NotificationManager::class.java
+                ) as NotificationManager
+
+            val intent = Intent()
+            notificationManager.notify(launchEntity.name, 0, notification)
+        }
+
+
+
         binding.tvLaunchDetailsHeadline.text = launchEntity.name
         binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
 

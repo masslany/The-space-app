@@ -28,6 +28,10 @@ class LaunchesSharedViewModel @Inject constructor(
         fetchUpcomingLaunchesData()
     }
 
+    fun onRemainderClicked() {
+
+    }
+
     fun getLaunchByName(name: String): LaunchEntity? {
         return (upcomingLaunches.value as State.Success<List<LaunchEntity>>).data.findLast {
             it.name == name
