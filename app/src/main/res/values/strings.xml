@@ -29,10 +29,13 @@
     <string name="size">Size</string>
     <string name="height_label">Height</string>
     <string name="height">%1$s m</string>
+    <string name="size_meters">%1$s m</string>
+    <string name="temp_degrees">%1$s °C</string>
     <string name="diameter_label">Diameter</string>
     <string name="diameter">%1$s m</string>
     <string name="mass_label">Mass</string>
     <string name="mass">%1$s kg</string>
+    <string name="volume_cubic_meters">%1$s m³</string>
     <string name="first_stage_label">First stage</string>
     <string name="burn_time_label">Burn time</string>
     <string name="burn_time">%1$s s</string>
@@ -47,5 +50,19 @@
     <string name="dragons">Dragons</string>
     <string name="speed_per_hour">%1$s km/h</string>
     <string name="distance">%1$s km</string>
+    <string name="capsule">Capsule</string>
     <string name="starlink">Starlink</string>
+    <string name="height_with_trunk">Height with trunk</string>
+    <string name="active">Active</string>
+    <string name="first_flight">First flight</string>
+    <string name="info">Info</string>
+    <string name="crew_capacity">Crew capacity</string>
+    <string name="heat_shield">Heat shield</string>
+    <string name="material">Material</string>
+    <string name="temperature">Temperature</string>
+    <string name="dev_partner">Dev partner</string>
+    <string name="launch_mass">Launch mass</string>
+    <string name="launch_volume">Launch volume</string>
+    <string name="return_mass">Return mass</string>
+    <string name="return_volume">Return volume</string>
 </resources>

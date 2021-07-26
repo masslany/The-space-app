@@ -20,6 +20,10 @@ class DragonsSharedViewModel @Inject constructor(
     private val _dragons = MutableLiveData<State<List<DragonEntity>>>()
     val dragons: LiveData<State<List<DragonEntity>>> = _dragons
 
+    private val _dragon = MutableLiveData<State<DragonEntity>>()
+    val dragon: LiveData<State<DragonEntity>> = _dragon
+
+
     init {
         fetchDragons()
     }
@@ -40,6 +44,18 @@ class DragonsSharedViewModel @Inject constructor(
                     _dragons.value = State.Error(res.exception)
                 }
             }
+        }
+    }
+
+    fun getDragonById(id: String) {
+        val dragon = (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
+            it.id == id
+        }
+
+        if (dragon != null) {
+            _dragon.value = State.Success(dragon)
+        } else {
+            _dragon.value = State.Error(NullPointerException())
         }
     }
 }

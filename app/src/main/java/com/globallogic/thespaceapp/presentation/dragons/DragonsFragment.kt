@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
@@ -42,8 +43,10 @@ class DragonsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dragonsAdapter = DragonsAdapter(glide) {
-            // TODO: Proceed to dragon details fragment
+        val dragonsAdapter = DragonsAdapter(glide) { dragon ->
+            findNavController().navigate(
+                DragonsFragmentDirections.actionDragonsFragmentToDragonDetailsFragment(dragon.id)
+            )
         }
         binding.rvDragons.adapter = dragonsAdapter
 
