@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.globallogic.thespaceapp.presentation.dashboard.DashboardFragment"
-        android:label="DashboardFragment"
+        android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
             android:id="@+id/action_dashboardFragment_to_roadsterDetailsFragment"
@@ -29,12 +29,12 @@
     <fragment
         android:id="@+id/roadsterDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
-        android:label="RoadsterDetailsFragment"
+        android:label="Roadster details"
         tools:layout="@layout/fragment_roadster_details" />
     <fragment
         android:id="@+id/upcomingLaunchesFragment"
         android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
-        android:label="UpcomingLaunchesFragment"
+        android:label="Upcoming launches"
         tools:layout="@layout/fragment_launches">
         <action
             android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
@@ -43,7 +43,7 @@
     <fragment
         android:id="@+id/launchDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
-        android:label="LaunchDetailsFragment"
+        android:label="Launch details"
         tools:layout="@layout/fragment_launch_details">
         <argument
             android:name="launchName"
@@ -52,7 +52,7 @@
     <fragment
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
-        android:label="RocketsFragment"
+        android:label="Rockets"
         tools:layout="@layout/fragment_rockets">
         <action
             android:id="@+id/action_rocketsFragment_to_rocketDetailsFragment"
@@ -61,7 +61,7 @@
     <fragment
         android:id="@+id/rocketDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketDetailsFragment"
-        android:label="RocketDetailsFragment"
+        android:label="Rocket details"
         tools:layout="@layout/fragment_rocket_details">
         <argument
             android:name="rocketId"
@@ -70,17 +70,16 @@
     <fragment
         android:id="@+id/dragonsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
-        android:label="DragonsFragment"
+        android:label="Dragons"
         tools:layout="@layout/fragment_dragons">
         <action
             android:id="@+id/action_dragonsFragment_to_dragonDetailsFragment"
             app:destination="@id/dragonDetailsFragment" />
     </fragment>
-
     <fragment
         android:id="@+id/starlinkMapFragment"
         android:name="com.globallogic.thespaceapp.presentation.starlink.StarlinkMapFragment"
-        android:label="StarlinkMapFragment"
+        android:label="Starlinks"
         tools:layout="@layout/fragment_map_starlink" />
     <fragment
         android:id="@+id/dragonDetailsFragment"
