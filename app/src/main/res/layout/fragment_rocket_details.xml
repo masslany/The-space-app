@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragment_rocket_details_scene">
+    app:layoutDescription="@xml/fragment_rocket_details_scene"
+    tools:background="@android:color/white">
 
     <ImageView
         android:id="@+id/iv_rocket_details"
@@ -25,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:layout_marginTop="@dimen/large_margin"
-        tools:text="Falcon Heavy"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_rocket_details" />
+        app:layout_constraintTop_toBottomOf="@id/iv_rocket_details"
+        tools:text="Falcon Heavy" />
 
     <TextView
         android:id="@+id/tv_rocket_details_type"
@@ -36,10 +37,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/default_margin"
-        tools:text="rocket"
         app:layout_constraintEnd_toEndOf="@+id/tv_rocket_details_headline"
         app:layout_constraintStart_toStartOf="@+id/tv_rocket_details_headline"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rocket_details_headline" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_rocket_details_headline"
+        tools:text="rocket" />
 
     <View
         android:id="@+id/v_separator"
@@ -60,7 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/v_separator">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:id="@+id/cl_rocket"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,14 +73,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                tools:text="With the ability to lift into orbit over 54 metric tons (119,000 lb)--a mass equivalent to a 737 jetliner loaded with passengers, crew, luggage and fuel--Falcon Heavy can lift more than twice the payload of the next closest operational vehicle, the Delta IV Heavy, at one-third the cost."
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                tools:text="With the ability to lift into orbit over 54 metric tons (119,000 lb)--a mass equivalent to a 737 jetliner loaded with passengers, crew, luggage and fuel--Falcon Heavy can lift more than twice the payload of the next closest operational vehicle, the Delta IV Heavy, at one-third the cost." />
 
+            <include
+                android:id="@+id/card_rocket_size"
+                layout="@layout/card_rocket_size_info" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/card_first_stage"
+                layout="@layout/card_rocket_first_stage_info" />
+
+            <include
+                android:id="@+id/card_second_stage"
+                layout="@layout/card_rocket_second_stage_info" />
+
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_layout"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

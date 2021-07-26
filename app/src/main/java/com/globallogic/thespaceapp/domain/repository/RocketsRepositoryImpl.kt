@@ -24,7 +24,7 @@ class RocketsRepositoryImp @Inject constructor(
                         company = data.company,
                         costPerLaunch = data.costPerLaunch,
                         country = data.country,
-                        description = data.company,
+                        description = data.description,
                         diameter = data.diameter,
                         engines = data.engines,
                         firstFlight = data.firstFlight,

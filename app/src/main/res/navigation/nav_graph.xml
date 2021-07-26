@@ -53,7 +53,20 @@
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
         android:label="RocketsFragment"
-        tools:layout="@layout/fragment_rockets" />
+        tools:layout="@layout/fragment_rockets">
+        <action
+            android:id="@+id/action_rocketsFragment_to_rocketDetailsFragment"
+            app:destination="@id/rocketDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rocketDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketDetailsFragment"
+        android:label="RocketDetailsFragment"
+        tools:layout="@layout/fragment_rocket_details">
+        <argument
+            android:name="rocketId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/dragonsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
