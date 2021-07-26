@@ -29,4 +29,5 @@
     <string name="dragons">Dragons</string>
     <string name="speed_per_hour">%1$s km/h</string>
     <string name="distance">%1$s km</string>
+    <string name="capsule">Capsule</string>
 </resources>
