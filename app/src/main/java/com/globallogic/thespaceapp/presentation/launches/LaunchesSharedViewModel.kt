@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
+import com.globallogic.thespaceapp.domain.usecase.AddLaunchRemainderUseCase
 import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LaunchesSharedViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase
+    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase,
+    private val addLaunchRemainderUseCase: AddLaunchRemainderUseCase
 ) : ViewModel() {
 
     private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
@@ -28,8 +30,8 @@ class LaunchesSharedViewModel @Inject constructor(
         fetchUpcomingLaunchesData()
     }
 
-    fun onRemainderClicked() {
-
+    fun onRemainderClicked(launchEntity: LaunchEntity) {
+        addLaunchRemainderUseCase.execute(launchEntity)
     }
 
     fun getLaunchByName(name: String): LaunchEntity? {

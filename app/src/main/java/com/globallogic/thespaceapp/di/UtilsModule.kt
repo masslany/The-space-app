@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.presentation.notification.NotificationScheduler
+import com.globallogic.thespaceapp.presentation.notification.NotificationSchedulerImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +27,11 @@ class UtilsModule {
     @Provides
     fun provideWorkManager(@ApplicationContext context: Context): WorkManager {
         return WorkManager.getInstance(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotificationScheduler(workManager: WorkManager): NotificationScheduler {
+        return NotificationSchedulerImpl(workManager)
     }
 }

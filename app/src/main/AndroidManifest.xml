@@ -17,6 +17,8 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity android:name=".presentation.MainActivity">
+            <nav-graph android:value="@navigation/nav_graph" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />

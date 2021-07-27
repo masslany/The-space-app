@@ -1,11 +1,7 @@
 package com.globallogic.thespaceapp.presentation.notification
 
-import android.app.Notification
-import android.app.NotificationManager
 import android.content.Context
-import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
-import androidx.work.Data
 import androidx.work.WorkerParameters
 
 class NotificationWorker(
@@ -13,14 +9,11 @@ class NotificationWorker(
     private val workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
-        val notificationManager =
-            ContextCompat.getSystemService(
-                context,
-                NotificationManager::class.java
-            ) as NotificationManager
+        val tag = inputData.getString("tag") ?: return Result.failure()
+        val name = inputData.getString("name") ?: return Result.failure()
 
-//        val notification = SpaceNotificationManager(context).createNotification()
-//        notificationManager.notify(tag, 0, notification)
+        val helper = NotificationHelper(context)
+        helper.sendNotification(name, tag)
 
         return Result.success()
     }
