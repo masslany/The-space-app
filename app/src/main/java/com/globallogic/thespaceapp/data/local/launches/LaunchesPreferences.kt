@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface LaunchesPreferences {
 
-    fun isFavourite(id: String): Flow<Boolean>
+    fun isNotificationEnabled(id: String): Flow<Boolean>
 
-    fun setFavourite(id: String, state: Boolean)
+    suspend fun setNotificationEnabled(id: String, enabled: Boolean)
 }

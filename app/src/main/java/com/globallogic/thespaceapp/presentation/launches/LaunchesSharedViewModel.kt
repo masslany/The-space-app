@@ -1,17 +1,18 @@
 package com.globallogic.thespaceapp.presentation.launches
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
-import com.globallogic.thespaceapp.domain.usecase.AddLaunchRemainderUseCase
 import com.globallogic.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
 import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
+import com.globallogic.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
+import com.globallogic.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class LaunchesSharedViewModel @Inject constructor(
     private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase,
     private val fetchLaunchByIdUseCase: FetchLaunchByIdUseCase,
-    private val addLaunchRemainderUseCase: AddLaunchRemainderUseCase
+    private val toggleLaunchNotificationUseCase: ToggleLaunchNotificationUseCase,
+    private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
 ) : ViewModel() {
 
     private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
@@ -27,6 +29,9 @@ class LaunchesSharedViewModel @Inject constructor(
 
     private val _launch = MutableLiveData<State<LaunchEntity>>()
     val launch: LiveData<State<LaunchEntity>> = _launch
+
+    private val _notificationState = MutableLiveData<Boolean>()
+    val notificationState: LiveData<Boolean> = _notificationState
 
     init {
         fetchUpcomingLaunchesData()
@@ -36,33 +41,32 @@ class LaunchesSharedViewModel @Inject constructor(
         fetchUpcomingLaunchesData()
     }
 
-    fun onRemainderClicked(launchEntity: LaunchEntity) {
-        addLaunchRemainderUseCase.execute(launchEntity)
+    fun onNotificationToggleClicked(launchEntity: LaunchEntity) {
+        viewModelScope.launch {
+            toggleLaunchNotificationUseCase.execute(launchEntity)
+        }
+    }
+
+    fun fetchNotificationState(launchEntity: LaunchEntity) {
+        viewModelScope.launch {
+            val result = getLaunchNotificationStateUseCase.execute(launchEntity)
+            result.collect { state ->
+                _notificationState.value = state
+            }
+        }
     }
 
     fun getLaunchById(id: String) {
-        Log.e("TAG", id  )
-        if (upcomingLaunches.value == State.Loading) {
-            // Should only happen when launching from deeplink
-            viewModelScope.launch {
-                when (val res = fetchLaunchByIdUseCase.execute(id)) {
-                    is Result.Success -> {
-                        _launch.value = State.Success(res.data)
-                    }
-                    is Result.Error<*> -> {
-                        _launch.value = State.Error(res.exception)
-                    }
+        _launch.value = State.Loading
+
+        viewModelScope.launch {
+            when (val res = fetchLaunchByIdUseCase.execute(id)) {
+                is Result.Success -> {
+                    _launch.value = State.Success(res.data)
                 }
-            }
-        } else {
-            val foundLaunch =
-                (upcomingLaunches.value as State.Success<List<LaunchEntity>>).data.findLast {
-                    it.id == id
+                is Result.Error<*> -> {
+                    _launch.value = State.Error(res.exception)
                 }
-            if (foundLaunch != null) {
-                _launch.value = State.Success(foundLaunch)
-            } else {
-                _launch.value = State.Error(NullPointerException())
             }
         }
     }

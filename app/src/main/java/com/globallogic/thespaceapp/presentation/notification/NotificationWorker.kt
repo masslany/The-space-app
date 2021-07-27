@@ -6,7 +6,7 @@ import androidx.work.WorkerParameters
 
 class NotificationWorker(
     private val context: Context,
-    private val workerParameters: WorkerParameters,
+    workerParameters: WorkerParameters,
 ) : CoroutineWorker(context, workerParameters) {
     override suspend fun doWork(): Result {
         val tag = inputData.getString("tag") ?: return Result.failure()

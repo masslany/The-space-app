@@ -52,16 +52,20 @@ class LaunchDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.launch.observe(viewLifecycleOwner) { state ->
-            Log.e("TAG", state.toString() )
-            when(state) {
+            Log.i("TAG", state.toString())
+            when (state) {
                 is State.Success -> {
+                    Log.i("TAG", "aaaaaaaaaaa")
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.progressLayout.makeGone()
                     fillUi(state.data)
                 }
                 State.Loading -> {
-//                    TODO
+                    binding.progressLayout.makeVisible()
                 }
                 is State.Error -> {
-//                    TODO
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
+                    binding.progressLayout.makeGone()
                 }
             }
         }
@@ -70,11 +74,23 @@ class LaunchDetailsFragment : Fragment() {
     }
 
     private fun fillUi(launchEntity: LaunchEntity) {
-        binding.btnFavourite.setOnClickListener {
-            // TODO: Implement unclicked favourite
-            viewModel.onRemainderClicked(launchEntity)
-            binding.btnFavourite.setImageResource(R.drawable.ic_outline_favorite_24)
+        viewModel.fetchNotificationState(launchEntity)
 
+        viewModel.notificationState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                true -> {
+                    binding.btnToggleNotification
+                        .setImageResource(R.drawable.ic_outline_notifications_off_24)
+                }
+                false -> {
+                    binding.btnToggleNotification
+                        .setImageResource(R.drawable.ic_outline_notifications_none_24)
+                }
+            }
+        }
+
+        binding.btnToggleNotification.setOnClickListener {
+            viewModel.onNotificationToggleClicked(launchEntity)
         }
 
         binding.tvLaunchDetailsHeadline.text = launchEntity.name

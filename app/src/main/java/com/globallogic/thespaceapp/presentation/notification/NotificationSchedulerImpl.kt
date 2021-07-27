@@ -22,10 +22,10 @@ class NotificationSchedulerImpl @Inject constructor(
 //                    TimeUnit.SECONDS
 //                )
                 .setInitialDelay(
-                    10,
+                    5,
                     TimeUnit.SECONDS
                 )
-                .addTag(name)
+                .addTag(tag)
                 .setInputData(
                     workDataOf(
                         "tag" to tag,
@@ -35,6 +35,10 @@ class NotificationSchedulerImpl @Inject constructor(
                 .build()
 
         workManager.enqueue(notificationRequest)
+    }
+
+    override fun cancelNotification(tag: String) {
+        workManager.cancelAllWorkByTag(tag)
     }
 
     private fun calculateTimeToLaunch(launchTime: Long): Long {
