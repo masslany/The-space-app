@@ -46,11 +46,11 @@
         android:label="Launch details"
         tools:layout="@layout/fragment_launch_details">
         <argument
-            android:name="launchName"
+            android:name="launchId"
             app:argType="string" />
         <deepLink
             android:id="@+id/deepLink"
-            app:uri="spaceapp://launchDetails/{launchName}" />
+            app:uri="spaceapp://launchDetails/{launchId}" />
     </fragment>
     <fragment
         android:id="@+id/rocketsFragment"

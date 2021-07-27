@@ -4,6 +4,7 @@ import android.net.Uri
 import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.Core
 
 data class LaunchEntity(
+    val id: String,
     val name: String,
     val details: String?,
     val date: Long,

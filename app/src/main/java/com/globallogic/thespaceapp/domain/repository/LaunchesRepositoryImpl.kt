@@ -1,11 +1,10 @@
 package com.globallogic.thespaceapp.domain.repository
 
-import android.net.Uri
+import androidx.core.net.toUri
 import com.globallogic.thespaceapp.data.remote.api.SpacexApiService
 import com.globallogic.thespaceapp.di.IoDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.Result
-import com.globallogic.thespaceapp.utils.toDateSting
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,6 +19,7 @@ class LaunchesRepositoryImpl @Inject constructor(
                 val response = apiService.fetchUpcomingLaunchesData()
                 val launches: List<LaunchEntity> = response.map {
                     LaunchEntity(
+                        id = it.id,
                         name = it.name,
                         details = it.details,
                         date = it.dateUnix,
@@ -30,17 +30,17 @@ class LaunchesRepositoryImpl @Inject constructor(
                         launchpadId = it.launchpad,
                         payloadsIds = it.payloads,
                         webcast = try {
-                            Uri.parse(it.links.webcast)
+                            it.links.webcast!!.toUri()
                         } catch (e: Exception) {
                             null
                         },
                         article = try {
-                            Uri.parse(it.links.article)
+                            it.links.article!!.toUri()
                         } catch (e: Exception) {
                             null
                         },
                         wikipedia = try {
-                            Uri.parse(it.links.wikipedia)
+                            it.links.wikipedia!!.toUri()
                         } catch (e: Exception) {
                             null
                         }
@@ -48,6 +48,45 @@ class LaunchesRepositoryImpl @Inject constructor(
                 }
 
                 Result.Success(launches)
+            } catch (e: Exception) {
+                Result.Error<Any>(e)
+            }
+        }
+    }
+
+    override suspend fun fetchLaunchById(id: String): Result<LaunchEntity> {
+        return withContext(ioDispatcher) {
+            try {
+                val response = apiService.fetchLaunchById(id)
+                val launch = LaunchEntity(
+                    id = response.id,
+                    name = response.name,
+                    details = response.details,
+                    date = response.dateUnix,
+                    image = response.links.patch.small,
+                    crewIds = response.crew,
+                    cores = response.cores,
+                    rocketId = response.rocket,
+                    launchpadId = response.launchpad,
+                    payloadsIds = response.payloads,
+                    webcast = try {
+                        response.links.webcast!!.toUri()
+                    } catch (e: Exception) {
+                        null
+                    },
+                    article = try {
+                        response.links.article!!.toUri()
+                    } catch (e: Exception) {
+                        null
+                    },
+                    wikipedia = try {
+                        response.links.wikipedia!!.toUri()
+                    } catch (e: Exception) {
+                        null
+                    }
+                )
+
+                Result.Success(launch)
             } catch (e: Exception) {
                 Result.Error<Any>(e)
             }

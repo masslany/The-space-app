@@ -65,4 +65,5 @@
     <string name="launch_volume">Launch volume</string>
     <string name="return_mass">Return mass</string>
     <string name="return_volume">Return volume</string>
+    <string name="notification_title">Start of %1$s in 1 hour!</string>
 </resources>

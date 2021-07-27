@@ -17,8 +17,12 @@ class NotificationSchedulerImpl @Inject constructor(
     override fun scheduleNotification(scheduleTimeSeconds: Long, tag: String, name: String) {
         val notificationRequest: WorkRequest =
             OneTimeWorkRequestBuilder<NotificationWorker>()
+//                .setInitialDelay(
+//                    calculateTimeToLaunch(scheduleTimeSeconds),
+//                    TimeUnit.SECONDS
+//                )
                 .setInitialDelay(
-                    calculateTimeToLaunch(scheduleTimeSeconds),
+                    10,
                     TimeUnit.SECONDS
                 )
                 .addTag(name)

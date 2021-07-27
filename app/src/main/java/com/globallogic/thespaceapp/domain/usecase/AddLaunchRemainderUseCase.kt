@@ -11,7 +11,7 @@ class AddLaunchRemainderUseCase @Inject constructor(
     fun execute(launchEntity: LaunchEntity) {
         notificationScheduler.scheduleNotification(
             scheduleTimeSeconds = launchEntity.date,
-            tag = launchEntity.name,
+            tag = launchEntity.id,
             name = launchEntity.name
         )
     }

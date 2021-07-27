@@ -2,6 +2,7 @@ package com.globallogic.thespaceapp.presentation.launches
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,7 @@ import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
-import com.globallogic.thespaceapp.utils.enable
-import com.globallogic.thespaceapp.utils.makeVisible
-import com.globallogic.thespaceapp.utils.toCountdownString
-import com.globallogic.thespaceapp.utils.toDateSting
+import com.globallogic.thespaceapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -53,13 +51,22 @@ class LaunchDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val launchEntity = viewModel.getLaunchByName(args.launchName)
-
-        if (launchEntity != null) {
-            fillUi(launchEntity)
-        } else {
-            throw RuntimeException("LaunchEntity is null in LaunchDetailsFragment!")
+        viewModel.launch.observe(viewLifecycleOwner) { state ->
+            Log.e("TAG", state.toString() )
+            when(state) {
+                is State.Success -> {
+                    fillUi(state.data)
+                }
+                State.Loading -> {
+//                    TODO
+                }
+                is State.Error -> {
+//                    TODO
+                }
+            }
         }
+
+        viewModel.getLaunchById(args.launchId)
     }
 
     private fun fillUi(launchEntity: LaunchEntity) {
