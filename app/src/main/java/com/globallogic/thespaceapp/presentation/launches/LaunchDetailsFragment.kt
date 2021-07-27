@@ -2,7 +2,6 @@ package com.globallogic.thespaceapp.presentation.launches
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,10 +51,8 @@ class LaunchDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.launch.observe(viewLifecycleOwner) { state ->
-            Log.i("TAG", state.toString())
             when (state) {
                 is State.Success -> {
-                    Log.i("TAG", "aaaaaaaaaaa")
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.progressLayout.makeGone()
                     fillUi(state.data)

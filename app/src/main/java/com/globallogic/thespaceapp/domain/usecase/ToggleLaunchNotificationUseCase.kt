@@ -1,7 +1,5 @@
 package com.globallogic.thespaceapp.domain.usecase
 
-import android.annotation.SuppressLint
-import android.util.Log
 import com.globallogic.thespaceapp.data.local.launches.LaunchesPreferences
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.presentation.notification.NotificationScheduler
@@ -13,13 +11,11 @@ class ToggleLaunchNotificationUseCase @Inject constructor(
     private val launchesPreferences: LaunchesPreferences
 ) {
 
-    @SuppressLint("LongLogTag")
     suspend fun execute(launchEntity: LaunchEntity): Boolean {
         val isEnabled = launchesPreferences.isNotificationEnabled(launchEntity.id).first()
         val newState = !isEnabled
         launchesPreferences.setNotificationEnabled(launchEntity.id, newState)
 
-        Log.i("ToggleLaunchNotificationUseCase", newState.toString())
         when (newState) {
             true -> {
                 notificationScheduler.scheduleNotification(
