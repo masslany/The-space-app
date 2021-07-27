@@ -73,6 +73,8 @@ class LaunchDetailsFragment : Fragment() {
         binding.btnFavourite.setOnClickListener {
             // TODO: Implement unclicked favourite
             viewModel.onRemainderClicked(launchEntity)
+            binding.btnFavourite.setImageResource(R.drawable.ic_outline_favorite_24)
+
         }
 
         binding.tvLaunchDetailsHeadline.text = launchEntity.name
