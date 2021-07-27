@@ -16,10 +16,7 @@ import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
-import com.globallogic.thespaceapp.utils.enable
-import com.globallogic.thespaceapp.utils.makeVisible
-import com.globallogic.thespaceapp.utils.toCountdownString
-import com.globallogic.thespaceapp.utils.toDateSting
+import com.globallogic.thespaceapp.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -53,16 +50,46 @@ class LaunchDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val launchEntity = viewModel.getLaunchByName(args.launchName)
-
-        if (launchEntity != null) {
-            fillUi(launchEntity)
-        } else {
-            throw RuntimeException("LaunchEntity is null in LaunchDetailsFragment!")
+        viewModel.launch.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is State.Success -> {
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.progressLayout.makeGone()
+                    fillUi(state.data)
+                }
+                State.Loading -> {
+                    binding.progressLayout.makeVisible()
+                }
+                is State.Error -> {
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
+                    binding.progressLayout.makeGone()
+                }
+            }
         }
+
+        viewModel.getLaunchById(args.launchId)
     }
 
     private fun fillUi(launchEntity: LaunchEntity) {
+        viewModel.fetchNotificationState(launchEntity)
+
+        viewModel.notificationState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                true -> {
+                    binding.btnToggleNotification
+                        .setImageResource(R.drawable.ic_outline_notifications_off_24)
+                }
+                false -> {
+                    binding.btnToggleNotification
+                        .setImageResource(R.drawable.ic_outline_notifications_none_24)
+                }
+            }
+        }
+
+        binding.btnToggleNotification.setOnClickListener {
+            viewModel.onNotificationToggleClicked(launchEntity)
+        }
+
         binding.tvLaunchDetailsHeadline.text = launchEntity.name
         binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
 

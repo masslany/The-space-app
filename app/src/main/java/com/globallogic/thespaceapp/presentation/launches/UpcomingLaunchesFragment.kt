@@ -44,7 +44,7 @@ class UpcomingLaunchesFragment : Fragment() {
         val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
             findNavController().navigate(
                 UpcomingLaunchesFragmentDirections.actionUpcomingLaunchesFragmentToLaunchDetailsFragment(
-                    it.name
+                    it.id
                 )
             )
         })
