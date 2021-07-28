@@ -2,6 +2,7 @@ package com.globallogic.thespaceapp.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
 
 fun Long.toDateSting(): String {
     val date = Date(this * 1000)
@@ -17,9 +18,9 @@ fun Long.toCountdownString(): String {
 
     return String.format(
         format,
-        (diff / 60 / 60 / 24).toString().padStart(2, '0'), // days
-        (diff / 60 / 60 % 24).toString().padStart(2, '0'), // hours
-        (diff / 60 % 60).toString().padStart(2, '0'), // minutes
-        (diff % 60).toString().padStart(2, '0') // seconds
+        (abs(diff) / 60 / 60 / 24).toString().padStart(2, '0'), // days
+        (abs(diff) / 60 / 60 % 24).toString().padStart(2, '0'), // hours
+        (abs(diff) / 60 % 60).toString().padStart(2, '0'), // minutes
+        (abs(diff) % 60).toString().padStart(2, '0') // seconds
     )
 }
