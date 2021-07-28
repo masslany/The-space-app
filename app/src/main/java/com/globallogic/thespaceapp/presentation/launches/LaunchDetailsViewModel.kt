@@ -28,13 +28,22 @@ class LaunchDetailsViewModel @Inject constructor(
     private val _notificationState = MutableLiveData<Boolean>()
     val notificationState: LiveData<Boolean> = _notificationState
 
+    private val _shouldShowNotificationToggle = MutableLiveData(false)
+    val shouldShowNotificationToggle: LiveData<Boolean> = _shouldShowNotificationToggle
+
+
     fun onRetryClicked(id: String) {
         getLaunchById(id)
     }
 
-    fun onNotificationToggleClicked(launchEntity: LaunchEntity) {
+    fun onNotificationToggleClicked() {
         viewModelScope.launch {
-            toggleLaunchNotificationUseCase.execute(launchEntity)
+            if (launch.value is State.Success) {
+                launch.value?.let {
+                    val entity = (it as State.Success).data
+                    toggleLaunchNotificationUseCase.execute(entity)
+                }
+            }
         }
     }
 
@@ -47,7 +56,7 @@ class LaunchDetailsViewModel @Inject constructor(
         }
     }
 
-    fun shouldShowNotificationToggle(launchEntity: LaunchEntity): Boolean {
+    private fun shouldShowNotificationToggle(launchEntity: LaunchEntity): Boolean {
         return launchEntity.date > System.currentTimeMillis() / 1000
     }
 
@@ -57,6 +66,7 @@ class LaunchDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             when (val res = fetchLaunchByIdUseCase.execute(id)) {
                 is Result.Success -> {
+                    _shouldShowNotificationToggle.value = shouldShowNotificationToggle(res.data)
                     _launch.value = State.Success(res.data)
                 }
                 is Result.Error<*> -> {
