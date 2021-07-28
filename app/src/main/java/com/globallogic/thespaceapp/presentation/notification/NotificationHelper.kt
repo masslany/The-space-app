@@ -37,27 +37,11 @@ class NotificationHelper(
     }
 
     fun sendNotification(name: String, tag: String) {
-//        val resultIntent = Intent(
-//            Intent.ACTION_VIEW,
-//            Uri.parse("spaceapp://launchDetails/${tag}")
-//        ).apply {
-//            setPackage(context.packageName)
-//            setClass(context, MainActivity::class.java)
-//        }
-
         val pendingIntent = NavDeepLinkBuilder(context)
             .setGraph(R.navigation.nav_graph)
             .setDestination(R.id.launchDetailsFragment)
             .setArguments(bundleOf("launchId" to tag))
             .createPendingIntent()
-
-
-//        val pendingIntent = PendingIntent.getActivity(
-//            context,
-//            0,
-//            resultIntent,
-//            PendingIntent.FLAG_ONE_SHOT
-//        )
 
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_launcher)

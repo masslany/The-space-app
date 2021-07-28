@@ -19,4 +19,5 @@
     <dimen name="shimmer_text_height_large">20dp</dimen>
     <dimen name="media_link_view_width">100dp</dimen>
     <dimen name="error_image_size">300dp</dimen>
+    <dimen name="launch_details_headline_width">300dp</dimen>
 </resources>

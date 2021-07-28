@@ -89,11 +89,19 @@ class LaunchDetailsFragment : Fragment() {
             }
         }
 
-        binding.btnToggleNotification.setOnClickListener {
-            viewModel.onNotificationToggleClicked(launchEntity)
+        if (viewModel.shouldShowNotificationToggle(launchEntity)) {
+            binding.btnToggleNotification.makeVisible()
+            binding.btnToggleNotification.setOnClickListener {
+                viewModel.onNotificationToggleClicked(launchEntity)
+            }
+        } else {
+            binding.btnToggleNotification.makeGone()
         }
 
+
+
         binding.tvLaunchDetailsHeadline.text = launchEntity.name
+        binding.tvLaunchDetailsHeadline.isSelected = true // to enable marquee
         binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
 
         // Countdown

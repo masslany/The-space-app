@@ -47,6 +47,10 @@ class LaunchDetailsViewModel @Inject constructor(
         }
     }
 
+    fun shouldShowNotificationToggle(launchEntity: LaunchEntity): Boolean {
+        return launchEntity.date > System.currentTimeMillis() / 1000
+    }
+
     fun getLaunchById(id: String) {
         _launch.value = State.Loading
 
