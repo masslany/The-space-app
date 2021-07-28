@@ -49,4 +49,40 @@ class RocketsRepositoryImp @Inject constructor(
             }
         }
     }
+
+    override suspend fun fetchRocketById(id: String): Result<RocketEntity> {
+        return withContext(ioDispatcher) {
+            try {
+                val response = apiService.fetchRocketById(id)
+                val rocket = RocketEntity(
+                    active = response.active,
+                    boosters = response.boosters,
+                    company = response.company,
+                    costPerLaunch = response.costPerLaunch,
+                    country = response.country,
+                    description = response.description,
+                    diameter = response.diameter,
+                    engines = response.engines,
+                    firstFlight = response.firstFlight,
+                    firstStage = response.firstStage,
+                    flickrImages = response.flickrImages,
+                    height = response.height,
+                    id = response.id,
+                    landingLegs = response.landingLegs,
+                    mass = response.mass,
+                    name = response.name,
+                    payloadWeights = response.payloadWeights,
+                    secondStage = response.secondStage,
+                    stages = response.stages,
+                    successRatePct = response.successRatePct,
+                    type = response.type,
+                    wikipedia = Uri.parse(response.wikipedia)
+                )
+
+                Result.Success(rocket)
+            } catch (e: Exception) {
+                Result.Error<Any>(e)
+            }
+        }
+    }
 }

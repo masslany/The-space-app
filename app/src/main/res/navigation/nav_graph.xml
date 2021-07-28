@@ -48,6 +48,9 @@
         <argument
             android:name="rocketId"
             app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="spaceapp://rocketDetails/{rocketId}" />
     </fragment>
     <fragment
         android:id="@+id/dragonsFragment"

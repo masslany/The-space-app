@@ -4,6 +4,7 @@ import com.globallogic.thespaceapp.data.remote.response.RoadsterResponse
 import com.globallogic.thespaceapp.data.remote.response.dragons.DragonsResponse
 import com.globallogic.thespaceapp.data.remote.response.dragons.DragonsResponseItem
 import com.globallogic.thespaceapp.data.remote.response.rockets.RocketsResponse
+import com.globallogic.thespaceapp.data.remote.response.rockets.RocketsResponseItem
 import com.globallogic.thespaceapp.data.remote.response.starlinks.StarlinkResponse
 import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.UpcomingLaunchesResponse
 import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.UpcomingLaunchesResponseItem
@@ -22,6 +23,9 @@ interface SpacexApiService {
 
     @GET("/v4/rockets")
     suspend fun fetchRocketsData(): RocketsResponse
+
+    @GET("/v4/rockets/{id}")
+    suspend fun fetchRocketById(@Path("id") id: String): RocketsResponseItem
 
     @GET("/v4/dragons")
     suspend fun fetchDragonsData(): DragonsResponse

@@ -25,7 +25,7 @@ class RocketsFragment : Fragment() {
     private var _binding: FragmentRocketsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RocketsSharedViewModel by activityViewModels()
+    private val viewModel: RocketsViewModel by activityViewModels()
 
     @Inject
     lateinit var glide: RequestManager

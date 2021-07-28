@@ -11,19 +11,15 @@ import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.State.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 @HiltViewModel
-class RocketsSharedViewModel @Inject constructor(
+class RocketsViewModel @Inject constructor(
     private val fetchRocketsUseCase: FetchRocketsUseCase
 ) : ViewModel() {
 
     private val _rockets = MutableLiveData<State<List<RocketEntity>>>()
     val rockets: LiveData<State<List<RocketEntity>>> = _rockets
-
-    private val _rocket = MutableLiveData<State<RocketEntity>>()
-    val rocket: LiveData<State<RocketEntity>> = _rocket
 
     init {
         fetchRockets()
@@ -44,18 +40,6 @@ class RocketsSharedViewModel @Inject constructor(
                     _rockets.value = Error(result.exception)
                 }
             }
-        }
-    }
-
-    fun getRocketById(rocketId: String) {
-        val rocket = (rockets.value as Success).data.findLast {
-            it.id == rocketId
-        }
-
-        if(rocket != null) {
-            _rocket.value = Success(rocket)
-        } else {
-            _rocket.value = Error(NullPointerException())
         }
     }
 }

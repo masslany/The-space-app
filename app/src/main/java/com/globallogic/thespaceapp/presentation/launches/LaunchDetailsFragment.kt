@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
@@ -17,6 +19,7 @@ import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -73,7 +76,6 @@ class LaunchDetailsFragment : Fragment() {
     private fun fillUi(launchEntity: LaunchEntity) {
         viewModel.fetchNotificationState(launchEntity)
 
-        binding.btnToggleNotification.performClick()
         viewModel.notificationState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 true -> {
@@ -107,8 +109,6 @@ class LaunchDetailsFragment : Fragment() {
             }
         }
 
-//        TODO: Do we need launchEntity.cores ?
-
         launchEntity.details?.let { details ->
             binding.tvLaunchDetailsDescription.text = details
             binding.cvLaunchDetailsDescription.makeVisible()
@@ -137,17 +137,38 @@ class LaunchDetailsFragment : Fragment() {
 
         launchEntity.rocketId?.let { rocketId ->
             binding.cardRocketInfo.cvRocket.makeVisible()
-            // TODO: Navigate to RocketDetailsFragment
+
+            binding.cardRocketInfo.cvRocket.setOnClickListener {
+                findNavController().navigate("spaceapp://rocketDetails/${rocketId}".toUri())
+            }
         }
 
         launchEntity.launchpadId?.let { launchpadId ->
             binding.cardLaunchpadInfo.cvLaunchpad.makeVisible()
+
             // TODO: Navigate to LaunchpadDetailsFragment
+            binding.cardLaunchpadInfo.cvLaunchpad.setOnClickListener {
+                Snackbar.make(
+                    requireContext(),
+                    binding.cardLaunchpadInfo.cvLaunchpad,
+                    getString(R.string.not_implemented),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
 
         if (launchEntity.payloadsIds.isNotEmpty()) {
             binding.cardPayloadInfo.cvPayload.makeVisible()
-            // TODO: Navigate to PayloadDetailsFragment
+
+            // TODO: Navigate to LaunchpadDetailsFragment
+            binding.cardPayloadInfo.cvPayload.setOnClickListener {
+                Snackbar.make(
+                    requireContext(),
+                    binding.cardPayloadInfo.cvPayload,
+                    getString(R.string.not_implemented),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
 
         glide
