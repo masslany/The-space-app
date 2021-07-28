@@ -24,7 +24,7 @@ class UpcomingLaunchesFragment : Fragment() {
     private var _binding: FragmentLaunchesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LaunchesSharedViewModel by activityViewModels()
+    private val viewModel: LaunchesViewModel by activityViewModels()
 
     @Inject
     lateinit var glide: RequestManager

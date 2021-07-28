@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
-import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
 import com.globallogic.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
 import com.globallogic.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
 import com.globallogic.thespaceapp.utils.Result
@@ -17,15 +16,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LaunchesSharedViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase,
+class LaunchDetailsViewModel @Inject constructor(
     private val fetchLaunchByIdUseCase: FetchLaunchByIdUseCase,
     private val toggleLaunchNotificationUseCase: ToggleLaunchNotificationUseCase,
     private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
 ) : ViewModel() {
-
-    private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
-    val upcomingLaunches: LiveData<State<List<LaunchEntity>>> = _upcomingLaunches
 
     private val _launch = MutableLiveData<State<LaunchEntity>>()
     val launch: LiveData<State<LaunchEntity>> = _launch
@@ -33,12 +28,8 @@ class LaunchesSharedViewModel @Inject constructor(
     private val _notificationState = MutableLiveData<Boolean>()
     val notificationState: LiveData<Boolean> = _notificationState
 
-    init {
-        fetchUpcomingLaunchesData()
-    }
-
-    fun onRetryClicked() {
-        fetchUpcomingLaunchesData()
+    fun onRetryClicked(id: String) {
+        getLaunchById(id)
     }
 
     fun onNotificationToggleClicked(launchEntity: LaunchEntity) {
@@ -66,21 +57,6 @@ class LaunchesSharedViewModel @Inject constructor(
                 }
                 is Result.Error<*> -> {
                     _launch.value = State.Error(res.exception)
-                }
-            }
-        }
-    }
-
-    fun fetchUpcomingLaunchesData() {
-        _upcomingLaunches.value = State.Loading
-
-        viewModelScope.launch {
-            when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
-                is Result.Success -> {
-                    _upcomingLaunches.value = State.Success(res.data)
-                }
-                is Result.Error<*> -> {
-                    _upcomingLaunches.value = State.Error(res.exception)
                 }
             }
         }
