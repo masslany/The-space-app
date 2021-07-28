@@ -61,22 +61,26 @@
             android:id="@+id/action_dragonsFragment_to_dragonDetailsFragment"
             app:destination="@id/dragonDetailsFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/starlinkMapFragment"
         android:name="com.globallogic.thespaceapp.presentation.starlink.StarlinkMapFragment"
         android:label="Starlinks"
         tools:layout="@layout/fragment_map_starlink" />
+
     <fragment
         android:id="@+id/dragonDetailsFragment"
         android:name="com.globallogic.thespaceapp.presentation.dragons.DragonDetailsFragment"
-        android:label="DragonDetailsFragment"
+        android:label="Dragon details"
         tools:layout="@layout/fragment_dragon_details" >
         <argument
             android:name="dragonId"
             app:argType="string" />
     </fragment>
+
     <navigation android:id="@+id/launchesGraph"
         app:startDestination="@id/upcomingLaunchesFragment">
+
         <fragment
             android:id="@+id/launchDetailsFragment"
             android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
@@ -89,6 +93,7 @@
                 android:id="@+id/deepLink"
                 app:uri="spaceapp://launchDetails/{launchId}" />
         </fragment>
+
         <fragment
             android:id="@+id/upcomingLaunchesFragment"
             android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
@@ -98,5 +103,7 @@
                 android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
                 app:destination="@id/launchDetailsFragment" />
         </fragment>
+
     </navigation>
+
 </navigation>
