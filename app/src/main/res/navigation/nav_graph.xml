@@ -15,7 +15,7 @@
             app:destination="@id/roadsterDetailsFragment" />
         <action
             android:id="@+id/action_dashboardFragment_to_upcomingLaunchesFragment"
-            app:destination="@id/upcomingLaunchesFragment" />
+            app:destination="@id/launchesGraph" />
         <action
             android:id="@+id/action_dashboardFragment_to_rocketsFragment"
             app:destination="@id/rocketsFragment" />
@@ -31,27 +31,6 @@
         android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
         android:label="Roadster details"
         tools:layout="@layout/fragment_roadster_details" />
-    <fragment
-        android:id="@+id/upcomingLaunchesFragment"
-        android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
-        android:label="Upcoming launches"
-        tools:layout="@layout/fragment_launches">
-        <action
-            android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
-            app:destination="@id/launchDetailsFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/launchDetailsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
-        android:label="Launch details"
-        tools:layout="@layout/fragment_launch_details">
-        <argument
-            android:name="launchId"
-            app:argType="string" />
-        <deepLink
-            android:id="@+id/deepLink"
-            app:uri="spaceapp://launchDetails/{launchId}" />
-    </fragment>
     <fragment
         android:id="@+id/rocketsFragment"
         android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
@@ -93,4 +72,28 @@
             android:name="dragonId"
             app:argType="string" />
     </fragment>
+    <navigation android:id="@+id/launchesGraph"
+        app:startDestination="@id/upcomingLaunchesFragment">
+        <fragment
+            android:id="@+id/launchDetailsFragment"
+            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
+            android:label="Launch details"
+            tools:layout="@layout/fragment_launch_details">
+            <argument
+                android:name="launchId"
+                app:argType="string" />
+            <deepLink
+                android:id="@+id/deepLink"
+                app:uri="spaceapp://launchDetails/{launchId}" />
+        </fragment>
+        <fragment
+            android:id="@+id/upcomingLaunchesFragment"
+            android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
+            android:label="Upcoming launches"
+            tools:layout="@layout/fragment_launches">
+            <action
+                android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
+                app:destination="@id/launchDetailsFragment" />
+        </fragment>
+    </navigation>
 </navigation>

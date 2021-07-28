@@ -73,6 +73,7 @@ class LaunchDetailsFragment : Fragment() {
     private fun fillUi(launchEntity: LaunchEntity) {
         viewModel.fetchNotificationState(launchEntity)
 
+        binding.btnToggleNotification.performClick()
         viewModel.notificationState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 true -> {
