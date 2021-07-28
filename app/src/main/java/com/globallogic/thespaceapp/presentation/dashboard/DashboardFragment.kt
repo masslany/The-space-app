@@ -30,7 +30,7 @@ class DashboardFragment : Fragment() {
 
         binding.cvLaunches.setOnClickListener {
             navController.navigate(
-                DashboardFragmentDirections.actionDashboardFragmentToUpcomingLaunchesFragment()
+                DashboardFragmentDirections.actionDashboardFragmentToLaunchesFragment()
             )
         }
 
