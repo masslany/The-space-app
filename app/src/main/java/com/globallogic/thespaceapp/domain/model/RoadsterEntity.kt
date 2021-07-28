@@ -7,5 +7,5 @@ data class RoadsterEntity(
     val distanceFromEarth: String,
     val distanceFromMars: String,
     val description: String,
-    val image: String,
+    val images: List<String>,
 )

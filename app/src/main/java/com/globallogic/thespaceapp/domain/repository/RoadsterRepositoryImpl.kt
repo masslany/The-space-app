@@ -9,7 +9,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import kotlin.random.Random
 
 class RoadsterRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
@@ -26,7 +25,7 @@ class RoadsterRepositoryImpl @Inject constructor(
                     distanceFromEarth = response.earthDistanceKm.roundToInt().toString(),
                     distanceFromMars = response.marsDistanceKm.roundToInt().toString(),
                     description = response.details,
-                    image = response.flickrImages[Random.nextInt(0, 3)]
+                    images = response.flickrImages
                 )
                 Result.Success(entity)
             } catch (e: Exception) {

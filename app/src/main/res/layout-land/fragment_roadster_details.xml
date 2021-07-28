@@ -5,17 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_roadster"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/roadster_image_height"
-        android:contentDescription="@string/roadster_image"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1"
-        app:layout_constraintEnd_toStartOf="@id/nested_scroll_view"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_roadster_images"
+        android:layout_width="@dimen/roadster_image_height"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/backgrounds/scenic" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
@@ -23,7 +19,7 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_roadster"
+        app:layout_constraintStart_toEndOf="@id/rv_roadster_images"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -179,7 +175,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/rocket_loading" />
+        app:lottie_rawRes="@raw/rocket_loading"
+        tools:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/error_layout"
@@ -188,7 +185,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone">
 
         <TextView
             android:id="@+id/tv_error"
