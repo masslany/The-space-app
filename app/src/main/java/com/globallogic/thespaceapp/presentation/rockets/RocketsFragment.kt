@@ -49,7 +49,6 @@ class RocketsFragment : Fragment() {
         binding.rvRockets.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.rockets.observe(viewLifecycleOwner) { state ->
-            println(state)
             when (state) {
                 State.Loading -> {
                     binding.srlLaunches.isRefreshing = true

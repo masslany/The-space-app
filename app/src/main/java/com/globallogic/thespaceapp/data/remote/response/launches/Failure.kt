@@ -1,4 +1,4 @@
-package com.globallogic.thespaceapp.data.remote.response.upcominglaunches
+package com.globallogic.thespaceapp.data.remote.response.launches
 
 import com.google.gson.annotations.SerializedName
 

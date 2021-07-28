@@ -16,7 +16,7 @@ class LaunchesRepositoryImpl @Inject constructor(
     override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchEntity>> {
         return withContext(ioDispatcher) {
             try {
-                val response = apiService.fetchUpcomingLaunchesData()
+                val response = apiService.fetchLaunchesData()
                 val launches: List<LaunchEntity> = response
                     .map {
                         LaunchEntity(

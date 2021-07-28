@@ -1,4 +1,4 @@
-package com.globallogic.thespaceapp.data.remote.response
+package com.globallogic.thespaceapp.data.remote.response.roadster
 
 
 import com.google.gson.annotations.SerializedName

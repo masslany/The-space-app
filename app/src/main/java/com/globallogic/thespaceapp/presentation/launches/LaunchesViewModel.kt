@@ -4,34 +4,22 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
-import com.globallogic.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
 import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
-import com.globallogic.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
-import com.globallogic.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LaunchesViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase,
-    private val fetchLaunchByIdUseCase: FetchLaunchByIdUseCase,
-    private val toggleLaunchNotificationUseCase: ToggleLaunchNotificationUseCase,
-    private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
+    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase
 ) : ViewModel() {
 
-    private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
-    val upcomingLaunches: LiveData<State<List<LaunchEntity>>> = _upcomingLaunches
-
-    private val _launch = MutableLiveData<State<LaunchEntity>>()
-    val launch: LiveData<State<LaunchEntity>> = _launch
-
-    private val _notificationState = MutableLiveData<Boolean>()
-    val notificationState: LiveData<Boolean> = _notificationState
+    private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
+    val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
 
     init {
         fetchUpcomingLaunchesData()
@@ -41,46 +29,50 @@ class LaunchesViewModel @Inject constructor(
         fetchUpcomingLaunchesData()
     }
 
-    fun onNotificationToggleClicked(launchEntity: LaunchEntity) {
-        viewModelScope.launch {
-            toggleLaunchNotificationUseCase.execute(launchEntity)
-        }
-    }
+    private fun convertLaunchesToAdapterItems(launchEntities: List<LaunchEntity>): List<LaunchAdapterItem> {
+        val upcomingHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Upcoming", null)
+        val pastHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Past", null)
 
-    fun fetchNotificationState(launchEntity: LaunchEntity) {
-        viewModelScope.launch {
-            val result = getLaunchNotificationStateUseCase.execute(launchEntity)
-            result.collect { state ->
-                _notificationState.value = state
-            }
+        val (upcoming, past) = launchEntities.partition {
+            it.date >= System.currentTimeMillis() / 1000
         }
-    }
 
-    fun getLaunchById(id: String) {
-        _launch.value = State.Loading
+        val converted = mutableListOf<LaunchAdapterItem>()
 
-        viewModelScope.launch {
-            when (val res = fetchLaunchByIdUseCase.execute(id)) {
-                is Result.Success -> {
-                    _launch.value = State.Success(res.data)
-                }
-                is Result.Error<*> -> {
-                    _launch.value = State.Error(res.exception)
-                }
-            }
-        }
+        converted.add(upcomingHeader)
+        converted.addAll(
+            upcoming.map {
+                LaunchAdapterItem(
+                    type = R.id.item_recyclerview,
+                    header = null,
+                    launchEntity = it
+                )
+            })
+        converted.add(pastHeader)
+        converted.addAll(
+            past.map {
+                LaunchAdapterItem(
+                    type = R.id.item_recyclerview,
+                    header = null,
+                    launchEntity = it
+                )
+            }.reversed() // to sort most recent date
+        )
+
+        return converted
     }
 
     fun fetchUpcomingLaunchesData() {
-        _upcomingLaunches.value = State.Loading
+        _launches.value = State.Loading
 
         viewModelScope.launch {
             when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
                 is Result.Success -> {
-                    _upcomingLaunches.value = State.Success(res.data)
+                    val converted = convertLaunchesToAdapterItems(res.data)
+                    _launches.value = State.Success(converted)
                 }
                 is Result.Error<*> -> {
-                    _upcomingLaunches.value = State.Error(res.exception)
+                    _launches.value = State.Error(res.exception)
                 }
             }
         }

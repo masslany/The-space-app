@@ -14,7 +14,7 @@
             android:id="@+id/action_dashboardFragment_to_roadsterDetailsFragment"
             app:destination="@id/roadsterDetailsFragment" />
         <action
-            android:id="@+id/action_dashboardFragment_to_upcomingLaunchesFragment"
+            android:id="@+id/action_dashboardFragment_to_launchesFragment"
             app:destination="@id/launchesGraph" />
         <action
             android:id="@+id/action_dashboardFragment_to_rocketsFragment"
@@ -79,7 +79,7 @@
     </fragment>
 
     <navigation android:id="@+id/launchesGraph"
-        app:startDestination="@id/upcomingLaunchesFragment">
+        app:startDestination="@id/LaunchesFragment">
 
         <fragment
             android:id="@+id/launchDetailsFragment"
@@ -95,12 +95,12 @@
         </fragment>
 
         <fragment
-            android:id="@+id/upcomingLaunchesFragment"
-            android:name="com.globallogic.thespaceapp.presentation.launches.UpcomingLaunchesFragment"
-            android:label="Upcoming launches"
+            android:id="@+id/LaunchesFragment"
+            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchesFragment"
+            android:label="Launches"
             tools:layout="@layout/fragment_launches">
             <action
-                android:id="@+id/action_upcomingLaunchesFragment_to_launchDetailsFragment"
+                android:id="@+id/action_launchesFragment_to_launchDetailsFragment"
                 app:destination="@id/launchDetailsFragment" />
         </fragment>
 

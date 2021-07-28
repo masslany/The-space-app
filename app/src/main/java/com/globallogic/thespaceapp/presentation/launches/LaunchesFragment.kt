@@ -11,15 +11,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
+import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchesBinding
-import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UpcomingLaunchesFragment : Fragment() {
+class LaunchesFragment : Fragment() {
 
     private var _binding: FragmentLaunchesBinding? = null
     private val binding get() = _binding!!
@@ -43,12 +43,18 @@ class UpcomingLaunchesFragment : Fragment() {
 
         val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
             findNavController().navigate(
-                UpcomingLaunchesFragmentDirections.actionUpcomingLaunchesFragmentToLaunchDetailsFragment(
+                LaunchesFragmentDirections.actionLaunchesFragmentToLaunchDetailsFragment(
                     it.id
                 )
             )
         })
         binding.rvLaunches.adapter = launchesAdapter
+
+        val decor = HeaderItemDecoration(binding.rvLaunches) { itemPosition ->
+            launchesAdapter.getItemViewType(itemPosition) == R.id.item_recyclerview_header
+        }
+
+        binding.rvLaunches.addItemDecoration(decor)
 
         when (resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> {
@@ -58,11 +64,12 @@ class UpcomingLaunchesFragment : Fragment() {
                 binding.rvLaunches.layoutManager = LinearLayoutManager(requireContext())
             }
         }
-        viewModel.upcomingLaunches.observe(viewLifecycleOwner) { state ->
+        viewModel.launches.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Success<List<LaunchEntity>> -> {
+                is State.Success<List<LaunchAdapterItem>> -> {
                     launchesAdapter.launches = state.data
-                    launchesAdapter.notifyDataSetChanged()
+
+
                     binding.srlLaunches.isRefreshing = false
                 }
                 is State.Error -> {
