@@ -3,25 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/error_layout">
-            <PropertySet
-                app:applyMotionScene="false"
-                app:visibilityMode="ignore" />
-        </Constraint>
-
-        <Constraint android:id="@+id/progress_layout">
-            <PropertySet
-                app:applyMotionScene="false"
-                app:visibilityMode="ignore" />
-        </Constraint>
 
         <Constraint android:id="@+id/nsv_headline">
-            <PropertySet
-                app:applyMotionScene="false"
-                app:visibilityMode="ignore" />
-        </Constraint>
-
-        <Constraint android:id="@+id/btn_toggle_notification">
             <PropertySet
                 app:applyMotionScene="false"
                 app:visibilityMode="ignore" />

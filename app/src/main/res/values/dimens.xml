@@ -20,4 +20,5 @@
     <dimen name="media_link_view_width">100dp</dimen>
     <dimen name="error_image_size">300dp</dimen>
     <dimen name="launch_details_headline_width">300dp</dimen>
+    <dimen name="error_image_size_landscape">200dp</dimen>
 </resources>

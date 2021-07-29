@@ -15,6 +15,8 @@ import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentLaunchesBinding
 import com.globallogic.thespaceapp.utils.State
+import com.globallogic.thespaceapp.utils.makeGone
+import com.globallogic.thespaceapp.utils.makeVisible
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -85,7 +87,7 @@ class LaunchesFragment : Fragment() {
                 is State.Success<List<LaunchAdapterItem>> -> {
                     launchesAdapter.launches = state.data
 
-
+                    binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.srlLaunches.isRefreshing = false
                 }
                 is State.Error -> {
@@ -94,9 +96,12 @@ class LaunchesFragment : Fragment() {
                         state.throwable.message ?: "Error!",
                         Snackbar.LENGTH_LONG
                     ).show()
+                    
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
                     binding.srlLaunches.isRefreshing = false
                 }
                 is State.Loading -> {
+                    binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.srlLaunches.isRefreshing = true
                 }
             }
