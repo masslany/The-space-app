@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/iv_error_cloud"
-        android:layout_width="@dimen/error_image_size"
-        android:layout_height="@dimen/error_image_size"
+        android:layout_width="wrap_content"
+        android:layout_height="250dp"
         android:contentDescription="@string/error_cloud_logo"
         android:src="@drawable/error_cloud_gray"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,5 +28,16 @@
         app:layout_constraintEnd_toEndOf="@id/iv_error_cloud"
         app:layout_constraintStart_toStartOf="@id/iv_error_cloud"
         app:layout_constraintTop_toBottomOf="@id/iv_error_cloud" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_retry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/tv_error_message"
+        app:layout_constraintStart_toStartOf="@+id/tv_error_message"
+        app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
