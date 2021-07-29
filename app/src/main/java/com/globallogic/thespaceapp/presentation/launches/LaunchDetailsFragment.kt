@@ -58,6 +58,7 @@ class LaunchDetailsFragment : Fragment() {
                 is State.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.mlLaunchDetails?.makeVisible()
+                    binding.clContent?.makeVisible()
                     binding.progressIndicator.makeGone()
                     fillUi(state.data)
                 }
