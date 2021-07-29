@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/error_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/backgroundColor">
+
+    <ImageView
+        android:id="@+id/iv_error_cloud"
+        android:layout_width="@dimen/error_image_size"
+        android:layout_height="@dimen/error_image_size"
+        android:contentDescription="@string/error_cloud_logo"
+        android:src="@drawable/error_cloud_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_error_message"
+        style="@style/error_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/an_error_occurred"
+        app:layout_constraintEnd_toEndOf="@id/iv_error_cloud"
+        app:layout_constraintStart_toStartOf="@id/iv_error_cloud"
+        app:layout_constraintTop_toBottomOf="@id/iv_error_cloud" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

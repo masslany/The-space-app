@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_roadsterDetailsFragment"
+            app:destination="@id/roadsterDetailsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_launchesFragment"
+            app:destination="@id/launchesGraph" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_rocketsFragment"
+            app:destination="@id/rocketsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_dragonsFragment"
+            app:destination="@id/dragonsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_starlinkMapFragment"
+            app:destination="@id/starlinkMapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roadsterDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
+        android:label="Roadster details"
+        tools:layout="@layout/fragment_roadster_details" />
+    <fragment
+        android:id="@+id/rocketsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
+        android:label="Rockets"
+        tools:layout="@layout/fragment_rockets">
+        <action
+            android:id="@+id/action_rocketsFragment_to_rocketDetailsFragment"
+            app:destination="@id/rocketDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/rocketDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketDetailsFragment"
+        android:label="Rocket details"
+        tools:layout="@layout/fragment_rocket_details">
+        <argument
+            android:name="rocketId"
+            app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:uri="spaceapp://rocketDetails/{rocketId}" />
+    </fragment>
+    <fragment
+        android:id="@+id/dragonsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
+        android:label="Dragons"
+        tools:layout="@layout/fragment_dragons">
+        <action
+            android:id="@+id/action_dragonsFragment_to_dragonDetailsFragment"
+            app:destination="@id/dragonDetailsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/starlinkMapFragment"
+        android:name="com.globallogic.thespaceapp.presentation.starlink.StarlinkMapFragment"
+        android:label="Starlinks"
+        tools:layout="@layout/fragment_map_starlink" />
+
+    <fragment
+        android:id="@+id/dragonDetailsFragment"
+        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonDetailsFragment"
+        android:label="Dragon details"
+        tools:layout="@layout/fragment_dragon_details" >
+        <argument
+            android:name="dragonId"
+            app:argType="string" />
+    </fragment>
+
+    <navigation android:id="@+id/launchesGraph"
+        app:startDestination="@id/LaunchesFragment">
+
+        <fragment
+            android:id="@+id/launchDetailsFragment"
+            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
+            android:label="Launch details"
+            tools:layout="@layout/fragment_launch_details">
+            <argument
+                android:name="launchId"
+                app:argType="string" />
+            <deepLink
+                android:id="@+id/deepLink"
+                app:uri="spaceapp://launchDetails/{launchId}" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/LaunchesFragment"
+            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchesFragment"
+            android:label="Launches"
+            tools:layout="@layout/fragment_launches">
+            <action
+                android:id="@+id/action_launchesFragment_to_launchDetailsFragment"
+                app:destination="@id/launchDetailsFragment" />
+        </fragment>
+
+    </navigation>
+
+</navigation>
