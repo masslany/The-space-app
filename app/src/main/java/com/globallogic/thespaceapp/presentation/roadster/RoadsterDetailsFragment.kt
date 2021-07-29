@@ -58,16 +58,17 @@ class RoadsterDetailsFragment : Fragment() {
                     with(binding) {
                         lottieLoading.makeGone()
                         errorLayout.errorConstraintLayout.makeVisible()
-                        srlContainer.isRefreshing = false
+                        errorLayout.btnRetry.makeVisible()
+                        mlContent?.makeGone()
+                        clContent?.makeGone()
                     }
                 }
                 Loading -> {
                     with(binding) {
-                        rvRoadsterImages.makeGone()
-                        nestedScrollView.makeGone()
-                        detailsLayout.makeGone()
-
                         errorLayout.errorConstraintLayout.makeGone()
+
+                        mlContent?.makeGone()
+                        clContent?.makeGone()
 
 
                         lottieLoading.makeVisible()
@@ -75,11 +76,9 @@ class RoadsterDetailsFragment : Fragment() {
                 }
                 is Success -> {
                     with(binding) {
-                        rvRoadsterImages.makeVisible()
-                        nestedScrollView.makeVisible()
-                        detailsLayout.makeVisible()
 
-                        srlContainer.isRefreshing = false
+                        clContent?.makeVisible()
+                        mlContent?.makeVisible()
 
                         lottieLoading.makeGone()
 
@@ -100,8 +99,7 @@ class RoadsterDetailsFragment : Fragment() {
                 }
             }
         }
-
-        binding.srlContainer.setOnRefreshListener {
+        binding.errorLayout.btnRetry.setOnClickListener {
             viewModel.onRetryClicked()
         }
     }
