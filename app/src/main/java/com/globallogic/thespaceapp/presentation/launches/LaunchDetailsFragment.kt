@@ -57,15 +57,19 @@ class LaunchDetailsFragment : Fragment() {
             when (state) {
                 is State.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.progressLayout.makeGone()
+                    binding.mlLaunchDetails.makeVisible()
+                    binding.srlContainer.isRefreshing = false
                     fillUi(state.data)
                 }
                 State.Loading -> {
-                    binding.progressLayout.makeVisible()
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.mlLaunchDetails.makeGone()
+                    binding.srlContainer.isRefreshing = true
                 }
                 is State.Error -> {
                     binding.errorLayout.errorConstraintLayout.makeVisible()
-                    binding.progressLayout.makeGone()
+                    binding.mlLaunchDetails.makeGone()
+                    binding.srlContainer.isRefreshing = false
                 }
             }
         }
