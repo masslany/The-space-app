@@ -58,9 +58,7 @@ class RoadsterDetailsFragment : Fragment() {
                     with(binding) {
                         lottieLoading.makeGone()
 
-                        tvError.makeVisible()
-                        btnRetry.makeVisible()
-                        errorLayout.makeVisible()
+                        errorLayout.errorConstraintLayout.makeVisible()
                     }
                 }
                 Loading -> {
@@ -69,9 +67,7 @@ class RoadsterDetailsFragment : Fragment() {
                         nestedScrollView.makeGone()
                         detailsLayout.makeGone()
 
-                        binding.tvError.makeGone()
-                        binding.btnRetry.makeGone()
-                        errorLayout.makeGone()
+                        errorLayout.errorConstraintLayout.makeGone()
 
 
                         lottieLoading.makeVisible()
@@ -85,9 +81,7 @@ class RoadsterDetailsFragment : Fragment() {
 
                         lottieLoading.makeGone()
 
-                        tvError.makeGone()
-                        btnRetry.makeGone()
-                        errorLayout.makeGone()
+                        errorLayout.errorConstraintLayout.makeGone()
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
@@ -104,10 +98,7 @@ class RoadsterDetailsFragment : Fragment() {
                 }
             }
         }
-
-        binding.btnRetry.setOnClickListener {
-            viewModel.onRetryClicked()
-        }
+        
     }
 
     override fun onDestroyView() {

@@ -178,38 +178,8 @@
         app:lottie_rawRes="@raw/rocket_loading"
         tools:visibility="gone" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include
         android:id="@+id/error_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_error"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/an_error_occurred"
-            android:textColor="@color/red"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_retry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/retry"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/tv_error"
-            app:layout_constraintStart_toStartOf="@id/tv_error"
-            app:layout_constraintTop_toBottomOf="@id/tv_error" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        layout="@layout/error_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
