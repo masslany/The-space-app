@@ -57,21 +57,18 @@ class RoadsterDetailsFragment : Fragment() {
                 is Error -> {
                     with(binding) {
                         lottieLoading.makeGone()
-
-                        tvError.makeVisible()
-                        btnRetry.makeVisible()
-                        errorLayout.makeVisible()
+                        errorLayout.errorConstraintLayout.makeVisible()
+                        errorLayout.btnRetry.makeVisible()
+                        mlContent?.makeGone()
+                        clContent?.makeGone()
                     }
                 }
                 Loading -> {
                     with(binding) {
-                        rvRoadsterImages.makeGone()
-                        nestedScrollView.makeGone()
-                        detailsLayout.makeGone()
+                        errorLayout.errorConstraintLayout.makeGone()
 
-                        binding.tvError.makeGone()
-                        binding.btnRetry.makeGone()
-                        errorLayout.makeGone()
+                        mlContent?.makeGone()
+                        clContent?.makeGone()
 
 
                         lottieLoading.makeVisible()
@@ -79,15 +76,13 @@ class RoadsterDetailsFragment : Fragment() {
                 }
                 is Success -> {
                     with(binding) {
-                        rvRoadsterImages.makeVisible()
-                        nestedScrollView.makeVisible()
-                        detailsLayout.makeVisible()
+
+                        clContent?.makeVisible()
+                        mlContent?.makeVisible()
 
                         lottieLoading.makeGone()
 
-                        tvError.makeGone()
-                        btnRetry.makeGone()
-                        errorLayout.makeGone()
+                        errorLayout.errorConstraintLayout.makeGone()
 
                         tvName.text = state.data.name
                         tvLaunchDate.text = state.data.launchDate
@@ -104,8 +99,7 @@ class RoadsterDetailsFragment : Fragment() {
                 }
             }
         }
-
-        binding.btnRetry.setOnClickListener {
+        binding.errorLayout.btnRetry.setOnClickListener {
             viewModel.onRetryClicked()
         }
     }

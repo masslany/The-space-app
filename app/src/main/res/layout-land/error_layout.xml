@@ -9,25 +9,28 @@
 
     <ImageView
         android:id="@+id/iv_error_cloud"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_width="@dimen/error_image_size_landscape"
+        android:layout_height="@dimen/error_image_size_landscape"
         android:contentDescription="@string/error_cloud_logo"
         android:src="@drawable/error_cloud_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/tv_error_message"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tv_error_message"
         style="@style/error_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:text="@string/an_error_occurred"
+        app:layout_constraintBottom_toTopOf="@+id/btn_retry"
         app:layout_constraintEnd_toEndOf="@id/iv_error_cloud"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/iv_error_cloud"
-        app:layout_constraintTop_toBottomOf="@id/iv_error_cloud" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_error_cloud" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_retry"
@@ -36,7 +39,9 @@
         android:layout_marginTop="8dp"
         android:text="@string/retry"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/tv_error_message"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/tv_error_message"
         app:layout_constraintTop_toBottomOf="@+id/tv_error_message" />
 
