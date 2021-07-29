@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
-import com.globallogic.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
 import com.globallogic.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
 import com.globallogic.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
 import com.globallogic.thespaceapp.utils.Result
@@ -17,15 +16,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LaunchesSharedViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase,
+class LaunchDetailsViewModel @Inject constructor(
     private val fetchLaunchByIdUseCase: FetchLaunchByIdUseCase,
     private val toggleLaunchNotificationUseCase: ToggleLaunchNotificationUseCase,
     private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
 ) : ViewModel() {
-
-    private val _upcomingLaunches = MutableLiveData<State<List<LaunchEntity>>>()
-    val upcomingLaunches: LiveData<State<List<LaunchEntity>>> = _upcomingLaunches
 
     private val _launch = MutableLiveData<State<LaunchEntity>>()
     val launch: LiveData<State<LaunchEntity>> = _launch
@@ -33,17 +28,22 @@ class LaunchesSharedViewModel @Inject constructor(
     private val _notificationState = MutableLiveData<Boolean>()
     val notificationState: LiveData<Boolean> = _notificationState
 
-    init {
-        fetchUpcomingLaunchesData()
+    private val _shouldShowNotificationToggle = MutableLiveData(false)
+    val shouldShowNotificationToggle: LiveData<Boolean> = _shouldShowNotificationToggle
+
+
+    fun onRetryClicked(id: String) {
+        getLaunchById(id)
     }
 
-    fun onRetryClicked() {
-        fetchUpcomingLaunchesData()
-    }
-
-    fun onNotificationToggleClicked(launchEntity: LaunchEntity) {
+    fun onNotificationToggleClicked() {
         viewModelScope.launch {
-            toggleLaunchNotificationUseCase.execute(launchEntity)
+            if (launch.value is State.Success) {
+                launch.value?.let {
+                    val entity = (it as State.Success).data
+                    toggleLaunchNotificationUseCase.execute(entity)
+                }
+            }
         }
     }
 
@@ -56,31 +56,21 @@ class LaunchesSharedViewModel @Inject constructor(
         }
     }
 
+    private fun shouldShowNotificationToggle(launchEntity: LaunchEntity): Boolean {
+        return launchEntity.date > System.currentTimeMillis() / 1000
+    }
+
     fun getLaunchById(id: String) {
         _launch.value = State.Loading
 
         viewModelScope.launch {
             when (val res = fetchLaunchByIdUseCase.execute(id)) {
                 is Result.Success -> {
+                    _shouldShowNotificationToggle.value = shouldShowNotificationToggle(res.data)
                     _launch.value = State.Success(res.data)
                 }
                 is Result.Error<*> -> {
                     _launch.value = State.Error(res.exception)
-                }
-            }
-        }
-    }
-
-    fun fetchUpcomingLaunchesData() {
-        _upcomingLaunches.value = State.Loading
-
-        viewModelScope.launch {
-            when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
-                is Result.Success -> {
-                    _upcomingLaunches.value = State.Success(res.data)
-                }
-                is Result.Error<*> -> {
-                    _upcomingLaunches.value = State.Error(res.exception)
                 }
             }
         }

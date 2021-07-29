@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@id/rv_roadster_images">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
         <Constraint android:id="@id/lottie_loading">
             <PropertySet
                 app:applyMotionScene="false"
@@ -17,7 +22,7 @@
 
     <ConstraintSet android:id="@+id/end">
         <Constraint
-            android:id="@+id/iv_roadster"
+            android:id="@+id/rv_roadster_images"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"

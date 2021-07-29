@@ -1,7 +1,7 @@
 package com.globallogic.thespaceapp.domain.model
 
 import android.net.Uri
-import com.globallogic.thespaceapp.data.remote.response.upcominglaunches.Core
+import com.globallogic.thespaceapp.data.remote.response.launches.Core
 
 data class LaunchEntity(
     val id: String,

@@ -1,11 +1,14 @@
 package com.globallogic.thespaceapp.presentation.roadster
 
+import LinePagerIndicatorDecoration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentRoadsterDetailsBinding
@@ -14,6 +17,7 @@ import com.globallogic.thespaceapp.utils.makeGone
 import com.globallogic.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class RoadsterDetailsFragment : Fragment() {
@@ -39,6 +43,15 @@ class RoadsterDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val roadsterImagesAdapter = RoadsterImagesAdapter(glide)
+        binding.rvRoadsterImages.adapter = roadsterImagesAdapter
+        binding.rvRoadsterImages.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.rvRoadsterImages)
+        binding.rvRoadsterImages.addItemDecoration(LinePagerIndicatorDecoration())
+
         viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Error -> {
@@ -52,7 +65,7 @@ class RoadsterDetailsFragment : Fragment() {
                 }
                 Loading -> {
                     with(binding) {
-                        ivRoadster.makeGone()
+                        rvRoadsterImages.makeGone()
                         nestedScrollView.makeGone()
                         detailsLayout.makeGone()
 
@@ -66,7 +79,7 @@ class RoadsterDetailsFragment : Fragment() {
                 }
                 is Success -> {
                     with(binding) {
-                        ivRoadster.makeVisible()
+                        rvRoadsterImages.makeVisible()
                         nestedScrollView.makeVisible()
                         detailsLayout.makeVisible()
 
@@ -84,7 +97,9 @@ class RoadsterDetailsFragment : Fragment() {
                         tvMarsDistance.text =
                             getString(R.string.distance, state.data.distanceFromMars)
                         tvDescription.text = state.data.description
-                        glide.load(state.data.image).into(ivRoadster)
+
+                        // TODO: fill recyclerview with data
+                        roadsterImagesAdapter.images = state.data.images
                     }
                 }
             }

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragment_launch_details_scene"
-    tools:background="@android:color/white">
+    app:layoutDescription="@xml/fragment_launch_details_scene">
 
     <ImageView
         android:id="@+id/iv_launch_details"
@@ -20,25 +19,19 @@
     <TextView
         android:id="@+id/tv_launch_details_headline"
         style="@style/TextAppearance.MaterialComponents.Headline4"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/launch_details_headline_width"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/default_margin"
         android:layout_marginTop="@dimen/large_margin"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_launch_details"
         tools:text="Starlink-29 (v1.0)" />
-
-    <ImageButton
-        android:id="@+id/btn_toggle_notification"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/default_margin"
-        android:background="?android:attr/selectableItemBackground"
-        android:src="@drawable/ic_outline_notifications_none_24"
-        app:layout_constraintBottom_toBottomOf="@id/tv_launch_details_headline"
-        app:layout_constraintStart_toEndOf="@id/tv_launch_details_headline"
-        app:layout_constraintTop_toTopOf="@id/tv_launch_details_headline" />
 
     <TextView
         android:id="@+id/tv_launch_details_countdown"
@@ -188,8 +181,8 @@
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
         android:background="@color/backgroundColor"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -202,7 +195,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include

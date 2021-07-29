@@ -2,14 +2,15 @@ package com.globallogic.thespaceapp.presentation.launches
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
@@ -17,6 +18,7 @@ import com.globallogic.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.*
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -29,7 +31,7 @@ class LaunchDetailsFragment : Fragment() {
 
     private val args: LaunchDetailsFragmentArgs by navArgs()
 
-    private val viewModel: LaunchesSharedViewModel by activityViewModels()
+    private val viewModel: LaunchDetailsViewModel by viewModels()
 
     @Inject
     @DefaultDispatcher
@@ -49,6 +51,7 @@ class LaunchDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         viewModel.launch.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -72,26 +75,10 @@ class LaunchDetailsFragment : Fragment() {
 
     private fun fillUi(launchEntity: LaunchEntity) {
         viewModel.fetchNotificationState(launchEntity)
-
-        binding.btnToggleNotification.performClick()
-        viewModel.notificationState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                true -> {
-                    binding.btnToggleNotification
-                        .setImageResource(R.drawable.ic_outline_notifications_off_24)
-                }
-                false -> {
-                    binding.btnToggleNotification
-                        .setImageResource(R.drawable.ic_outline_notifications_none_24)
-                }
-            }
-        }
-
-        binding.btnToggleNotification.setOnClickListener {
-            viewModel.onNotificationToggleClicked(launchEntity)
-        }
+        activity?.invalidateOptionsMenu()
 
         binding.tvLaunchDetailsHeadline.text = launchEntity.name
+        binding.tvLaunchDetailsHeadline.isSelected = true // to enable marquee
         binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
 
         // Countdown
@@ -106,8 +93,6 @@ class LaunchDetailsFragment : Fragment() {
                 }
             }
         }
-
-//        TODO: Do we need launchEntity.cores ?
 
         launchEntity.details?.let { details ->
             binding.tvLaunchDetailsDescription.text = details
@@ -137,22 +122,85 @@ class LaunchDetailsFragment : Fragment() {
 
         launchEntity.rocketId?.let { rocketId ->
             binding.cardRocketInfo.cvRocket.makeVisible()
-            // TODO: Navigate to RocketDetailsFragment
+
+            binding.cardRocketInfo.cvRocket.setOnClickListener {
+                findNavController().navigate("spaceapp://rocketDetails/${rocketId}".toUri())
+            }
         }
 
         launchEntity.launchpadId?.let { launchpadId ->
             binding.cardLaunchpadInfo.cvLaunchpad.makeVisible()
+
             // TODO: Navigate to LaunchpadDetailsFragment
+            binding.cardLaunchpadInfo.cvLaunchpad.setOnClickListener {
+                Snackbar.make(
+                    requireContext(),
+                    binding.cardLaunchpadInfo.cvLaunchpad,
+                    getString(R.string.not_implemented),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
 
         if (launchEntity.payloadsIds.isNotEmpty()) {
             binding.cardPayloadInfo.cvPayload.makeVisible()
-            // TODO: Navigate to PayloadDetailsFragment
+
+            // TODO: Navigate to LaunchpadDetailsFragment
+            binding.cardPayloadInfo.cvPayload.setOnClickListener {
+                Snackbar.make(
+                    requireContext(),
+                    binding.cardPayloadInfo.cvPayload,
+                    getString(R.string.not_implemented),
+                    Snackbar.LENGTH_SHORT
+                ).show()
+            }
         }
 
         glide
             .load(launchEntity.image)
             .placeholder(R.drawable.ic_launch_placeholder)
             .into(binding.ivLaunchDetails)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_notification -> {
+                viewModel.onNotificationToggleClicked()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.launch_details_menu, menu)
+
+        viewModel.notificationState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                true -> {
+                    menu.findItem(R.id.action_notification)?.icon = ResourcesCompat.getDrawable(
+                        resources, R.drawable.ic_outline_notifications_off_24, null
+                    )
+                }
+                false -> {
+                    menu.findItem(R.id.action_notification)?.icon = ResourcesCompat.getDrawable(
+                        resources, R.drawable.ic_outline_notifications_none_24, null
+                    )
+                }
+            }
+        }
+
+        viewModel.shouldShowNotificationToggle.observe(viewLifecycleOwner) { should ->
+            when (should) {
+                true -> {
+                    setMenuVisibility(true)
+                }
+                false -> {
+                    setMenuVisibility(false)
+                }
+            }
+        }
     }
 }

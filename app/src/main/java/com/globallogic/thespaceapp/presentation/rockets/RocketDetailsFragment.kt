@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
@@ -24,7 +24,7 @@ class RocketDetailsFragment : Fragment() {
 
     private val args: RocketDetailsFragmentArgs by navArgs()
 
-    private val viewModel: RocketsSharedViewModel by activityViewModels()
+    private val viewModel: RocketDetailsViewModel by viewModels()
 
     @Inject
     lateinit var glide: RequestManager
@@ -43,7 +43,7 @@ class RocketDetailsFragment : Fragment() {
 
         observeUi()
 
-        viewModel.getRocketById(args.rocketId)
+        viewModel.fetchRocketById(args.rocketId)
     }
 
     private fun observeUi() {

@@ -25,7 +25,7 @@ class RocketsFragment : Fragment() {
     private var _binding: FragmentRocketsBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: RocketsSharedViewModel by activityViewModels()
+    private val viewModel: RocketsViewModel by activityViewModels()
 
     @Inject
     lateinit var glide: RequestManager
@@ -49,7 +49,6 @@ class RocketsFragment : Fragment() {
         binding.rvRockets.layoutManager = LinearLayoutManager(requireContext())
 
         viewModel.rockets.observe(viewLifecycleOwner) { state ->
-            println(state)
             when (state) {
                 State.Loading -> {
                     binding.srlLaunches.isRefreshing = true

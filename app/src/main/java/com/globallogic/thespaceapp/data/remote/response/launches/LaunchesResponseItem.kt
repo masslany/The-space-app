@@ -1,9 +1,9 @@
-package com.globallogic.thespaceapp.data.remote.response.upcominglaunches
+package com.globallogic.thespaceapp.data.remote.response.launches
 
 
 import com.google.gson.annotations.SerializedName
 
-data class UpcomingLaunchesResponseItem(
+data class LaunchesResponseItem(
     // Non-null:
     @SerializedName("id")
     val id: String,

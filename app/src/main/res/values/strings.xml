@@ -67,4 +67,6 @@
     <string name="return_volume">Return volume</string>
     <string name="notification_title">Start of %1$s in 1 hour!</string>
     <string name="incoming_launch">Incoming launch</string>
+    <string name="not_implemented">Not implemented yet :)</string>
+    <string name="notification">Notification</string>
 </resources>

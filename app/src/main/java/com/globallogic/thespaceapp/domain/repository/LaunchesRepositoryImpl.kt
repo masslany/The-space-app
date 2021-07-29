@@ -16,36 +16,37 @@ class LaunchesRepositoryImpl @Inject constructor(
     override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchEntity>> {
         return withContext(ioDispatcher) {
             try {
-                val response = apiService.fetchUpcomingLaunchesData()
-                val launches: List<LaunchEntity> = response.map {
-                    LaunchEntity(
-                        id = it.id,
-                        name = it.name,
-                        details = it.details,
-                        date = it.dateUnix,
-                        image = it.links.patch.small,
-                        crewIds = it.crew,
-                        cores = it.cores,
-                        rocketId = it.rocket,
-                        launchpadId = it.launchpad,
-                        payloadsIds = it.payloads,
-                        webcast = try {
-                            it.links.webcast!!.toUri()
-                        } catch (e: Exception) {
-                            null
-                        },
-                        article = try {
-                            it.links.article!!.toUri()
-                        } catch (e: Exception) {
-                            null
-                        },
-                        wikipedia = try {
-                            it.links.wikipedia!!.toUri()
-                        } catch (e: Exception) {
-                            null
-                        }
-                    )
-                }
+                val response = apiService.fetchLaunchesData()
+                val launches: List<LaunchEntity> = response
+                    .map {
+                        LaunchEntity(
+                            id = it.id,
+                            name = it.name,
+                            details = it.details,
+                            date = it.dateUnix,
+                            image = it.links.patch.small,
+                            crewIds = it.crew,
+                            cores = it.cores,
+                            rocketId = it.rocket,
+                            launchpadId = it.launchpad,
+                            payloadsIds = it.payloads,
+                            webcast = try {
+                                it.links.webcast!!.toUri()
+                            } catch (e: Exception) {
+                                null
+                            },
+                            article = try {
+                                it.links.article!!.toUri()
+                            } catch (e: Exception) {
+                                null
+                            },
+                            wikipedia = try {
+                                it.links.wikipedia!!.toUri()
+                            } catch (e: Exception) {
+                                null
+                            }
+                        )
+                    }.sortedBy { it.date }
 
                 Result.Success(launches)
             } catch (e: Exception) {

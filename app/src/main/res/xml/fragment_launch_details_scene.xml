@@ -15,6 +15,18 @@
                 app:visibilityMode="ignore" />
         </Constraint>
 
+        <Constraint android:id="@+id/nsv_headline">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
+        <Constraint android:id="@+id/btn_toggle_notification">
+            <PropertySet
+                app:applyMotionScene="false"
+                app:visibilityMode="ignore" />
+        </Constraint>
+
         <Constraint
             android:id="@+id/imageButton"
             app:layout_constraintBottom_toBottomOf="@+id/tv_launch_details_headline" />
