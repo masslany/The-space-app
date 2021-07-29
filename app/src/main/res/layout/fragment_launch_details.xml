@@ -1,206 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/srl_container"
+    android:id="@+id/cl_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/ml_launch_details"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_launch_details_scene">
 
-        <androidx.constraintlayout.motion.widget.MotionLayout
+        <ImageView
+            android:id="@+id/iv_launch_details"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/ml_launch_details"
-            app:layoutDescription="@xml/fragment_launch_details_scene">
+            android:layout_height="@dimen/details_image_max_height"
+            android:src="@drawable/launch_placeholder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="contentDescription" />
 
-            <ImageView
-                android:id="@+id/iv_launch_details"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/details_image_max_height"
-                android:src="@drawable/launch_placeholder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="contentDescription" />
+        <TextView
+            android:id="@+id/tv_launch_details_headline"
+            style="@style/TextAppearance.MaterialComponents.Headline4"
+            android:layout_width="@dimen/launch_details_headline_width"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_marginTop="@dimen/large_margin"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:scrollHorizontally="true"
+            android:singleLine="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_launch_details"
+            tools:text="Starlink-29 (v1.0)" />
+
+        <TextView
+            android:id="@+id/tv_launch_details_countdown"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_headline"
+            app:layout_constraintStart_toStartOf="@+id/tv_launch_details_headline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_headline"
+            tools:text="T-00:05:14:04" />
+
+        <TextView
+            android:id="@+id/tv_launch_details_date"
+            style="@style/TextAppearance.MaterialComponents.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_countdown"
+            app:layout_constraintStart_toStartOf="@+id/tv_launch_details_countdown"
+            app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_countdown"
+            tools:text="2021-08-12, 4:00 AM" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/cv_launch_details_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_countdown"
+            app:layout_constraintStart_toStartOf="@+id/tv_launch_details_countdown"
+            app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_date"
+            tools:visibility="visible">
 
             <TextView
-                android:id="@+id/tv_launch_details_headline"
-                style="@style/TextAppearance.MaterialComponents.Headline4"
-                android:layout_width="@dimen/launch_details_headline_width"
+                android:id="@+id/tv_launch_details_description"
+                style="@style/TextAppearance.MaterialComponents.Body2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_margin"
-                android:layout_marginTop="@dimen/large_margin"
-                android:ellipsize="marquee"
-                android:gravity="center"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_launch_details"
-                tools:text="Starlink-29 (v1.0)" />
+                tools:text="Successful first stage burn and transition to second stage, maximum altitude 289 km, Premature engine shutdown at T+7 min 30 s, Failed to reach orbit, Failed to recover first stage" />
 
-            <TextView
-                android:id="@+id/tv_launch_details_countdown"
-                style="@style/TextAppearance.MaterialComponents.Headline6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_headline"
-                app:layout_constraintStart_toStartOf="@+id/tv_launch_details_headline"
-                app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_headline"
-                tools:text="T-00:05:14:04" />
+        </com.google.android.material.card.MaterialCardView>
 
-            <TextView
-                android:id="@+id/tv_launch_details_date"
-                style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_margin"
-                app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_countdown"
-                app:layout_constraintStart_toStartOf="@+id/tv_launch_details_countdown"
-                app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_countdown"
-                tools:text="2021-08-12, 4:00 AM" />
+        <TextView
+            android:id="@+id/tv_article_label"
+            android:layout_width="@dimen/media_link_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/article"
+            app:drawableTopCompat="@drawable/ic_outline_article_24"
+            app:layout_constraintEnd_toStartOf="@+id/iv_webcast"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+            tools:enabled="true"
+            tools:ignore="contentDescription" />
 
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cv_launch_details_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/default_margin"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="@+id/tv_launch_details_countdown"
-                app:layout_constraintStart_toStartOf="@+id/tv_launch_details_countdown"
-                app:layout_constraintTop_toBottomOf="@+id/tv_launch_details_date"
-                tools:visibility="visible">
+        <TextView
+            android:id="@+id/iv_webcast"
+            android:layout_width="@dimen/media_link_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/webcast"
+            app:drawableTopCompat="@drawable/ic_outline_article_24"
+            app:layout_constraintEnd_toStartOf="@+id/iv_wikipedia"
+            app:layout_constraintStart_toEndOf="@+id/tv_article_label"
+            app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+            tools:enabled="true"
+            tools:ignore="contentDescription" />
 
-                <TextView
-                    android:id="@+id/tv_launch_details_description"
-                    style="@style/TextAppearance.MaterialComponents.Body2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/default_margin"
-                    tools:text="Successful first stage burn and transition to second stage, maximum altitude 289 km, Premature engine shutdown at T+7 min 30 s, Failed to reach orbit, Failed to recover first stage" />
+        <TextView
+            android:id="@+id/iv_wikipedia"
+            android:layout_width="@dimen/media_link_view_width"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:gravity="center"
+            android:text="@string/wikipedia"
+            app:drawableTopCompat="@drawable/ic_outline_article_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_webcast"
+            app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
+            tools:enabled="true"
+            tools:ignore="contentDescription" />
 
-            </com.google.android.material.card.MaterialCardView>
+        <View
+            android:id="@+id/v_separator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginBottom="@dimen/large_margin"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintTop_toBottomOf="@id/tv_article_label" />
 
-            <TextView
-                android:id="@+id/tv_article_label"
-                android:layout_width="@dimen/media_link_view_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="@string/article"
-                app:drawableTopCompat="@drawable/ic_outline_article_24"
-                app:layout_constraintEnd_toStartOf="@+id/iv_webcast"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
-                tools:enabled="true"
-                tools:ignore="contentDescription" />
-
-            <TextView
-                android:id="@+id/iv_webcast"
-                android:layout_width="@dimen/media_link_view_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="@string/webcast"
-                app:drawableTopCompat="@drawable/ic_outline_article_24"
-                app:layout_constraintEnd_toStartOf="@+id/iv_wikipedia"
-                app:layout_constraintStart_toEndOf="@+id/tv_article_label"
-                app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
-                tools:enabled="true"
-                tools:ignore="contentDescription" />
-
-            <TextView
-                android:id="@+id/iv_wikipedia"
-                android:layout_width="@dimen/media_link_view_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:enabled="false"
-                android:focusable="true"
-                android:gravity="center"
-                android:text="@string/wikipedia"
-                app:drawableTopCompat="@drawable/ic_outline_article_24"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/iv_webcast"
-                app:layout_constraintTop_toBottomOf="@id/cv_launch_details_description"
-                tools:enabled="true"
-                tools:ignore="contentDescription" />
-
-            <View
-                android:id="@+id/v_separator"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/separator_height"
-                android:layout_marginTop="@dimen/large_margin"
-                android:layout_marginBottom="@dimen/large_margin"
-                android:background="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@id/tv_article_label" />
-
-            <androidx.core.widget.NestedScrollView
-                android:id="@+id/nsv_launch"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/large_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/v_separator">
-
-                <LinearLayout
-                    android:id="@+id/ll_launch"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <include
-                        android:id="@+id/card_rocket_info"
-                        layout="@layout/card_rocket_info"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        android:id="@+id/card_launchpad_info"
-                        layout="@layout/card_launchpad_info"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                    <include
-                        android:id="@+id/card_payload_info"
-                        layout="@layout/card_payload_info"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
-
-                </LinearLayout>
-
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.constraintlayout.motion.widget.MotionLayout>
-
-        <include
-            android:id="@+id/error_layout"
-            layout="@layout/error_layout"
-            android:layout_width="0dp"
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_launch"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="@dimen/large_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/v_separator">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/ll_launch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <include
+                    android:id="@+id/card_rocket_info"
+                    layout="@layout/card_rocket_info"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/card_launchpad_info"
+                    layout="@layout/card_launchpad_info"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <include
+                    android:id="@+id/card_payload_info"
+                    layout="@layout/card_payload_info"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+    <ProgressBar
+        android:id="@+id/progress_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/error_layout"
+        layout="@layout/error_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
 

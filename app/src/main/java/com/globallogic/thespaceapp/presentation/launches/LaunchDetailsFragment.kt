@@ -57,19 +57,26 @@ class LaunchDetailsFragment : Fragment() {
             when (state) {
                 is State.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.mlLaunchDetails.makeVisible()
-                    binding.srlContainer.isRefreshing = false
+                    binding.mlLaunchDetails?.makeVisible()
+                    binding.progressIndicator.makeGone()
                     fillUi(state.data)
                 }
                 State.Loading -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.mlLaunchDetails.makeGone()
-                    binding.srlContainer.isRefreshing = true
+                    binding.clContent?.makeGone()
+                    binding.mlLaunchDetails?.makeGone()
+                    binding.progressIndicator.makeVisible()
                 }
                 is State.Error -> {
                     binding.errorLayout.errorConstraintLayout.makeVisible()
-                    binding.mlLaunchDetails.makeGone()
-                    binding.srlContainer.isRefreshing = false
+                    binding.errorLayout.btnRetry.makeVisible()
+                    binding.mlLaunchDetails?.makeGone()
+                    binding.clContent?.makeGone()
+                    binding.progressIndicator.makeGone()
+
+                    binding.errorLayout.btnRetry.setOnClickListener {
+                        viewModel.onRetryClicked(args.launchId)
+                    }
                 }
             }
         }

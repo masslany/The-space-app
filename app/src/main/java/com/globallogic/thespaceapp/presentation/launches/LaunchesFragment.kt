@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
@@ -60,7 +61,22 @@ class LaunchesFragment : Fragment() {
 
         when (resources.configuration.orientation) {
             Configuration.ORIENTATION_LANDSCAPE -> {
-                binding.rvLaunches.layoutManager = GridLayoutManager(requireContext(), 2)
+                binding.rvLaunches.layoutManager = GridLayoutManager(requireContext(), 2).also {
+                    it.spanSizeLookup = object : SpanSizeLookup() {
+                        override fun getSpanSize(position: Int): Int {
+                            return when (launchesAdapter.getItemViewType(position)) {
+                                R.id.item_recyclerview -> {
+                                    1
+                                }
+                                R.id.item_recyclerview_header -> {
+                                    2
+                                }
+                                else -> -1
+                            }
+                        }
+
+                    }
+                }
             }
             else -> {
                 binding.rvLaunches.layoutManager = LinearLayoutManager(requireContext())
