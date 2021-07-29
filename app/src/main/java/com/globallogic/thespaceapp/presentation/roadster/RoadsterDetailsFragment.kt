@@ -57,8 +57,8 @@ class RoadsterDetailsFragment : Fragment() {
                 is Error -> {
                     with(binding) {
                         lottieLoading.makeGone()
-
                         errorLayout.errorConstraintLayout.makeVisible()
+                        srlContainer.isRefreshing = false
                     }
                 }
                 Loading -> {
@@ -79,6 +79,8 @@ class RoadsterDetailsFragment : Fragment() {
                         nestedScrollView.makeVisible()
                         detailsLayout.makeVisible()
 
+                        srlContainer.isRefreshing = false
+
                         lottieLoading.makeGone()
 
                         errorLayout.errorConstraintLayout.makeGone()
@@ -98,7 +100,10 @@ class RoadsterDetailsFragment : Fragment() {
                 }
             }
         }
-        
+
+        binding.srlContainer.setOnRefreshListener {
+            viewModel.onRetryClicked()
+        }
     }
 
     override fun onDestroyView() {

@@ -134,7 +134,7 @@ class RocketDetailsFragment : Fragment() {
             }
         }
 
-        binding.srlContainer?.setOnRefreshListener {
+        binding.srlContainer.setOnRefreshListener {
             viewModel.onRetryClicked(args.rocketId)
         }
     }
