@@ -50,13 +50,21 @@ class RocketDetailsFragment : Fragment() {
         viewModel.rocket.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is State.Error -> {
+                    binding.mlRocketDetails?.makeGone()
                     binding.errorLayout.errorConstraintLayout.makeVisible()
+                    binding.srlContainer.isRefreshing = false
                 }
                 State.Loading -> {
-
+                    binding.mlRocketDetails?.makeGone()
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.srlContainer.isRefreshing = true
                 }
                 is State.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.mlRocketDetails?.makeVisible()
+                    binding.srlContainer.isRefreshing = false
+
+
                     val rocketInfo = state.data
                     with(binding) {
 
@@ -124,6 +132,10 @@ class RocketDetailsFragment : Fragment() {
                     }
                 }
             }
+        }
+
+        binding.srlContainer?.setOnRefreshListener {
+            viewModel.onRetryClicked(args.rocketId)
         }
     }
 }
