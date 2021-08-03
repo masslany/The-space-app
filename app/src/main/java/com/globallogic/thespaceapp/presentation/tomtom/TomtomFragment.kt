@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentTomtomBinding
-import com.globallogic.thespaceapp.presentation.starlink.StarlinkMarker
 import com.globallogic.thespaceapp.presentation.starlink.StarlinkViewModel
 import com.globallogic.thespaceapp.utils.State
 import com.tomtom.online.sdk.common.location.LatLng
@@ -27,6 +26,7 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
     private lateinit var currentIcon: Icon
     private lateinit var iconSmall: Icon
     private lateinit var iconMedium: Icon
+    private lateinit var iconLarge: Icon
 
 
     override fun onCreateView(
@@ -41,8 +41,10 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        iconSmall = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_20)
+        iconSmall = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
         iconMedium = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
+        iconLarge = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
+
 
         mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapFragment
         mapFragment.getAsyncMap(this)
@@ -53,6 +55,29 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
         tomtomMap.uiSettings.setStyleUrl("asset://styles/night.json")
         viewModel.predictPosition()
 
+        val markers = mutableMapOf<String, Marker>()
+
+        viewModel.markersMap.observe(viewLifecycleOwner) { data ->
+            data.forEach { (id, marker) ->
+                val latitude = marker?.latLong!!.latitude
+                val longitude = marker.latLong.longitude
+                val m = tomtomMap.addMarker(
+                    MarkerBuilder(
+                        LatLng(
+                            latitude,
+                            longitude
+                        )
+                    )
+                        .icon(currentIcon)
+                        .decal(false)
+                        .iconAnchor(MarkerAnchor.Center)
+                )
+                markers[id] = m
+            }
+
+            viewModel.predictPosition()
+        }
+
         viewModel.starlinks.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is State.Error -> {
@@ -62,30 +87,27 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
 
                 is State.Success -> {
                     currentIcon = if (tomtomMap.zoomLevel < 5.0) {
-                        iconSmall
+                        iconMedium
                     } else {
                         iconMedium
                     }
 
-                    tomtomMap.removeMarkers()
-                    prepareMarkers(tomtomMap, state.data)
+                    state.data.forEach {
+                        val marker = markers[it.id]!!
+                        tomtomMap.markerSettings.moveMarker(
+                            marker,
+                            LatLng(
+                                it.latLong.latitude,
+                                it.latLong.longitude
+                            )
+                        )
+                        tomtomMap.markerSettings.updateMarkerIcon(
+                            marker,
+                            currentIcon
+                        )
+                    }
                 }
             }
-        }
-    }
-
-    private fun prepareMarkers(map: TomtomMap, starlinkMarkers: List<StarlinkMarker>) {
-        starlinkMarkers.forEach {
-            val latitude = it.latLong.latitude
-            val longitude = it.latLong.longitude
-            map.addMarker(
-                MarkerBuilder(
-                    LatLng(
-                        latitude,
-                        longitude
-                    )
-                ).icon(currentIcon)
-            )
         }
     }
 }
