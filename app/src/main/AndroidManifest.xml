@@ -16,6 +16,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
 
+        <meta-data
+            android:name="OnlineMaps.Key"
+            android:value="${TOMTOM_API_MAPS}" />
+
         <activity android:name=".presentation.MainActivity">
             <nav-graph android:value="@navigation/nav_graph" />
 
