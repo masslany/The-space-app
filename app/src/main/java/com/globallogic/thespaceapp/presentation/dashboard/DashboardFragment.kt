@@ -57,6 +57,12 @@ class DashboardFragment : Fragment() {
                 DashboardFragmentDirections.actionDashboardFragmentToStarlinkMapFragment()
             )
         }
+
+        binding.cvTomtom.setOnClickListener {
+            navController.navigate(
+                DashboardFragmentDirections.actionDashboardFragmentToTomtomFragment()
+            )
+        }
     }
 
     override fun onDestroyView() {

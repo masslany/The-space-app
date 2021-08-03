@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_starlinkMapFragment"
             app:destination="@id/starlinkMapFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_tomtomFragment"
+            app:destination="@id/tomtomFragment" />
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
@@ -105,5 +108,9 @@
         </fragment>
 
     </navigation>
+    <fragment
+        android:id="@+id/tomtomFragment"
+        android:name="com.globallogic.thespaceapp.presentation.tomtom.TomtomFragment"
+        android:label="TomtomFragment" />
 
 </navigation>
