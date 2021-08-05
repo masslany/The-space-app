@@ -10,7 +10,6 @@ import com.globallogic.thespaceapp.domain.usecase.FetchStarlinksUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.State.*
-import com.google.android.gms.maps.model.LatLng
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -69,7 +68,8 @@ class StarlinkViewModel @Inject constructor(
                 )
                 tempMap[starlink.id] =
                     StarlinkMarker(
-                        latLong = LatLng(predicted[0], predicted[1]),
+                        latitude = predicted[0],
+                        longitude = predicted[1],
                         id = starlink.id,
                         objectName = starlink.objectName,
                         launchDate = starlink.launchDate,
@@ -89,7 +89,8 @@ class StarlinkViewModel @Inject constructor(
                 )
                 markers.add(
                     StarlinkMarker(
-                        latLong = LatLng(predicted[0], predicted[1]),
+                        latitude = predicted[0],
+                        longitude = predicted[1],
                         id = starlink.id,
                         objectName = starlink.objectName,
                         launchDate = starlink.launchDate,
@@ -97,7 +98,7 @@ class StarlinkViewModel @Inject constructor(
                 )
             }
             _starlinks.postValue(Success(markers))
-            delay(200L)
+            delay(2000L)
         }
     }
 }

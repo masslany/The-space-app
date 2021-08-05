@@ -2,9 +2,7 @@ package com.globallogic.thespaceapp.presentation.launches
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -43,6 +41,8 @@ class LaunchesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setHasOptionsMenu(true)
 
         val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
             findNavController().navigate(
@@ -109,5 +109,10 @@ class LaunchesFragment : Fragment() {
         binding.srlLaunches.setOnRefreshListener {
             viewModel.fetchUpcomingLaunchesData()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
     }
 }

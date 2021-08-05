@@ -88,7 +88,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             data.forEach { (id, marker) ->
                 val m = googleMap.addMarker(
                     MarkerOptions()
-                        .position(marker?.latLong!!)
+                        .position(LatLng(marker!!.latitude, marker.longitude))
                         .title(marker.objectName)
                         .icon(currentIcon)
                 )
@@ -115,7 +115,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                     }
 
                     state.data.forEach {
-                        markers[it.id]?.position = it.latLong
+                        markers[it.id]?.position = LatLng(it.latitude, it.longitude)
                         markers[it.id]?.setIcon(currentIcon)
                     }
                 }
