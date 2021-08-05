@@ -59,8 +59,8 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
             data.forEach { (id, marker) ->
-                val latitude = marker?.latLong!!.latitude
-                val longitude = marker.latLong.longitude
+                val latitude = marker!!.latitude
+                val longitude = marker.longitude
                 val m = tomtomMap.addMarker(
                     MarkerBuilder(
                         LatLng(
@@ -97,8 +97,8 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
                         tomtomMap.markerSettings.moveMarker(
                             marker,
                             LatLng(
-                                it.latLong.latitude,
-                                it.latLong.longitude
+                                it.latitude,
+                                it.longitude
                             )
                         )
                         tomtomMap.markerSettings.updateMarkerIcon(
