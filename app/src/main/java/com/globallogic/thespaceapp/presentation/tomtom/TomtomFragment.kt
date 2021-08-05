@@ -15,7 +15,7 @@ import com.tomtom.online.sdk.map.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class TomtomFragment : Fragment(), OnMapReadyCallback {
+class TomtomFragment : Fragment(), OnMapReadyCallback, TomtomMapCallback.OnMarkerClickListener {
 
     private var _binding: FragmentTomtomBinding? = null
     private val binding get() = _binding!!
@@ -43,8 +43,9 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
 
         iconSmall = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
         iconMedium = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
-        iconLarge = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_50)
+        iconLarge = Icon.Factory.fromResources(requireContext(), R.drawable.sat_icon_100)
 
+        currentIcon = iconLarge
 
         mapFragment = childFragmentManager.findFragmentById(R.id.map_fragment) as MapFragment
         mapFragment.getAsyncMap(this)
@@ -53,7 +54,8 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
 
     override fun onMapReady(tomtomMap: TomtomMap) {
         tomtomMap.uiSettings.setStyleUrl("asset://styles/night.json")
-        viewModel.predictPosition()
+        tomtomMap.markerSettings.setMarkersClustering(true, 40, 6)
+        tomtomMap.addOnMarkerClickListener(this);
 
         val markers = mutableMapOf<String, Marker>()
 
@@ -69,8 +71,10 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
                         )
                     )
                         .icon(currentIcon)
+                        .markerBalloon(SimpleMarkerBalloon(marker.objectName))
+                        .iconAnchor(MarkerAnchor.Bottom)
                         .decal(false)
-                        .iconAnchor(MarkerAnchor.Center)
+                        .shouldCluster(true)
                 )
                 markers[id] = m
             }
@@ -86,12 +90,12 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 is State.Success -> {
-                    currentIcon = if (tomtomMap.zoomLevel < 5.0) {
-                        iconMedium
-                    } else {
-                        iconMedium
-                    }
-
+                    println(tomtomMap.zoomLevel.toString())
+//                    currentIcon = if (tomtomMap.zoomLevel < 5.0) {
+//                        iconMedium
+//                    } else {
+//                        iconLarge
+//                    }
                     state.data.forEach {
                         val marker = markers[it.id]!!
                         tomtomMap.markerSettings.moveMarker(
@@ -101,13 +105,15 @@ class TomtomFragment : Fragment(), OnMapReadyCallback {
                                 it.longitude
                             )
                         )
-                        tomtomMap.markerSettings.updateMarkerIcon(
-                            marker,
-                            currentIcon
-                        )
+//                        tomtomMap.markerSettings.updateMarkerIcon(
+//                            marker,
+//                            currentIcon
+//                        )
                     }
                 }
             }
         }
     }
+
+    override fun onMarkerClick(marker: Marker) {}
 }
