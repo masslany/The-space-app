@@ -31,6 +31,8 @@ class LaunchesFragment : Fragment() {
     @Inject
     lateinit var glide: RequestManager
 
+    private var searchView: SearchView? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,6 +110,7 @@ class LaunchesFragment : Fragment() {
         }
         binding.srlLaunches.setOnRefreshListener {
             viewModel.fetchUpcomingLaunchesData()
+            searchView?.onActionViewCollapsed()
         }
     }
 
@@ -115,15 +118,16 @@ class LaunchesFragment : Fragment() {
         inflater.inflate(R.menu.launches_menu, menu)
 
         val menuItem = menu.findItem(R.id.search_item)
-        val searchView: SearchView = menuItem.actionView as SearchView
+        searchView = menuItem.actionView as SearchView
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = true
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 newText?.let { text -> viewModel.onQueryTextChange(text) }
                 return true
             }
+
         })
     }
 }
