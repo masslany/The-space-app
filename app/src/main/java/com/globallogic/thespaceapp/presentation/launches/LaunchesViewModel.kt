@@ -20,7 +20,7 @@ class LaunchesViewModel @Inject constructor(
 
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
     val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
-    private var allLaunches: List<LaunchAdapterItem> = emptyList()
+    private var allLaunches: List<LaunchEntity> = emptyList()
 
     init {
         fetchUpcomingLaunchesData()
@@ -41,24 +41,45 @@ class LaunchesViewModel @Inject constructor(
         val converted = mutableListOf<LaunchAdapterItem>()
 
         converted.add(upcomingHeader)
-        converted.addAll(
-            upcoming.map {
+        if (upcoming.isNotEmpty()) {
+            converted.addAll(
+                upcoming.map {
+                    LaunchAdapterItem(
+                        type = R.id.item_recyclerview,
+                        header = null,
+                        launchEntity = it
+                    )
+                })
+        } else {
+            converted.add(
                 LaunchAdapterItem(
-                    type = R.id.item_recyclerview,
+                    type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = it
+                    launchEntity = null
                 )
-            })
+            )
+        }
+
         converted.add(pastHeader)
-        converted.addAll(
-            past.map {
+        if (past.isNotEmpty()) {
+            converted.addAll(
+                past.map {
+                    LaunchAdapterItem(
+                        type = R.id.item_recyclerview,
+                        header = null,
+                        launchEntity = it
+                    )
+                }.reversed() // to sort most recent date
+            )
+        } else {
+            converted.add(
                 LaunchAdapterItem(
-                    type = R.id.item_recyclerview,
+                    type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = it
+                    launchEntity = null
                 )
-            }.reversed() // to sort most recent date
-        )
+            )
+        }
 
         return converted
     }
@@ -70,7 +91,7 @@ class LaunchesViewModel @Inject constructor(
             when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
                 is Result.Success -> {
                     val converted = convertLaunchesToAdapterItems(res.data)
-                    allLaunches = converted
+                    allLaunches = res.data
                     _launches.value = State.Success(converted)
                 }
                 is Result.Error<*> -> {
@@ -81,13 +102,10 @@ class LaunchesViewModel @Inject constructor(
     }
 
     fun onQueryTextChange(newText: String) {
-        if(launches.value is State.Success) {
-            println(allLaunches)
-            val filtered = allLaunches.filter {
-                 it.launchEntity?.name?.contains(newText, ignoreCase = true) ?: true
-            }
-            println(filtered)
-            _launches.value = State.Success(filtered)
+        if (launches.value is State.Success) {
+            val filtered = allLaunches.filter { it.name.contains(newText, ignoreCase = true) }
+            val result = convertLaunchesToAdapterItems(filtered)
+            _launches.value = State.Success(result)
         }
     }
 }
