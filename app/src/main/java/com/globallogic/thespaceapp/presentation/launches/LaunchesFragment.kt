@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.GridLayoutManager.SpanSizeLookup
@@ -26,7 +26,7 @@ class LaunchesFragment : Fragment() {
     private var _binding: FragmentLaunchesBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: LaunchesViewModel by activityViewModels()
+    private val viewModel: LaunchesViewModel by viewModels()
 
     @Inject
     lateinit var glide: RequestManager
@@ -111,6 +111,8 @@ class LaunchesFragment : Fragment() {
         binding.srlLaunches.setOnRefreshListener {
             viewModel.fetchUpcomingLaunchesData()
             searchView?.onActionViewCollapsed()
+            viewModel.setSearchExpanded(false)
+            viewModel.setQuery("")
         }
     }
 
@@ -119,15 +121,44 @@ class LaunchesFragment : Fragment() {
 
         val menuItem = menu.findItem(R.id.search_item)
         searchView = menuItem.actionView as SearchView
+        searchView?.setOnSearchClickListener {
+            viewModel.setSearchExpanded(true)
+        }
+
+        searchView?.setOnCloseListener {
+            viewModel.setSearchExpanded(false)
+            true
+        }
+
+        viewModel.isSearchExpanded.observe(viewLifecycleOwner) { expanded ->
+            if (expanded) {
+                searchView?.onActionViewExpanded()
+                searchView?.setQuery(viewModel.query.value, false)
+            } else {
+                searchView?.onActionViewCollapsed()
+            }
+        }
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = true
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { text -> viewModel.onQueryTextChange(text) }
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.setQuery(query)
+                    viewModel.onQueryTextChange()
+                    searchView?.clearFocus()
+                }
                 return true
             }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { text ->
+                    viewModel.setQuery(text)
+                    viewModel.onQueryTextChange()
+                }
+                return true
+            }
         })
     }
+
+
 }

@@ -20,7 +20,14 @@ class LaunchesViewModel @Inject constructor(
 
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
     val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
+
     private var allLaunches: List<LaunchEntity> = emptyList()
+
+    private var _query = MutableLiveData("")
+    val query: LiveData<String> = _query
+
+    private var _isSearchExpanded = MutableLiveData(false)
+    val isSearchExpanded: LiveData<Boolean> = _isSearchExpanded
 
     init {
         fetchUpcomingLaunchesData()
@@ -101,11 +108,19 @@ class LaunchesViewModel @Inject constructor(
         }
     }
 
-    fun onQueryTextChange(newText: String) {
+    fun onQueryTextChange() {
         if (launches.value is State.Success) {
-            val filtered = allLaunches.filter { it.name.contains(newText, ignoreCase = true) }
+            val filtered = allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
             val result = convertLaunchesToAdapterItems(filtered)
             _launches.value = State.Success(result)
         }
+    }
+
+    fun setSearchExpanded(expanded: Boolean) {
+        _isSearchExpanded.value = expanded
+    }
+
+    fun setQuery(query: String) {
+        _query.value = query
     }
 }
