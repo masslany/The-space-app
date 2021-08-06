@@ -2,9 +2,8 @@ package com.globallogic.thespaceapp.presentation.launches
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -43,6 +42,7 @@ class LaunchesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
 
         val launchesAdapter = LaunchesAdapter(glide, onItemClick = {
             findNavController().navigate(
@@ -96,7 +96,7 @@ class LaunchesFragment : Fragment() {
                         state.throwable.message ?: "Error!",
                         Snackbar.LENGTH_LONG
                     ).show()
-                    
+
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                     binding.srlLaunches.isRefreshing = false
                 }
@@ -109,5 +109,21 @@ class LaunchesFragment : Fragment() {
         binding.srlLaunches.setOnRefreshListener {
             viewModel.fetchUpcomingLaunchesData()
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.launches_menu, menu)
+
+        val menuItem = menu.findItem(R.id.search_item)
+        val searchView: SearchView = menuItem.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = true
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { text -> viewModel.onQueryTextChange(text) }
+                return true
+            }
+        })
     }
 }

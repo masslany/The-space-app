@@ -20,6 +20,7 @@ class LaunchesViewModel @Inject constructor(
 
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
     val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
+    private var allLaunches: List<LaunchAdapterItem> = emptyList()
 
     init {
         fetchUpcomingLaunchesData()
@@ -69,12 +70,24 @@ class LaunchesViewModel @Inject constructor(
             when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
                 is Result.Success -> {
                     val converted = convertLaunchesToAdapterItems(res.data)
+                    allLaunches = converted
                     _launches.value = State.Success(converted)
                 }
                 is Result.Error<*> -> {
                     _launches.value = State.Error(res.exception)
                 }
             }
+        }
+    }
+
+    fun onQueryTextChange(newText: String) {
+        if(launches.value is State.Success) {
+            println(allLaunches)
+            val filtered = allLaunches.filter {
+                 it.launchEntity?.name?.contains(newText, ignoreCase = true) ?: true
+            }
+            println(filtered)
+            _launches.value = State.Success(filtered)
         }
     }
 }
