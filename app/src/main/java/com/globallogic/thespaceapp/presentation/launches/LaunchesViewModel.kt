@@ -21,6 +21,14 @@ class LaunchesViewModel @Inject constructor(
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
     val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
 
+    private var allLaunches: List<LaunchEntity> = emptyList()
+
+    private var _query = MutableLiveData("")
+    val query: LiveData<String> = _query
+
+    private var _isSearchExpanded = MutableLiveData(false)
+    val isSearchExpanded: LiveData<Boolean> = _isSearchExpanded
+
     init {
         fetchUpcomingLaunchesData()
     }
@@ -40,24 +48,45 @@ class LaunchesViewModel @Inject constructor(
         val converted = mutableListOf<LaunchAdapterItem>()
 
         converted.add(upcomingHeader)
-        converted.addAll(
-            upcoming.map {
+        if (upcoming.isNotEmpty()) {
+            converted.addAll(
+                upcoming.map {
+                    LaunchAdapterItem(
+                        type = R.id.item_recyclerview,
+                        header = null,
+                        launchEntity = it
+                    )
+                })
+        } else {
+            converted.add(
                 LaunchAdapterItem(
-                    type = R.id.item_recyclerview,
+                    type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = it
+                    launchEntity = null
                 )
-            })
+            )
+        }
+
         converted.add(pastHeader)
-        converted.addAll(
-            past.map {
+        if (past.isNotEmpty()) {
+            converted.addAll(
+                past.map {
+                    LaunchAdapterItem(
+                        type = R.id.item_recyclerview,
+                        header = null,
+                        launchEntity = it
+                    )
+                }.reversed() // to sort most recent date
+            )
+        } else {
+            converted.add(
                 LaunchAdapterItem(
-                    type = R.id.item_recyclerview,
+                    type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = it
+                    launchEntity = null
                 )
-            }.reversed() // to sort most recent date
-        )
+            )
+        }
 
         return converted
     }
@@ -69,6 +98,7 @@ class LaunchesViewModel @Inject constructor(
             when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
                 is Result.Success -> {
                     val converted = convertLaunchesToAdapterItems(res.data)
+                    allLaunches = res.data
                     _launches.value = State.Success(converted)
                 }
                 is Result.Error<*> -> {
@@ -76,5 +106,21 @@ class LaunchesViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun onQueryTextChange() {
+        if (launches.value is State.Success) {
+            val filtered = allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
+            val result = convertLaunchesToAdapterItems(filtered)
+            _launches.value = State.Success(result)
+        }
+    }
+
+    fun setSearchExpanded(expanded: Boolean) {
+        _isSearchExpanded.value = expanded
+    }
+
+    fun setQuery(query: String) {
+        _query.value = query
     }
 }

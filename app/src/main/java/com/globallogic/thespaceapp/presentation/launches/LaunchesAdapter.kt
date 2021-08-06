@@ -7,6 +7,7 @@ import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.RequestManager
 import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.ItemRecyclerviewBinding
+import com.globallogic.thespaceapp.databinding.ItemRecyclerviewEmptyBinding
 import com.globallogic.thespaceapp.databinding.ItemRecyclerviewHeaderBinding
 import com.globallogic.thespaceapp.domain.model.LaunchEntity
 import com.globallogic.thespaceapp.utils.toDateSting
@@ -29,6 +30,9 @@ class LaunchesAdapter constructor(
     inner class LaunchHeaderViewHolder(binding: ItemRecyclerviewHeaderBinding) :
         BaseLaunchViewHolder(binding)
 
+    inner class LaunchEmptyViewHolder(binding: ItemRecyclerviewEmptyBinding) :
+        BaseLaunchViewHolder(binding)
+
 
     var launches: List<LaunchAdapterItem> = listOf()
         set(value) {
@@ -49,6 +53,12 @@ class LaunchesAdapter constructor(
                 val binding = ItemRecyclerviewHeaderBinding
                     .inflate(LayoutInflater.from(parent.context), parent, false)
                 return LaunchHeaderViewHolder(binding)
+            }
+            R.id.item_recyclerview_empty -> {
+
+                val binding = ItemRecyclerviewEmptyBinding
+                    .inflate(LayoutInflater.from(parent.context), parent, false)
+                return LaunchEmptyViewHolder(binding)
             }
             else -> {
                 throw RuntimeException("Wrong view holder type!")
@@ -82,6 +92,9 @@ class LaunchesAdapter constructor(
                 with(launches[position]) {
                     binding.tvItemHeadline.text = this.header
                 }
+            }
+            R.id.item_recyclerview_empty -> {
+                
             }
         }
     }
