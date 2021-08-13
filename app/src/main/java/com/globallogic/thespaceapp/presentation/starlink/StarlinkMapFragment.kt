@@ -137,6 +137,10 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             isIdle = true
         }
 
+        map.setOnCameraMoveStartedListener {
+            isIdle = false
+        }
+
         map.setOnCameraMoveListener {
             isIdle = false
         }
