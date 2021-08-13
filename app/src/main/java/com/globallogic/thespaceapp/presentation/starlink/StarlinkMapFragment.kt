@@ -17,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
@@ -46,6 +47,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private val circles = mutableMapOf<String, Circle>()
 
     private var isIdle = true
+    private var isSettingsOpen = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +69,23 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        binding.btnSettings.setOnClickListener {
+            isSettingsOpen = !isSettingsOpen
+
+            binding.mcvSettings.visibility = if(isSettingsOpen) View.VISIBLE else View.GONE
+         }
+
+        binding.slCoverage.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                isIdle = false
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                isIdle = true
+            }
+
+        })
     }
 
     override fun onMapReady(map: GoogleMap) {

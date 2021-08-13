@@ -72,4 +72,6 @@
     <string name="search">Search</string>
     <string name="no_items_matching_the_query">No items matching the query</string>
     <string name="settings_content_description">Settings</string>
+    <string name="coverage_angle">Coverage angle</string>
+    <string name="show_coverage">Show coverage</string>
 </resources>
