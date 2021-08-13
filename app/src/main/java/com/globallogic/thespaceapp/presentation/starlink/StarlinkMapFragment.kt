@@ -83,6 +83,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         }
 
         val markers = mutableMapOf<String, Marker?>()
+        val circles = mutableMapOf<String, Circle>()
 
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
             data.forEach { (id, marker) ->
@@ -93,6 +94,17 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                         .icon(currentIcon)
                 )
                 markers[id] = m
+
+                val c = googleMap.addCircle(
+                    CircleOptions()
+                        .center(marker.latLong)
+                        .radius(500000.0)
+                        .strokeColor(R.color.circleStrokeColor)
+                        .strokeWidth(0.5f)
+                        .fillColor(R.color.circleFillColor)
+                )
+                circles[id] = c
+
             }
 
             viewModel.predictPosition()
@@ -108,6 +120,9 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 is State.Success -> {
+
+                    val curScreen = googleMap.projection.visibleRegion.latLngBounds
+
                     currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
                         iconSmall
                     } else {
@@ -115,8 +130,10 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                     }
 
                     state.data.forEach {
-                        markers[it.id]?.position = it.latLong
-                        markers[it.id]?.setIcon(currentIcon)
+//                        markers[it.id]?.position = it.latLong
+//                        markers[it.id]?.setIcon(currentIcon)
+
+//                        circles[it.id]?.center = it.latLong
                     }
                 }
             }

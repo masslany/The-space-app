@@ -71,4 +71,5 @@
     <string name="notification">Notification</string>
     <string name="search">Search</string>
     <string name="no_items_matching_the_query">No items matching the query</string>
+    <string name="settings_content_description">Settings</string>
 </resources>
