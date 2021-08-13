@@ -69,28 +69,17 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
-        binding.btnSettings.setOnClickListener {
-            isSettingsOpen = !isSettingsOpen
-
-            binding.mcvSettings.visibility = if(isSettingsOpen) View.VISIBLE else View.GONE
-         }
-
-        binding.slCoverage.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
-            override fun onStartTrackingTouch(slider: Slider) {
-                isIdle = false
-            }
-
-            override fun onStopTrackingTouch(slider: Slider) {
-                isIdle = true
-            }
-
-        })
     }
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
 
+        setMapStyle()
+        setupListeners()
+        setupObservers()
+    }
+
+    private fun setMapStyle() {
         try {
             // Customise the styling of the base map using a JSON object defined
             // in a raw resource file.
@@ -105,44 +94,19 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         } catch (e: Resources.NotFoundException) {
             Log.e("TAG", "Can't find style. Error: ", e)
         }
+    }
 
+    private fun setupObservers() {
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
             data.forEach { (id, marker) ->
-                val m = googleMap.addMarker(
-                    MarkerOptions()
-                        .position(marker?.latLong!!)
-                        .title(marker.objectName)
-                        .icon(currentIcon)
-                        .visible(false)
-                )
-                markers[id] = m
 
-                val c = googleMap.addCircle(
-                    CircleOptions()
-                        .center(marker.latLong)
-                        .radius(500000.0)
-                        .strokeColor(R.color.circleStrokeColor)
-                        .strokeWidth(0.5f)
-                        .fillColor(R.color.circleFillColor)
-                        .visible(false)
-                )
-                circles[id] = c
-
+                marker?.let {
+                    createMarker(id, it)
+                    createCircle(id, it)
+                }
             }
 
             viewModel.predictPosition()
-        }
-
-        map.setOnCameraIdleListener {
-            isIdle = true
-        }
-
-        map.setOnCameraMoveStartedListener {
-            isIdle = false
-        }
-
-        map.setOnCameraMoveListener {
-            isIdle = false
         }
 
         viewModel.starlinks.observe(viewLifecycleOwner) { state ->
@@ -160,8 +124,6 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                         return@observe
                     }
 
-                    val curScreen = googleMap.projection.visibleRegion.latLngBounds
-
                     currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
                         iconSmall
                     } else {
@@ -169,21 +131,81 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                     }
 
                     state.data.forEach { starlink ->
-                        markers[starlink.id]?.position = starlink.latLong
-                        markers[starlink.id]?.setIcon(currentIcon)
-                        circles[starlink.id]?.center = starlink.latLong
-
-                        if (curScreen.contains(starlink.latLong)) {
-                            markers[starlink.id]?.isVisible = true
-                            circles[starlink.id]?.isVisible = true
-                        } else {
-                            markers[starlink.id]?.isVisible = false
-                            circles[starlink.id]?.isVisible = false
-                        }
+                        updateUi(starlink)
                     }
                 }
             }
         }
+    }
 
+    private fun createMarker(id: String, marker: StarlinkMarker) {
+        val m = googleMap.addMarker(
+            MarkerOptions()
+                .position(marker.latLong)
+                .title(marker.objectName)
+                .icon(currentIcon)
+                .visible(false)
+        )
+        markers[id] = m
+    }
+
+    private fun createCircle(id: String, marker: StarlinkMarker) {
+        val c = googleMap.addCircle(
+            CircleOptions()
+                .center(marker.latLong)
+                .radius(500000.0)
+                .strokeColor(R.color.circleStrokeColor)
+                .strokeWidth(0.5f)
+                .fillColor(R.color.circleFillColor)
+                .visible(false)
+        )
+        circles[id] = c
+    }
+
+    private fun setupListeners() {
+        googleMap.setOnCameraIdleListener {
+            isIdle = true
+        }
+
+        googleMap.setOnCameraMoveStartedListener {
+            isIdle = false
+        }
+
+        googleMap.setOnCameraMoveListener {
+            isIdle = false
+        }
+
+        binding.btnSettings.setOnClickListener {
+            isSettingsOpen = !isSettingsOpen
+
+            binding.mcvSettings.visibility = if (isSettingsOpen) View.VISIBLE else View.GONE
+        }
+
+        binding.slCoverage.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
+            override fun onStartTrackingTouch(slider: Slider) {
+                isIdle = false
+            }
+
+            override fun onStopTrackingTouch(slider: Slider) {
+                isIdle = true
+            }
+
+        })
+    }
+
+    private fun updateUi(starlink: StarlinkMarker) {
+        val curScreen = googleMap.projection.visibleRegion.latLngBounds
+
+        markers[starlink.id]?.position = starlink.latLong
+        markers[starlink.id]?.setIcon(currentIcon)
+        circles[starlink.id]?.center = starlink.latLong
+
+        if (curScreen.contains(starlink.latLong)) {
+            markers[starlink.id]?.isVisible = true
+            circles[starlink.id]?.isVisible = true
+        } else {
+            markers[starlink.id]?.isVisible = false
+            circles[starlink.id]?.isVisible = false
+        }
     }
 }
