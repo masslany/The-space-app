@@ -98,11 +98,12 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setupObservers() {
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
+
             data.forEach { (id, marker) ->
 
                 marker?.let {
                     createMarker(id, it)
-                    createCircle(id, it)
+                    createOrUpdateCircle(id, it)
                 }
             }
 
@@ -149,17 +150,22 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         markers[id] = m
     }
 
-    private fun createCircle(id: String, marker: StarlinkMarker) {
-        val c = googleMap.addCircle(
-            CircleOptions()
-                .center(marker.latLong)
-                .radius(500000.0)
-                .strokeColor(R.color.circleStrokeColor)
-                .strokeWidth(0.5f)
-                .fillColor(R.color.circleFillColor)
-                .visible(false)
-        )
-        circles[id] = c
+    private fun createOrUpdateCircle(id: String, marker: StarlinkMarker) {
+        if (circles[id] != null) {
+            circles[id]?.isVisible = marker.showCoverage
+
+        } else {
+            val c = googleMap.addCircle(
+                CircleOptions()
+                    .center(marker.latLong)
+                    .radius(marker.radius)
+                    .strokeColor(R.color.circleStrokeColor)
+                    .strokeWidth(0.5f)
+                    .fillColor(R.color.circleFillColor)
+                    .visible(marker.showCoverage)
+            )
+            circles[id] = c
+        }
     }
 
     private fun setupListeners() {
@@ -191,6 +197,10 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             }
 
         })
+
+        binding.cbCoverage.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.onShowCoverageClicked(isChecked)
+        }
     }
 
     private fun updateUi(starlink: StarlinkMarker) {
@@ -202,7 +212,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         if (curScreen.contains(starlink.latLong)) {
             markers[starlink.id]?.isVisible = true
-            circles[starlink.id]?.isVisible = true
+            circles[starlink.id]?.isVisible = starlink.showCoverage
         } else {
             markers[starlink.id]?.isVisible = false
             circles[starlink.id]?.isVisible = false

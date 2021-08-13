@@ -31,6 +31,7 @@ class StarlinkViewModel @Inject constructor(
     val markersMap: LiveData<Map<String, StarlinkMarker?>> = _markersMap
 
     private val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
+    private var showCoverage: Boolean = false
 
     init {
         fetchStarlinks()
@@ -39,6 +40,29 @@ class StarlinkViewModel @Inject constructor(
     fun onRetryClicked() {
         fetchStarlinks()
     }
+
+    fun onShowCoverageClicked(showCoverage: Boolean) {
+        val tempMap = mutableMapOf<String, StarlinkMarker>()
+        this.showCoverage = showCoverage
+
+        starlinkEntities.forEach { starlink ->
+            val predicted = TlePredictionEngine.getSatellitePosition(
+                starlink.TLELine1,
+                starlink.TLELine2,
+                true
+            )
+            tempMap[starlink.id] =
+                StarlinkMarker(
+                    latLong = LatLng(predicted[0], predicted[1]),
+                    id = starlink.id,
+                    objectName = starlink.objectName,
+                    launchDate = starlink.launchDate,
+                    showCoverage = this.showCoverage
+                )
+        }
+        _markersMap.postValue(tempMap)
+    }
+
 
     private fun fetchStarlinks() = viewModelScope.launch() {
         _starlinks.value = Loading
@@ -56,7 +80,6 @@ class StarlinkViewModel @Inject constructor(
         }
     }
 
-
     private fun convertToStarlinkMarkerMap(data: List<StarlinkEntity>) =
         viewModelScope.launch(defaultDispatcher) {
             val tempMap = mutableMapOf<String, StarlinkMarker>()
@@ -73,6 +96,7 @@ class StarlinkViewModel @Inject constructor(
                         id = starlink.id,
                         objectName = starlink.objectName,
                         launchDate = starlink.launchDate,
+                        showCoverage = showCoverage
                     )
             }
             _markersMap.postValue(tempMap)
@@ -93,6 +117,7 @@ class StarlinkViewModel @Inject constructor(
                         id = starlink.id,
                         objectName = starlink.objectName,
                         launchDate = starlink.launchDate,
+                        showCoverage = showCoverage
                     )
                 )
             }

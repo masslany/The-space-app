@@ -7,4 +7,6 @@ data class StarlinkMarker(
     val id: String,
     val objectName: String,
     val launchDate: String,
+    val radius: Double = 500000.0,
+    val showCoverage: Boolean = false
 )
