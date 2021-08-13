@@ -45,6 +45,8 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private val markers = mutableMapOf<String, Marker?>()
     private val circles = mutableMapOf<String, Circle>()
 
+    private var isIdle = true
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -113,46 +115,57 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         }
 
         map.setOnCameraIdleListener {
+            isIdle = true
+        }
 
-            viewModel.starlinks.observe(viewLifecycleOwner) { state ->
+        map.setOnCameraMoveListener {
+            isIdle = false
+        }
 
-                when (state) {
-                    is State.Error -> {
+        viewModel.starlinks.observe(viewLifecycleOwner) { state ->
+
+            when (state) {
+                is State.Error -> {
+                }
+
+                State.Loading -> {
+                }
+
+                is State.Success -> {
+
+                    if (!isIdle) {
+                        return@observe
                     }
 
-                    State.Loading -> {
+                    val curScreen = googleMap.projection.visibleRegion.latLngBounds
+
+                    currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
+                        iconSmall
+                    } else {
+                        iconMedium
                     }
 
-                    is State.Success -> {
-                        val curScreen = googleMap.projection.visibleRegion.latLngBounds
+                    state.data.forEach { starlink ->
 
-                        currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
-                            iconSmall
+                        if (curScreen.contains(starlink.latLong)) {
+                            markers[starlink.id]?.position = starlink.latLong
+                            markers[starlink.id]?.setIcon(currentIcon)
+                            markers[starlink.id]?.isVisible = true
+
+                            circles[starlink.id]?.center = starlink.latLong
+                            circles[starlink.id]?.isVisible = true
                         } else {
-                            iconMedium
-                        }
+                            markers[starlink.id]?.position = starlink.latLong
+                            markers[starlink.id]?.setIcon(currentIcon)
+                            markers[starlink.id]?.isVisible = false
 
-                        state.data.forEach { starlink ->
-
-                            if (curScreen.contains(starlink.latLong)) {
-                                markers[starlink.id]?.position = starlink.latLong
-                                markers[starlink.id]?.setIcon(currentIcon)
-                                markers[starlink.id]?.isVisible = true
-
-                                circles[starlink.id]?.center = starlink.latLong
-                                circles[starlink.id]?.isVisible = true
-                            } else {
-                                markers[starlink.id]?.position = starlink.latLong
-                                markers[starlink.id]?.setIcon(currentIcon)
-                                markers[starlink.id]?.isVisible = false
-
-                                circles[starlink.id]?.center = starlink.latLong
-                                circles[starlink.id]?.isVisible = false
-                            }
+                            circles[starlink.id]?.center = starlink.latLong
+                            circles[starlink.id]?.isVisible = false
                         }
                     }
                 }
             }
         }
+
     }
 }
