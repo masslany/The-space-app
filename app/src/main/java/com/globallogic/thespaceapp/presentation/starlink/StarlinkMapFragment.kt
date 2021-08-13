@@ -140,6 +140,8 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun createMarker(id: String, marker: StarlinkMarker) {
+        if(markers.containsKey(id)) return
+
         val m = googleMap.addMarker(
             MarkerOptions()
                 .position(marker.latLong)
