@@ -146,20 +146,15 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                     }
 
                     state.data.forEach { starlink ->
+                        markers[starlink.id]?.position = starlink.latLong
+                        markers[starlink.id]?.setIcon(currentIcon)
+                        circles[starlink.id]?.center = starlink.latLong
 
                         if (curScreen.contains(starlink.latLong)) {
-                            markers[starlink.id]?.position = starlink.latLong
-                            markers[starlink.id]?.setIcon(currentIcon)
                             markers[starlink.id]?.isVisible = true
-
-                            circles[starlink.id]?.center = starlink.latLong
                             circles[starlink.id]?.isVisible = true
                         } else {
-                            markers[starlink.id]?.position = starlink.latLong
-                            markers[starlink.id]?.setIcon(currentIcon)
                             markers[starlink.id]?.isVisible = false
-
-                            circles[starlink.id]?.center = starlink.latLong
                             circles[starlink.id]?.isVisible = false
                         }
                     }
