@@ -1,16 +1,12 @@
 package com.globallogic.thespaceapp.presentation.starlink
 
 import android.content.res.Resources
-import android.graphics.Color
+import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.alpha
-import androidx.core.graphics.blue
-import androidx.core.graphics.green
-import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.globallogic.thespaceapp.R
@@ -26,6 +22,14 @@ import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
+import com.google.android.gms.maps.model.LatLngBounds
+
+import com.google.android.gms.maps.model.LatLng
+
+import com.google.android.gms.maps.Projection
+
+
+
 
 @AndroidEntryPoint
 class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
@@ -212,17 +216,41 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateUi(starlink: StarlinkMarker) {
         val curScreen = googleMap.projection.visibleRegion.latLngBounds
+        val scaleFactor = 1.5
+        val scaledBounds = scaleBounds(curScreen, scaleFactor, googleMap.projection);
 
         markers[starlink.id]?.position = starlink.latLong
         markers[starlink.id]?.setIcon(currentIcon)
         circles[starlink.id]?.center = starlink.latLong
 
-        if (curScreen.contains(starlink.latLong)) {
+        if (scaledBounds.contains(starlink.latLong)) {
             markers[starlink.id]?.isVisible = true
             circles[starlink.id]?.isVisible = starlink.showCoverage
         } else {
             markers[starlink.id]?.isVisible = false
             circles[starlink.id]?.isVisible = false
         }
+    }
+
+    private fun scaleBounds(
+        bounds: LatLngBounds,
+        scale: Double,
+        projection: Projection
+    ): LatLngBounds {
+        val center = bounds.center
+        val centerPoint: Point = projection.toScreenLocation(center)
+        val screenPositionNortheast: Point = projection.toScreenLocation(bounds.northeast)
+        screenPositionNortheast.x =
+            (scale * (screenPositionNortheast.x - centerPoint.x) + centerPoint.x).toInt()
+        screenPositionNortheast.y =
+            (scale * (screenPositionNortheast.y - centerPoint.y) + centerPoint.y).toInt()
+        val scaledNortheast = projection.fromScreenLocation(screenPositionNortheast)
+        val screenPositionSouthwest: Point = projection.toScreenLocation(bounds.southwest)
+        screenPositionSouthwest.x =
+            (scale * (screenPositionSouthwest.x - centerPoint.x) + centerPoint.x).toInt()
+        screenPositionSouthwest.y =
+            (scale * (screenPositionSouthwest.y - centerPoint.y) + centerPoint.y).toInt()
+        val scaledSouthwest = projection.fromScreenLocation(screenPositionSouthwest)
+        return LatLngBounds(scaledSouthwest, scaledNortheast)
     }
 }
