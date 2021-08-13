@@ -1,11 +1,16 @@
 package com.globallogic.thespaceapp.presentation.starlink
 
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.alpha
+import androidx.core.graphics.blue
+import androidx.core.graphics.green
+import androidx.core.graphics.red
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.globallogic.thespaceapp.R
@@ -161,9 +166,9 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                 CircleOptions()
                     .center(marker.latLong)
                     .radius(marker.radius)
-                    .strokeColor(R.color.circleStrokeColor)
+                    .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
-                    .fillColor(R.color.circleFillColor)
+                    .fillColor(0x6629434E.toInt())
                     .visible(marker.showCoverage)
             )
             circles[id] = c

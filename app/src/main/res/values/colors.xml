@@ -13,7 +13,4 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="backgroundColor">#151515</color>
     <color name="errorTextColor">#A2A2A2</color>
-
-    <color name="circleStrokeColor">#AA005EC3</color>
-    <color name="circleFillColor">#7E0078F8</color>
 </resources>
