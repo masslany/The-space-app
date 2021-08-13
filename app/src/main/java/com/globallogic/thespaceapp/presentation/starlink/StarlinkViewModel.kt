@@ -97,7 +97,7 @@ class StarlinkViewModel @Inject constructor(
                 )
             }
             _starlinks.postValue(Success(markers))
-            delay(200L)
+            delay(1000L)
         }
     }
 }

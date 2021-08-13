@@ -42,6 +42,9 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var iconSmall: BitmapDescriptor
     private lateinit var iconMedium: BitmapDescriptor
 
+    private val markers = mutableMapOf<String, Marker?>()
+    private val circles = mutableMapOf<String, Circle>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,9 +85,6 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             Log.e("TAG", "Can't find style. Error: ", e)
         }
 
-        val markers = mutableMapOf<String, Marker?>()
-        val circles = mutableMapOf<String, Circle>()
-
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
             data.forEach { (id, marker) ->
                 val m = googleMap.addMarker(
@@ -92,6 +92,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                         .position(marker?.latLong!!)
                         .title(marker.objectName)
                         .icon(currentIcon)
+                        .visible(false)
                 )
                 markers[id] = m
 
@@ -102,6 +103,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                         .strokeColor(R.color.circleStrokeColor)
                         .strokeWidth(0.5f)
                         .fillColor(R.color.circleFillColor)
+                        .visible(false)
                 )
                 circles[id] = c
 
@@ -110,30 +112,44 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             viewModel.predictPosition()
         }
 
+        map.setOnCameraIdleListener {
 
-        viewModel.starlinks.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is State.Error -> {
-                }
+            viewModel.starlinks.observe(viewLifecycleOwner) { state ->
 
-                State.Loading -> {
-                }
-
-                is State.Success -> {
-
-                    val curScreen = googleMap.projection.visibleRegion.latLngBounds
-
-                    currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
-                        iconSmall
-                    } else {
-                        iconMedium
+                when (state) {
+                    is State.Error -> {
                     }
 
-                    state.data.forEach {
-//                        markers[it.id]?.position = it.latLong
-//                        markers[it.id]?.setIcon(currentIcon)
+                    State.Loading -> {
+                    }
 
-//                        circles[it.id]?.center = it.latLong
+                    is State.Success -> {
+                        val curScreen = googleMap.projection.visibleRegion.latLngBounds
+
+                        currentIcon = if (googleMap.cameraPosition.zoom < 5.0) {
+                            iconSmall
+                        } else {
+                            iconMedium
+                        }
+
+                        state.data.forEach { starlink ->
+
+                            if (curScreen.contains(starlink.latLong)) {
+                                markers[starlink.id]?.position = starlink.latLong
+                                markers[starlink.id]?.setIcon(currentIcon)
+                                markers[starlink.id]?.isVisible = true
+
+                                circles[starlink.id]?.center = starlink.latLong
+                                circles[starlink.id]?.isVisible = true
+                            } else {
+                                markers[starlink.id]?.position = starlink.latLong
+                                markers[starlink.id]?.setIcon(currentIcon)
+                                markers[starlink.id]?.isVisible = false
+
+                                circles[starlink.id]?.center = starlink.latLong
+                                circles[starlink.id]?.isVisible = false
+                            }
+                        }
                     }
                 }
             }
