@@ -28,7 +28,7 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/mcv_settings"
-        android:layout_width="250dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
@@ -47,17 +47,56 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
+                style="@style/TextAppearance.MaterialComponents.Tooltip"
                 android:text="@string/coverage_angle" />
 
-            <com.google.android.material.slider.Slider
-                android:id="@+id/sl_coverage"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_start_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="8dp"
+                    android:text="@string/starlink_start_degree_text"
+                    app:layout_constraintEnd_toStartOf="@id/sl_coverage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sl_coverage"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:stepSize="1"
+                    android:valueFrom="@string/starlink_start_degree_value"
+                    android:valueTo="@string/starlink_end_degree_value"
+                    app:layout_constraintEnd_toStartOf="@id/tv_end_degree"
+                    app:layout_constraintStart_toEndOf="@id/tv_start_degree"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_end_degree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="@string/starlink_end_degree_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/sl_coverage"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <CheckBox
                 android:id="@+id/cb_coverage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
                 android:text="@string/show_coverage" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
