@@ -172,20 +172,21 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         location: LatLng,
         preferences: CirclePreferencesModel
     ) {
+        val radius = viewModel.calculateRadius(preferences.degrees)
+
         if (circles[id] != null) {
             circles[id]?.isVisible = preferences.showCoverage
-            circles[id]?.radius = preferences.degrees * 10000
+            circles[id]?.radius = radius
         } else {
-            val c = googleMap.addCircle(
+            circles[id] = googleMap.addCircle(
                 CircleOptions()
                     .center(location)
-                    .radius(preferences.degrees * 10000)
+                    .radius(radius)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
                     .fillColor(0x6629434E)
                     .visible(preferences.showCoverage)
             )
-            circles[id] = c
         }
     }
 

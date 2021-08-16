@@ -124,4 +124,9 @@ class StarlinkViewModel @Inject constructor(
         }
     }
 
+    fun calculateRadius(degrees: Double): Double {
+        // Todo: properly calculate radius based on degrees
+        return degrees * 10000
+    }
+
 }
