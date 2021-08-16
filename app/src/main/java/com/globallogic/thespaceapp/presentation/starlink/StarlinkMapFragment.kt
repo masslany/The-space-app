@@ -13,7 +13,7 @@ import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentMapStarlinkBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.di.MainDispatcher
-import com.globallogic.thespaceapp.domain.model.CircleSettingsModel
+import com.globallogic.thespaceapp.domain.model.CirclePreferencesModel
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -143,8 +143,11 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-        viewModel.settings.observe(viewLifecycleOwner) {
-
+        viewModel.settings.observe(viewLifecycleOwner) { preferences ->
+            circles.forEach { (_, circle) ->
+                circle.isVisible = preferences.showCoverage
+                circle.radius = preferences.radius * 1000
+            }
         }
     }
 
@@ -164,7 +167,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private fun createOrUpdateCircle(
         id: String,
         marker: StarlinkMarker,
-        settings: CircleSettingsModel = CircleSettingsModel(500000.0, false)
+        preferences: CirclePreferencesModel = CirclePreferencesModel(500000.0, false)
     ) {
         if (circles[id] != null) {
             circles[id]?.isVisible = marker.showCoverage
@@ -173,11 +176,11 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             val c = googleMap.addCircle(
                 CircleOptions()
                     .center(marker.latLong)
-                    .radius(settings.radius)
+                    .radius(preferences.radius)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
-                    .fillColor(0x6629434E.toInt())
-                    .visible(settings.showCoverage)
+                    .fillColor(0x6629434E)
+                    .visible(preferences.showCoverage)
             )
             circles[id] = c
         }
@@ -210,6 +213,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
             override fun onStopTrackingTouch(slider: Slider) {
 //                isIdle = true
+                viewModel.onSliderChanged(slider.value)
             }
 
         })
@@ -222,7 +226,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private fun updateUi(starlink: StarlinkMarker) {
         val curScreen = googleMap.projection.visibleRegion.latLngBounds
         val scaleFactor = 1.5
-        val scaledBounds = scaleBounds(curScreen, scaleFactor, googleMap.projection);
+        val scaledBounds = scaleBounds(curScreen, scaleFactor, googleMap.projection)
 
         markers[starlink.id]?.position = starlink.latLong
         markers[starlink.id]?.setIcon(currentIcon)
