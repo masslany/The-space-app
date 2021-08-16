@@ -16,17 +16,14 @@ import com.globallogic.thespaceapp.di.MainDispatcher
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.Projection
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import java.util.*
 import javax.inject.Inject
-import com.google.android.gms.maps.model.LatLngBounds
-
-import com.google.android.gms.maps.model.LatLng
-
-import com.google.android.gms.maps.Projection
 
 
 
@@ -194,17 +191,18 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         binding.btnSettings.setOnClickListener {
             isSettingsOpen = !isSettingsOpen
+            isIdle = !isSettingsOpen
 
             binding.mcvSettings.visibility = if (isSettingsOpen) View.VISIBLE else View.GONE
         }
 
         binding.slCoverage.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {
-                isIdle = false
+//                isIdle = false
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
-                isIdle = true
+//                isIdle = true
             }
 
         })
