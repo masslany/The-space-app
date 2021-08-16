@@ -107,7 +107,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
                 marker?.let {
                     createMarker(id, it)
-                    createOrUpdateCircle(id, it.latLong)
+                    createOrUpdateCircle(id, it.latLong, viewModel.settings.value!!)
                 }
             }
 
@@ -170,7 +170,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private fun createOrUpdateCircle(
         id: String,
         location: LatLng,
-        preferences: CirclePreferencesModel = CirclePreferencesModel()
+        preferences: CirclePreferencesModel
     ) {
         if (circles[id] != null) {
             circles[id]?.isVisible = preferences.showCoverage
