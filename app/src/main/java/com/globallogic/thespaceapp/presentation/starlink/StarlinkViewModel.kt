@@ -1,12 +1,10 @@
 package com.globallogic.thespaceapp.presentation.starlink
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.domain.model.StarlinkEntity
 import com.globallogic.thespaceapp.domain.usecase.FetchStarlinksUseCase
+import com.globallogic.thespaceapp.domain.usecase.GetSettingsUseCase
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.State.*
@@ -21,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class StarlinkViewModel @Inject constructor(
     private val fetchStarlinksUseCase: FetchStarlinksUseCase,
+    private val getSettingsUseCase: GetSettingsUseCase,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
@@ -29,6 +28,8 @@ class StarlinkViewModel @Inject constructor(
 
     private val _markersMap = MutableLiveData<Map<String, StarlinkMarker?>>()
     val markersMap: LiveData<Map<String, StarlinkMarker?>> = _markersMap
+
+    val settings = getSettingsUseCase.execute().asLiveData()
 
     private val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
     private var showCoverage: Boolean = false

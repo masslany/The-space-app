@@ -13,6 +13,7 @@ import com.globallogic.thespaceapp.R
 import com.globallogic.thespaceapp.databinding.FragmentMapStarlinkBinding
 import com.globallogic.thespaceapp.di.DefaultDispatcher
 import com.globallogic.thespaceapp.di.MainDispatcher
+import com.globallogic.thespaceapp.domain.model.CircleSettingsModel
 import com.globallogic.thespaceapp.utils.State
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,8 +28,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.LatLng
 
 import com.google.android.gms.maps.Projection
-
-
 
 
 @AndroidEntryPoint
@@ -146,10 +145,14 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
+
+        viewModel.settings.observe(viewLifecycleOwner) {
+
+        }
     }
 
     private fun createMarker(id: String, marker: StarlinkMarker) {
-        if(markers.containsKey(id)) return
+        if (markers.containsKey(id)) return
 
         val m = googleMap.addMarker(
             MarkerOptions()
@@ -161,7 +164,11 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         markers[id] = m
     }
 
-    private fun createOrUpdateCircle(id: String, marker: StarlinkMarker) {
+    private fun createOrUpdateCircle(
+        id: String,
+        marker: StarlinkMarker,
+        settings: CircleSettingsModel = CircleSettingsModel(500000.0, false)
+    ) {
         if (circles[id] != null) {
             circles[id]?.isVisible = marker.showCoverage
 
@@ -169,11 +176,11 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             val c = googleMap.addCircle(
                 CircleOptions()
                     .center(marker.latLong)
-                    .radius(marker.radius)
+                    .radius(settings.radius)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
                     .fillColor(0x6629434E.toInt())
-                    .visible(marker.showCoverage)
+                    .visible(settings.showCoverage)
             )
             circles[id] = c
         }
