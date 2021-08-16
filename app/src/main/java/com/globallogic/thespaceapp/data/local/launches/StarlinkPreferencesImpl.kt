@@ -35,7 +35,7 @@ class StarlinkPreferencesImpl @Inject constructor(
             }
         }.map {
             CirclePreferencesModel(
-                radius = it[radiusValueKey] ?: 500000.0,
+                radius = it[radiusValueKey] ?: 25.0,
                 showCoverage = it[showCoveragesKey] ?: false,
             )
         }

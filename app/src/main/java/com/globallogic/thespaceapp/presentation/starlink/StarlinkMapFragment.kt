@@ -103,12 +103,11 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun setupObservers() {
         viewModel.markersMap.observe(viewLifecycleOwner) { data ->
-
             data.forEach { (id, marker) ->
 
                 marker?.let {
                     createMarker(id, it)
-                    createOrUpdateCircle(id, it)
+                    createOrUpdateCircle(id, it.latLong)
                 }
             }
 
@@ -144,9 +143,13 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         }
 
         viewModel.settings.observe(viewLifecycleOwner) { preferences ->
-            circles.forEach { (_, circle) ->
-                circle.isVisible = preferences.showCoverage
-                circle.radius = preferences.radius * 1000
+
+            binding.slCoverage.value = preferences.radius.toFloat()
+            binding.cbCoverage.isChecked = preferences.showCoverage
+
+            circles.forEach { (id, _) ->
+                val marker = markers[id] ?: return@forEach
+                createOrUpdateCircle(id, marker.position, preferences)
             }
         }
     }
@@ -166,17 +169,17 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun createOrUpdateCircle(
         id: String,
-        marker: StarlinkMarker,
-        preferences: CirclePreferencesModel = CirclePreferencesModel(500000.0, false)
+        location: LatLng,
+        preferences: CirclePreferencesModel = CirclePreferencesModel()
     ) {
         if (circles[id] != null) {
-            circles[id]?.isVisible = marker.showCoverage
-
+            circles[id]?.isVisible = preferences.showCoverage
+            circles[id]?.radius = preferences.radius * 10000
         } else {
             val c = googleMap.addCircle(
                 CircleOptions()
-                    .center(marker.latLong)
-                    .radius(preferences.radius)
+                    .center(location)
+                    .radius(preferences.radius * 10000)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
                     .fillColor(0x6629434E)
@@ -208,11 +211,9 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         binding.slCoverage.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {
-//                isIdle = false
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
-//                isIdle = true
                 viewModel.onSliderChanged(slider.value)
             }
 
@@ -234,7 +235,6 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         if (scaledBounds.contains(starlink.latLong)) {
             markers[starlink.id]?.isVisible = true
-            circles[starlink.id]?.isVisible = starlink.showCoverage
         } else {
             markers[starlink.id]?.isVisible = false
             circles[starlink.id]?.isVisible = false
