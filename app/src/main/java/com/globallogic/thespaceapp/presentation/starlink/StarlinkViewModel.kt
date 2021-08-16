@@ -83,25 +83,29 @@ class StarlinkViewModel @Inject constructor(
 
     fun predictPosition() = viewModelScope.launch(defaultDispatcher) {
         while (true) {
-            val markers = mutableListOf<StarlinkMarker>()
-            starlinkEntities.forEach { starlink ->
-                val predicted = TlePredictionEngine.getSatellitePosition(
-                    starlink.TLELine1,
-                    starlink.TLELine2,
-                    true
-                )
-                markers.add(
-                    StarlinkMarker(
-                        latLong = LatLng(predicted[0], predicted[1]),
-                        id = starlink.id,
-                        objectName = starlink.objectName,
-                        launchDate = starlink.launchDate
-                    )
-                )
-            }
-            _starlinks.postValue(Success(markers))
-            delay(300L)
+            calculatePosition()
+            delay(2000L)
         }
+    }
+
+    fun calculatePosition() {
+        val markers = mutableListOf<StarlinkMarker>()
+        starlinkEntities.forEach { starlink ->
+            val predicted = TlePredictionEngine.getSatellitePosition(
+                starlink.TLELine1,
+                starlink.TLELine2,
+                true
+            )
+            markers.add(
+                StarlinkMarker(
+                    latLong = LatLng(predicted[0], predicted[1]),
+                    id = starlink.id,
+                    objectName = starlink.objectName,
+                    launchDate = starlink.launchDate
+                )
+            )
+        }
+        _starlinks.postValue(Success(markers))
     }
 
     fun onSliderChanged(value: Float) {

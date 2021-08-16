@@ -192,6 +192,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     private fun setupListeners() {
         googleMap.setOnCameraIdleListener {
             isIdle = true
+            viewModel.calculatePosition()
         }
 
         googleMap.setOnCameraMoveStartedListener {
