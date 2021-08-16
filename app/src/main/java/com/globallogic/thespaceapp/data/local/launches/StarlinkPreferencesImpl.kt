@@ -19,7 +19,7 @@ class StarlinkPreferencesImpl @Inject constructor(
 
     companion object {
         private val showCoveragesKey = booleanPreferencesKey("showCoverage")
-        private val radiusValueKey = doublePreferencesKey("radiusValue")
+        private val degreesValueKey = doublePreferencesKey("degreesValue")
     }
 
     private val Context.starlinkDataStore by preferencesDataStore(
@@ -35,7 +35,7 @@ class StarlinkPreferencesImpl @Inject constructor(
             }
         }.map {
             CirclePreferencesModel(
-                radius = it[radiusValueKey] ?: 25.0,
+                degrees = it[degreesValueKey] ?: 25.0,
                 showCoverage = it[showCoveragesKey] ?: false,
             )
         }
@@ -44,7 +44,7 @@ class StarlinkPreferencesImpl @Inject constructor(
     override suspend fun updatePreferences(preferences: CirclePreferencesModel) {
         context.starlinkDataStore.edit { currentPreferences ->
             currentPreferences[showCoveragesKey] = preferences.showCoverage
-            currentPreferences[radiusValueKey] = preferences.radius
+            currentPreferences[degreesValueKey] = preferences.degrees
         }
     }
 }

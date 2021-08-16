@@ -144,7 +144,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         viewModel.settings.observe(viewLifecycleOwner) { preferences ->
 
-            binding.slCoverage.value = preferences.radius.toFloat()
+            binding.slCoverage.value = preferences.degrees.toFloat()
             binding.cbCoverage.isChecked = preferences.showCoverage
 
             circles.forEach { (id, _) ->
@@ -174,12 +174,12 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
     ) {
         if (circles[id] != null) {
             circles[id]?.isVisible = preferences.showCoverage
-            circles[id]?.radius = preferences.radius * 10000
+            circles[id]?.radius = preferences.degrees * 10000
         } else {
             val c = googleMap.addCircle(
                 CircleOptions()
                     .center(location)
-                    .radius(preferences.radius * 10000)
+                    .radius(preferences.degrees * 10000)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
                     .fillColor(0x6629434E)

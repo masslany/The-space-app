@@ -105,7 +105,7 @@ class StarlinkViewModel @Inject constructor(
     }
 
     fun onSliderChanged(value: Float) {
-        val newSettings = settings.value?.copy(radius = value.toDouble()) ?: return
+        val newSettings = settings.value?.copy(degrees = value.toDouble()) ?: return
 
         viewModelScope.launch {
             updateStarlinkPreferencesUseCase.execute(newSettings)
