@@ -216,7 +216,6 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.onSliderChanged(slider.value)
             }
-
         })
 
         binding.cbCoverage.setOnCheckedChangeListener { _, isChecked ->
@@ -235,6 +234,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         if (scaledBounds.contains(starlink.latLong)) {
             markers[starlink.id]?.isVisible = true
+            circles[starlink.id]?.isVisible = viewModel.settings.value?.showCoverage!!
         } else {
             markers[starlink.id]?.isVisible = false
             circles[starlink.id]?.isVisible = false
