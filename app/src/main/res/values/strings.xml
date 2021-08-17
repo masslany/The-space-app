@@ -71,4 +71,11 @@
     <string name="notification">Notification</string>
     <string name="search">Search</string>
     <string name="no_items_matching_the_query">No items matching the query</string>
+    <string name="settings_content_description">Settings</string>
+    <string name="coverage_angle">Coverage angle</string>
+    <string name="show_coverage">Show coverage</string>
+    <string name="starlink_start_degree_value">25</string>
+    <string name="starlink_start_degree_text">25°</string>
+    <string name="starlink_end_degree_value">40</string>
+    <string name="starlink_end_degree_text">40°</string>
 </resources>

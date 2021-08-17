@@ -5,15 +5,17 @@ import com.globallogic.thespaceapp.domain.repository.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(ViewModelComponent::class)
 class RepositoryModule {
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideRoadsterRepository(
         apiService: SpacexApiService,
@@ -25,7 +27,7 @@ class RepositoryModule {
         )
     }
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideLaunchesRepository(
         apiService: SpacexApiService,
@@ -37,7 +39,7 @@ class RepositoryModule {
         )
     }
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideRocketsRepository(
         apiService: SpacexApiService,
@@ -49,7 +51,7 @@ class RepositoryModule {
         )
     }
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideDragonsRepository(
         apiService: SpacexApiService,
@@ -61,7 +63,7 @@ class RepositoryModule {
         )
     }
 
-    @Singleton
+    @ViewModelScoped
     @Provides
     fun provideStarlinksRepository(
         apiService: SpacexApiService,

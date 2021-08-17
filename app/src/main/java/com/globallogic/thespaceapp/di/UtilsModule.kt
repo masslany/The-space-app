@@ -4,8 +4,6 @@ import android.content.Context
 import androidx.work.WorkManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
-import com.globallogic.thespaceapp.data.local.launches.LaunchesPreferences
-import com.globallogic.thespaceapp.data.local.launches.LaunchesPreferencesImpl
 import com.globallogic.thespaceapp.presentation.notification.NotificationScheduler
 import com.globallogic.thespaceapp.presentation.notification.NotificationSchedulerImpl
 import dagger.Module
@@ -37,9 +35,4 @@ class UtilsModule {
         return NotificationSchedulerImpl(workManager)
     }
 
-    @Singleton
-    @Provides
-    fun provideLaunchesPreferences(@ApplicationContext context: Context): LaunchesPreferences {
-        return LaunchesPreferencesImpl(context)
-    }
 }
