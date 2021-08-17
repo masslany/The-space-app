@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/dashboardFragment"
-        android:name="com.globallogic.thespaceapp.presentation.dashboard.DashboardFragment"
+        android:name="com.masslany.thespaceapp.presentation.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
         <action
@@ -28,12 +28,12 @@
     </fragment>
     <fragment
         android:id="@+id/roadsterDetailsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
+        android:name="com.masslany.thespaceapp.presentation.roadster.RoadsterDetailsFragment"
         android:label="Roadster details"
         tools:layout="@layout/fragment_roadster_details" />
     <fragment
         android:id="@+id/rocketsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketsFragment"
+        android:name="com.masslany.thespaceapp.presentation.rockets.RocketsFragment"
         android:label="Rockets"
         tools:layout="@layout/fragment_rockets">
         <action
@@ -42,7 +42,7 @@
     </fragment>
     <fragment
         android:id="@+id/rocketDetailsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.rockets.RocketDetailsFragment"
+        android:name="com.masslany.thespaceapp.presentation.rockets.RocketDetailsFragment"
         android:label="Rocket details"
         tools:layout="@layout/fragment_rocket_details">
         <argument
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/dragonsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonsFragment"
+        android:name="com.masslany.thespaceapp.presentation.dragons.DragonsFragment"
         android:label="Dragons"
         tools:layout="@layout/fragment_dragons">
         <action
@@ -64,13 +64,13 @@
 
     <fragment
         android:id="@+id/starlinkMapFragment"
-        android:name="com.globallogic.thespaceapp.presentation.starlink.StarlinkMapFragment"
+        android:name="com.masslany.thespaceapp.presentation.starlink.StarlinkMapFragment"
         android:label="Starlinks"
         tools:layout="@layout/fragment_map_starlink" />
 
     <fragment
         android:id="@+id/dragonDetailsFragment"
-        android:name="com.globallogic.thespaceapp.presentation.dragons.DragonDetailsFragment"
+        android:name="com.masslany.thespaceapp.presentation.dragons.DragonDetailsFragment"
         android:label="Dragon details"
         tools:layout="@layout/fragment_dragon_details" >
         <argument
@@ -83,7 +83,7 @@
 
         <fragment
             android:id="@+id/launchDetailsFragment"
-            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchDetailsFragment"
+            android:name="com.masslany.thespaceapp.presentation.launches.LaunchDetailsFragment"
             android:label="Launch details"
             tools:layout="@layout/fragment_launch_details">
             <argument
@@ -96,7 +96,7 @@
 
         <fragment
             android:id="@+id/LaunchesFragment"
-            android:name="com.globallogic.thespaceapp.presentation.launches.LaunchesFragment"
+            android:name="com.masslany.thespaceapp.presentation.launches.LaunchesFragment"
             android:label="Launches"
             tools:layout="@layout/fragment_launches">
             <action
