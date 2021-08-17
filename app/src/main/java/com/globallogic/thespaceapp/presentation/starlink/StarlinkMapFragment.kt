@@ -106,8 +106,12 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             data.forEach { (id, marker) ->
 
                 marker?.let {
-                    createMarker(id, it)
-                    createOrUpdateCircle(id, it.latLong, viewModel.settings.value!!)
+                    createMarker(id = id, marker = it)
+                    createOrUpdateCircle(
+                        id = id,
+                        marker = it,
+                        preferences = viewModel.settings.value!!
+                    )
                 }
             }
 
@@ -148,8 +152,8 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
             binding.cbCoverage.isChecked = preferences.showCoverage
 
             circles.forEach { (id, _) ->
-                val marker = markers[id] ?: return@forEach
-                createOrUpdateCircle(id, marker.position, preferences)
+                val satellite = viewModel.markersMap.value?.get(id) ?: return@forEach
+                createOrUpdateCircle(id, satellite, preferences)
             }
         }
     }
@@ -159,7 +163,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
         val m = googleMap.addMarker(
             MarkerOptions()
-                .position(marker.latLong)
+                .position(LatLng(marker.latitude, marker.longitude))
                 .title(marker.objectName)
                 .icon(currentIcon)
                 .visible(false)
@@ -169,10 +173,10 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private fun createOrUpdateCircle(
         id: String,
-        location: LatLng,
+        marker: StarlinkMarker,
         preferences: CirclePreferencesModel
     ) {
-        val radius = viewModel.calculateRadius(preferences.degrees)
+        val radius = viewModel.calculateRadius(preferences.degrees, marker.altitude)
 
         if (circles[id] != null) {
             circles[id]?.isVisible = preferences.showCoverage
@@ -180,7 +184,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         } else {
             circles[id] = googleMap.addCircle(
                 CircleOptions()
-                    .center(location)
+                    .center(LatLng(marker.latitude, marker.longitude))
                     .radius(radius)
                     .strokeColor(0xEE29434E.toInt())
                     .strokeWidth(0.5f)
@@ -230,11 +234,13 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         val scaleFactor = 1.5
         val scaledBounds = scaleBounds(curScreen, scaleFactor, googleMap.projection)
 
-        markers[starlink.id]?.position = starlink.latLong
-        markers[starlink.id]?.setIcon(currentIcon)
-        circles[starlink.id]?.center = starlink.latLong
+        val position = LatLng(starlink.latitude, starlink.longitude)
 
-        if (scaledBounds.contains(starlink.latLong)) {
+        markers[starlink.id]?.position = position
+        markers[starlink.id]?.setIcon(currentIcon)
+        circles[starlink.id]?.center = position
+
+        if (scaledBounds.contains(position)) {
             markers[starlink.id]?.isVisible = true
             circles[starlink.id]?.isVisible = viewModel.settings.value?.showCoverage!!
         } else {

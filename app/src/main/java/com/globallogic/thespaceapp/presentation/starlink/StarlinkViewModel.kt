@@ -9,18 +9,19 @@ import com.globallogic.thespaceapp.domain.usecase.UpdateStarlinkPreferencesUseCa
 import com.globallogic.thespaceapp.utils.Result
 import com.globallogic.thespaceapp.utils.State
 import com.globallogic.thespaceapp.utils.State.*
-import com.google.android.gms.maps.model.LatLng
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.PI
+import kotlin.math.tan
 
 @HiltViewModel
 class StarlinkViewModel @Inject constructor(
     private val fetchStarlinksUseCase: FetchStarlinksUseCase,
-    private val getStarlinkPreferencesUseCase: GetStarlinkPreferencesUseCase,
+    getStarlinkPreferencesUseCase: GetStarlinkPreferencesUseCase,
     private val updateStarlinkPreferencesUseCase: UpdateStarlinkPreferencesUseCase,
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
@@ -72,10 +73,12 @@ class StarlinkViewModel @Inject constructor(
                 )
                 tempMap[starlink.id] =
                     StarlinkMarker(
-                        latLong = LatLng(predicted[0], predicted[1]),
                         id = starlink.id,
                         objectName = starlink.objectName,
-                        launchDate = starlink.launchDate
+                        launchDate = starlink.launchDate,
+                        latitude = predicted[0],
+                        longitude = predicted[1],
+                        altitude = predicted[2]
                     )
             }
             _markersMap.postValue(tempMap)
@@ -98,10 +101,12 @@ class StarlinkViewModel @Inject constructor(
             )
             markers.add(
                 StarlinkMarker(
-                    latLong = LatLng(predicted[0], predicted[1]),
                     id = starlink.id,
                     objectName = starlink.objectName,
-                    launchDate = starlink.launchDate
+                    launchDate = starlink.launchDate,
+                    latitude = predicted[0],
+                    longitude = predicted[1],
+                    altitude = predicted[2]
                 )
             )
         }
@@ -124,9 +129,16 @@ class StarlinkViewModel @Inject constructor(
         }
     }
 
-    fun calculateRadius(degrees: Double): Double {
-        // Todo: properly calculate radius based on degrees
-        return degrees * 10000
+    fun calculateRadius(angle: Double, altitude: Double): Double {
+        // Assuming the earth is flat 👀
+
+        val epsilon = degToRad(angle)
+        val areaInKm = altitude / tan(epsilon)
+
+        return areaInKm * 1000
     }
 
+    private fun degToRad(degrees: Double): Double {
+        return degrees / 180 * PI
+    }
 }
