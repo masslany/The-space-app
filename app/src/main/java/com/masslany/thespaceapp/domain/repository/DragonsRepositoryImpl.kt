@@ -4,7 +4,7 @@ import android.net.Uri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.masslany.thespaceapp.di.IoDispatcher
-import com.masslany.thespaceapp.domain.model.DragonEntity
+import com.masslany.thespaceapp.domain.model.DragonModel
 import com.masslany.thespaceapp.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,12 +14,12 @@ class DragonsRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : DragonsRepository {
-    override suspend fun fetchDragonsData(): Result<List<DragonEntity>> {
+    override suspend fun fetchDragonsData(): Result<List<DragonModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchDragonsData()
-                val dragons: List<DragonEntity> = response.map {
-                    DragonEntity(
+                val dragons: List<DragonModel> = response.map {
+                    DragonModel(
                         name = it.name,
                         active = it.active,
                         crewCapacity = it.crewCapacity,
@@ -49,11 +49,11 @@ class DragonsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchDragonById(id: String): Result<DragonEntity> {
+    override suspend fun fetchDragonById(id: String): Result<DragonModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchDragonById(id)
-                val dragons = DragonEntity(
+                val dragons = DragonModel(
                     name = response.name,
                     active = response.active,
                     crewCapacity = response.crewCapacity,

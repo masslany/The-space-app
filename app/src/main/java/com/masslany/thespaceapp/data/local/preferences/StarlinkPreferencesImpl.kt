@@ -1,4 +1,4 @@
-package com.masslany.thespaceapp.data.local.launches
+package com.masslany.thespaceapp.data.local.preferences
 
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey

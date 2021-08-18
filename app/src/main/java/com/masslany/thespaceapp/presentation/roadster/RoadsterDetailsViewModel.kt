@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.masslany.thespaceapp.domain.model.RoadsterEntity
+import com.masslany.thespaceapp.domain.model.RoadsterModel
 import com.masslany.thespaceapp.domain.usecase.FetchRoadsterDataUseCase
 import com.masslany.thespaceapp.utils.Result
 import com.masslany.thespaceapp.utils.State
@@ -19,8 +19,8 @@ class RoadsterDetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _roadsterEntity = MutableLiveData<State<RoadsterEntity>>()
-    val roadsterEntity: LiveData<State<RoadsterEntity>> = _roadsterEntity
+    private val _roadsterEntity = MutableLiveData<State<RoadsterModel>>()
+    val roadsterModel: LiveData<State<RoadsterModel>> = _roadsterEntity
 
     init {
         viewModelScope.launch {
@@ -38,7 +38,7 @@ class RoadsterDetailsViewModel @Inject constructor(
         _roadsterEntity.value = Loading
 
         when (val response = fetchRoadsterDataUseCase.execute()) {
-            is Result.Success<RoadsterEntity> -> {
+            is Result.Success<RoadsterModel> -> {
                 _roadsterEntity.value = Success(response.data)
             }
             is Result.Error<*> -> {

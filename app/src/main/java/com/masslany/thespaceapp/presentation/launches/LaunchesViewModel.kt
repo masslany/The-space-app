@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.masslany.thespaceapp.R
-import com.masslany.thespaceapp.domain.model.LaunchEntity
+import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
 import com.masslany.thespaceapp.utils.Result
 import com.masslany.thespaceapp.utils.State
@@ -21,7 +21,7 @@ class LaunchesViewModel @Inject constructor(
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
     val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
 
-    private var allLaunches: List<LaunchEntity> = emptyList()
+    private var allLaunches: List<LaunchModel> = emptyList()
 
     private var _query = MutableLiveData("")
     val query: LiveData<String> = _query
@@ -37,11 +37,11 @@ class LaunchesViewModel @Inject constructor(
         fetchUpcomingLaunchesData()
     }
 
-    private fun convertLaunchesToAdapterItems(launchEntities: List<LaunchEntity>): List<LaunchAdapterItem> {
+    private fun convertLaunchesToAdapterItems(launchModels: List<LaunchModel>): List<LaunchAdapterItem> {
         val upcomingHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Upcoming", null)
         val pastHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Past", null)
 
-        val (upcoming, past) = launchEntities.partition {
+        val (upcoming, past) = launchModels.partition {
             it.date >= System.currentTimeMillis() / 1000
         }
 
@@ -54,7 +54,7 @@ class LaunchesViewModel @Inject constructor(
                     LaunchAdapterItem(
                         type = R.id.item_recyclerview,
                         header = null,
-                        launchEntity = it
+                        launchModel = it
                     )
                 })
         } else {
@@ -62,7 +62,7 @@ class LaunchesViewModel @Inject constructor(
                 LaunchAdapterItem(
                     type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = null
+                    launchModel = null
                 )
             )
         }
@@ -74,7 +74,7 @@ class LaunchesViewModel @Inject constructor(
                     LaunchAdapterItem(
                         type = R.id.item_recyclerview,
                         header = null,
-                        launchEntity = it
+                        launchModel = it
                     )
                 }.reversed() // to sort most recent date
             )
@@ -83,7 +83,7 @@ class LaunchesViewModel @Inject constructor(
                 LaunchAdapterItem(
                     type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = null
+                    launchModel = null
                 )
             )
         }

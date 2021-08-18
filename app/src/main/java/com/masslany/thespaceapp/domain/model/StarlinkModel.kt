@@ -1,6 +1,6 @@
 package com.masslany.thespaceapp.domain.model
 
-data class StarlinkEntity(
+data class StarlinkModel(
     val id: String,
     val objectName: String,
     val launchDate: String,

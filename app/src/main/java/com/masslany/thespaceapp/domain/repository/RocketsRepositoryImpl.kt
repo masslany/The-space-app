@@ -3,7 +3,7 @@ package com.masslany.thespaceapp.domain.repository
 import android.net.Uri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
-import com.masslany.thespaceapp.domain.model.RocketEntity
+import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,12 +13,12 @@ class RocketsRepositoryImp @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RocketsRepository {
-    override suspend fun fetchRocketsData(): Result<List<RocketEntity>> {
+    override suspend fun fetchRocketsData(): Result<List<RocketModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketsData()
                 val rockets = response.map { data ->
-                    RocketEntity(
+                    RocketModel(
                         active = data.active,
                         boosters = data.boosters,
                         company = data.company,
@@ -50,11 +50,11 @@ class RocketsRepositoryImp @Inject constructor(
         }
     }
 
-    override suspend fun fetchRocketById(id: String): Result<RocketEntity> {
+    override suspend fun fetchRocketById(id: String): Result<RocketModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketById(id)
-                val rocket = RocketEntity(
+                val rocket = RocketModel(
                     active = response.active,
                     boosters = response.boosters,
                     company = response.company,

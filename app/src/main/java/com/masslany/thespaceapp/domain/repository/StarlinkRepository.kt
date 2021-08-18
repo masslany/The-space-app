@@ -1,8 +1,8 @@
 package com.masslany.thespaceapp.domain.repository
 
-import com.masslany.thespaceapp.domain.model.StarlinkEntity
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.domain.model.StarlinkModel
+import com.masslany.thespaceapp.utils.Resource
 
 interface StarlinkRepository {
-    suspend fun fetchStarlinksData(): Result<List<StarlinkEntity>>
+    suspend fun fetchStarlinksData(): Resource<List<StarlinkModel>>
 }

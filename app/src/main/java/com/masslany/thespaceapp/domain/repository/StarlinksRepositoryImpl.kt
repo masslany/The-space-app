@@ -2,8 +2,8 @@ package com.masslany.thespaceapp.domain.repository
 
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
-import com.masslany.thespaceapp.domain.model.StarlinkEntity
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.domain.model.StarlinkModel
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -12,7 +12,7 @@ class StarlinksRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : StarlinkRepository {
-    override suspend fun fetchStarlinksData(): Result<List<StarlinkEntity>> {
+    override suspend fun fetchStarlinksData(): Resource<List<StarlinkModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchStarlinksData()
@@ -21,7 +21,7 @@ class StarlinksRepositoryImpl @Inject constructor(
                         data.latitude != null && data.longitude != null
                     }
                     .map { data ->
-                        StarlinkEntity(
+                        StarlinkModel(
                             id = data.id,
                             objectName = data.spaceTrack.oBJECTNAME,
                             launchDate = data.launch,
@@ -30,9 +30,9 @@ class StarlinksRepositoryImpl @Inject constructor(
                             TLELine2 = data.spaceTrack.tLELINE2,
                         )
                     }
-                Result.Success(starlinks)
+                Resource.Success(starlinks)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

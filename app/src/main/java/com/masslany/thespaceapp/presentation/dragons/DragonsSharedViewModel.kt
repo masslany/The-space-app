@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.masslany.thespaceapp.domain.model.DragonEntity
+import com.masslany.thespaceapp.domain.model.DragonModel
 import com.masslany.thespaceapp.domain.usecase.FetchDragonsUseCase
 import com.masslany.thespaceapp.utils.Result
 import com.masslany.thespaceapp.utils.State
@@ -17,11 +17,11 @@ class DragonsSharedViewModel @Inject constructor(
     private val fetchDragonsUseCase: FetchDragonsUseCase
 ) : ViewModel() {
 
-    private val _dragons = MutableLiveData<State<List<DragonEntity>>>()
-    val dragons: LiveData<State<List<DragonEntity>>> = _dragons
+    private val _dragons = MutableLiveData<State<List<DragonModel>>>()
+    val dragons: LiveData<State<List<DragonModel>>> = _dragons
 
-    private val _dragon = MutableLiveData<State<DragonEntity>>()
-    val dragon: LiveData<State<DragonEntity>> = _dragon
+    private val _dragon = MutableLiveData<State<DragonModel>>()
+    val dragon: LiveData<State<DragonModel>> = _dragon
 
 
     init {
@@ -48,7 +48,7 @@ class DragonsSharedViewModel @Inject constructor(
     }
 
     fun getDragonById(id: String) {
-        val dragon = (dragons.value as State.Success<List<DragonEntity>>).data.findLast {
+        val dragon = (dragons.value as State.Success<List<DragonModel>>).data.findLast {
             it.id == id
         }
 

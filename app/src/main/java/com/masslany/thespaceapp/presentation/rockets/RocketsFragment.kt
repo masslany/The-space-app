@@ -12,7 +12,7 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentRocketsBinding
-import com.masslany.thespaceapp.domain.model.RocketEntity
+import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.utils.State
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
@@ -84,7 +84,7 @@ class RocketsFragment : Fragment() {
         }
     }
 
-    private fun onItemClicked(rocket: RocketEntity) {
+    private fun onItemClicked(rocket: RocketModel) {
         findNavController().navigate(
             RocketsFragmentDirections.actionRocketsFragmentToRocketDetailsFragment(
                 rocketId = rocket.id

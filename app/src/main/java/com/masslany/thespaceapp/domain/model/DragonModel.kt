@@ -5,7 +5,7 @@ import com.masslany.thespaceapp.data.remote.response.dragons.HeatShield
 import com.masslany.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.masslany.thespaceapp.data.remote.response.dragons.Thruster
 
-data class DragonEntity(
+data class DragonModel(
     val name: String,
     val active: Boolean,
     val crewCapacity: Int,

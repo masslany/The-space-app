@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.masslany.thespaceapp.domain.model.RocketEntity
+import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.domain.usecase.FetchRocketByIdUseCase
 import com.masslany.thespaceapp.utils.Result
 import com.masslany.thespaceapp.utils.State
@@ -18,8 +18,8 @@ class RocketDetailsViewModel @Inject constructor(
     private val fetchRocketByIdUseCase: FetchRocketByIdUseCase
 ) : ViewModel() {
 
-    private val _rocket = MutableLiveData<State<RocketEntity>>()
-    val rocket: LiveData<State<RocketEntity>> = _rocket
+    private val _rocket = MutableLiveData<State<RocketModel>>()
+    val rocket: LiveData<State<RocketModel>> = _rocket
 
     fun onRetryClicked(id: String) {
         fetchRocketById(id)

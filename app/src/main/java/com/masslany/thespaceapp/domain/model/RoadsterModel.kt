@@ -1,6 +1,6 @@
 package com.masslany.thespaceapp.domain.model
 
-data class RoadsterEntity(
+data class RoadsterModel(
     val name: String,
     val launchDate: String,
     val speed: String,

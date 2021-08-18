@@ -52,7 +52,7 @@ class RoadsterDetailsFragment : Fragment() {
         snapHelper.attachToRecyclerView(binding.rvRoadsterImages)
         binding.rvRoadsterImages.addItemDecoration(LinePagerIndicatorDecoration())
 
-        viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
+        viewModel.roadsterModel.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Error -> {
                     with(binding) {
