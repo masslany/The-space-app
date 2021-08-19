@@ -13,14 +13,18 @@ import com.masslany.thespaceapp.utils.State.Success
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.PI
 import kotlin.math.tan
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class StarlinkViewModel @Inject constructor(
     private val fetchStarlinksUseCase: FetchStarlinksUseCase,
     getStarlinkPreferencesUseCase: GetStarlinkPreferencesUseCase,
@@ -46,7 +50,6 @@ class StarlinkViewModel @Inject constructor(
         fetchStarlinks(true)
     }
 
-
     private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch() {
 
         fetchStarlinksUseCase.execute(
@@ -57,34 +60,23 @@ class StarlinkViewModel @Inject constructor(
             onFetchFailed = {
                 _starlinks.value = State.Error(it)
             }
-        ).collect { resource ->
-            when (resource) {
-                Resource.Loading -> {
-                    _starlinks.value = Loading
-                }
-                is Resource.Success -> {
-                    starlinkModels.clear()
-                    starlinkModels.addAll(resource.data)
-                    convertToStarlinkMarkerMap(resource.data)
-                }
-                is Resource.Error -> {
-                    _starlinks.value = State.Error(resource.throwable)
+        ).stateIn(viewModelScope, SharingStarted.Lazily, null)
+            .collect { resource ->
+                when (resource) {
+                    Resource.Loading -> {
+                        _starlinks.value = Loading
+                    }
+                    is Resource.Success -> {
+                        starlinkModels.clear()
+                        starlinkModels.addAll(resource.data)
+                        convertToStarlinkMarkerMap(resource.data)
+                    }
+                    is Resource.Error -> {
+                        _starlinks.value = State.Error(resource.throwable)
+                    }
                 }
             }
-        }
 
-
-//        when (val result = fetchStarlinksUseCase.execute()) {
-//            is Result.Success -> {
-//                starlinkModels.clear()
-//                starlinkModels.addAll(result.data)
-//
-//                convertToStarlinkMarkerMap(result.data)
-//            }
-//            is Result.Error<*> -> {
-//                _starlinks.value = Error(result.exception)
-//            }
-//        }
     }
 
     private fun convertToStarlinkMarkerMap(data: List<StarlinkModel>) =

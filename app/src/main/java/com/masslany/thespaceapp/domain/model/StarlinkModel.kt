@@ -7,4 +7,5 @@ data class StarlinkModel(
     val TLELine0: String,
     val TLELine1: String,
     val TLELine2: String,
+    val updatedAt: Long = System.currentTimeMillis()
 )
