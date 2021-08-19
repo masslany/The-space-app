@@ -16,5 +16,6 @@ data class LaunchModel(
     val payloadsIds: List<String>,
     val webcast: Uri?,
     val article: Uri?,
-    val wikipedia: Uri?
+    val wikipedia: Uri?,
+    val updatedAt: Long = System.currentTimeMillis()
 )

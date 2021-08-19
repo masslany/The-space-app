@@ -46,11 +46,11 @@ class FetchStarlinksUseCase @Inject constructor(
                 starlinksDao.insertStarlinks(entities)
             }
         },
-        shouldFetch = { cachedArticles ->
+        shouldFetch = { cachedStarlinks ->
               if(forceRefresh) {
                   true
               } else {
-                  val sorted = cachedArticles.sortedBy { starlink ->
+                  val sorted = cachedStarlinks.sortedBy { starlink ->
                         starlink.updatedAt
                   }
                   val oldestTimestamp = sorted.firstOrNull()?.updatedAt

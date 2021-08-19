@@ -88,6 +88,7 @@ class LaunchesFragment : Fragment() {
             }
         }
         viewModel.launches.observe(viewLifecycleOwner) { state ->
+            println("STATE IS $state")
             when (state) {
                 is State.Success<List<LaunchAdapterItem>> -> {
                     launchesAdapter.launches = state.data
@@ -112,7 +113,7 @@ class LaunchesFragment : Fragment() {
             }
         }
         binding.srlLaunches.setOnRefreshListener {
-            viewModel.fetchUpcomingLaunchesData()
+            viewModel.fetchUpcomingLaunchesData(false)
             searchView?.onActionViewCollapsed()
             viewModel.setSearchExpanded(false)
             viewModel.setQuery("")

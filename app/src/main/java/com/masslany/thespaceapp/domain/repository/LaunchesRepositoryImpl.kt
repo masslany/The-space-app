@@ -4,6 +4,7 @@ import androidx.core.net.toUri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
 import com.masslany.thespaceapp.domain.model.LaunchModel
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,7 +14,7 @@ class LaunchesRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : LaunchesRepository {
-    override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchModel>> {
+    override suspend fun fetchLaunchesData(): Resource<List<LaunchModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchLaunchesData()
@@ -48,9 +49,9 @@ class LaunchesRepositoryImpl @Inject constructor(
                         )
                     }.sortedBy { it.date }
 
-                Result.Success(launches)
+                Resource.Success(launches)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

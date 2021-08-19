@@ -6,16 +6,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.domain.model.LaunchModel
-import com.masslany.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LaunchesViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase
+    private val fetchLaunchesDataUseCase: FetchLaunchesDataUseCase
 ) : ViewModel() {
 
     private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
@@ -30,11 +33,11 @@ class LaunchesViewModel @Inject constructor(
     val isSearchExpanded: LiveData<Boolean> = _isSearchExpanded
 
     init {
-        fetchUpcomingLaunchesData()
+        fetchUpcomingLaunchesData(false)
     }
 
     fun onRetryClicked() {
-        fetchUpcomingLaunchesData()
+        fetchUpcomingLaunchesData(true)
     }
 
     private fun convertLaunchesToAdapterItems(launchModels: List<LaunchModel>): List<LaunchAdapterItem> {
@@ -91,26 +94,38 @@ class LaunchesViewModel @Inject constructor(
         return converted
     }
 
-    fun fetchUpcomingLaunchesData() {
-        _launches.value = State.Loading
+    fun fetchUpcomingLaunchesData(forceRefresh: Boolean) {
 
         viewModelScope.launch {
-            when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
-                is Result.Success -> {
-                    val converted = convertLaunchesToAdapterItems(res.data)
-                    allLaunches = res.data
-                    _launches.value = State.Success(converted)
+            fetchLaunchesDataUseCase.execute(
+                forceRefresh = forceRefresh,
+                onFetchSuccess = {},
+                onFetchFailed = {}
+            ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
+                .collect { resource ->
+                    println("RESOURCE IS $resource")
+                    when (resource) {
+                        Resource.Loading -> {
+                            _launches.value = State.Loading
+                        }
+                        is Resource.Success -> {
+                            val converted = convertLaunchesToAdapterItems(resource.data)
+                            allLaunches = resource.data
+                            _launches.value = State.Success(converted)
+                        }
+
+                        is Resource.Error -> {
+                            _launches.value = State.Error(resource.throwable)
+                        }
+                    }
                 }
-                is Result.Error<*> -> {
-                    _launches.value = State.Error(res.exception)
-                }
-            }
         }
     }
 
     fun onQueryTextChange() {
         if (launches.value is State.Success) {
-            val filtered = allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
+            val filtered =
+                allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
             val result = convertLaunchesToAdapterItems(filtered)
             _launches.value = State.Success(result)
         }

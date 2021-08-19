@@ -76,7 +76,6 @@ class StarlinkViewModel @Inject constructor(
                     }
                 }
             }
-
     }
 
     private fun convertToStarlinkMarkerMap(data: List<StarlinkModel>) =
