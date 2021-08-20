@@ -87,8 +87,7 @@ class LaunchesFragment : Fragment() {
                 binding.rvLaunches.layoutManager = LinearLayoutManager(requireContext())
             }
         }
-        viewModel.launches.observe(viewLifecycleOwner) { state ->
-            println("STATE IS $state")
+        viewModel.launches.observe(viewLifecycleOwner) { state ->g
             when (state) {
                 is State.Success<List<LaunchAdapterItem>> -> {
                     launchesAdapter.launches = state.data

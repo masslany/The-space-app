@@ -10,12 +10,14 @@ import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
 import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class LaunchesViewModel @Inject constructor(
     private val fetchLaunchesDataUseCase: FetchLaunchesDataUseCase
@@ -103,7 +105,6 @@ class LaunchesViewModel @Inject constructor(
                 onFetchFailed = {}
             ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
                 .collect { resource ->
-                    println("RESOURCE IS $resource")
                     when (resource) {
                         Resource.Loading -> {
                             _launches.value = State.Loading
