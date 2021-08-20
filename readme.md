@@ -1,6 +1,7 @@
 # The space app
 
 The space app is an application centered around the SpaceX company. It serves a learning purpose.
+
 ![Application showcase](blob/spaceapp.png?raw=true "The space app")
 
 
