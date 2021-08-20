@@ -8,4 +8,5 @@ data class RoadsterModel(
     val distanceFromMars: String,
     val description: String,
     val images: List<String>,
+    val updatedAt: Long = System.currentTimeMillis()
 )

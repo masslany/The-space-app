@@ -16,9 +16,11 @@ import com.masslany.thespaceapp.utils.State.*
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RoadsterDetailsFragment : Fragment() {
 
@@ -70,7 +72,6 @@ class RoadsterDetailsFragment : Fragment() {
                         mlContent?.makeGone()
                         clContent?.makeGone()
 
-
                         lottieLoading.makeVisible()
                     }
                 }
@@ -93,7 +94,6 @@ class RoadsterDetailsFragment : Fragment() {
                             getString(R.string.distance, state.data.distanceFromMars)
                         tvDescription.text = state.data.description
 
-                        // TODO: fill recyclerview with data
                         roadsterImagesAdapter.images = state.data.images
                     }
                 }
