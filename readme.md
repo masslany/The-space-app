@@ -2,8 +2,7 @@
 
 The space app is an application centered around the SpaceX company. It serves a learning purpose.
 
-![Application showcase](blob/spaceapp.png?raw=true "The space app")
-
+![Application showcase](blob/spaceapp.png "The space app")
 
 ## Setup
 
@@ -26,9 +25,12 @@ MAPS_API_KEY=YOUR_API_KEY
 * Datastore
 
 ## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would
+like to change.
 
 Please make sure to update tests as appropriate.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)
