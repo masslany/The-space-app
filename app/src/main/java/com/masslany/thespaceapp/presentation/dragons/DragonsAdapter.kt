@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewBinding
-import com.masslany.thespaceapp.domain.model.DragonEntity
+import com.masslany.thespaceapp.domain.model.DragonModel
 
 class DragonsAdapter constructor(
     private val glide: RequestManager,
-    private val onItemClick: (DragonEntity) -> Unit
+    private val onItemClick: (DragonModel) -> Unit
 ) : RecyclerView.Adapter<DragonsAdapter.LaunchViewHolder>() {
 
     inner class LaunchViewHolder(val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
-    var dragons = listOf<DragonEntity>()
+    var dragons = listOf<DragonModel>()
         set(value) {
             field = value
             notifyDataSetChanged()

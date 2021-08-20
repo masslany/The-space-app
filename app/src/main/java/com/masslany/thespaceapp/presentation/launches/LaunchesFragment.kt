@@ -20,10 +20,12 @@ import com.masslany.thespaceapp.utils.State
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class LaunchesFragment : Fragment() {
 
     private var _binding: FragmentLaunchesBinding? = null
@@ -112,7 +114,7 @@ class LaunchesFragment : Fragment() {
             }
         }
         binding.srlLaunches.setOnRefreshListener {
-            viewModel.fetchUpcomingLaunchesData()
+            viewModel.fetchUpcomingLaunchesData(false)
             searchView?.onActionViewCollapsed()
             viewModel.setSearchExpanded(false)
             viewModel.setQuery("")

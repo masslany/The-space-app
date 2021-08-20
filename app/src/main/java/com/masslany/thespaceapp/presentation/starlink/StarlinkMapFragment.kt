@@ -9,25 +9,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.*
+import com.google.android.material.slider.Slider
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentMapStarlinkBinding
 import com.masslany.thespaceapp.di.DefaultDispatcher
 import com.masslany.thespaceapp.di.MainDispatcher
 import com.masslany.thespaceapp.domain.model.CirclePreferencesModel
 import com.masslany.thespaceapp.utils.State
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.Projection
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
-import com.google.android.material.slider.Slider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.*
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
+@ExperimentalCoroutinesApi
 class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
 
     private var _binding: FragmentMapStarlinkBinding? = null
@@ -60,16 +59,12 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMapStarlinkBinding.inflate(inflater, container, false)
+        MapsInitializer.initialize(requireContext())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        iconSmall = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_20)
-        iconMedium = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_50)
-
-        currentIcon = iconSmall
 
         val mapFragment = childFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -80,6 +75,7 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         googleMap = map
 
         setMapStyle()
+        setupIcons()
         setupListeners()
         setupObservers()
     }
@@ -99,6 +95,14 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         } catch (e: Resources.NotFoundException) {
             Log.e("TAG", "Can't find style. Error: ", e)
         }
+    }
+
+    private fun setupIcons() {
+
+        iconSmall = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_20)
+        iconMedium = BitmapDescriptorFactory.fromResource(R.drawable.sat_icon_50)
+
+        currentIcon = iconSmall
     }
 
     private fun setupObservers() {

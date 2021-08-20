@@ -9,12 +9,12 @@ import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewBinding
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewEmptyBinding
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewHeaderBinding
-import com.masslany.thespaceapp.domain.model.LaunchEntity
+import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.utils.toDateSting
 
 class LaunchesAdapter constructor(
     private val glide: RequestManager,
-    private val onItemClick: (LaunchEntity) -> Unit
+    private val onItemClick: (LaunchModel) -> Unit
 ) : RecyclerView.Adapter<LaunchesAdapter.BaseLaunchViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -72,17 +72,17 @@ class LaunchesAdapter constructor(
                 val binding: ItemRecyclerviewBinding = holder.binding as ItemRecyclerviewBinding
 
                 with(launches[position]) {
-                    if (this.launchEntity == null) {
+                    if (this.launchModel == null) {
                         return
                     }
-                    binding.tvItemHeadline.text = this.launchEntity.name
-                    binding.tvItemCaption.text = this.launchEntity.date.toDateSting()
+                    binding.tvItemHeadline.text = this.launchModel.name
+                    binding.tvItemCaption.text = this.launchModel.date.toDateSting()
                     glide
-                        .load(this.launchEntity.image)
+                        .load(this.launchModel.image)
                         .placeholder(R.drawable.ic_launch_placeholder)
                         .into(binding.ivItem)
 
-                    binding.itemRecyclerview.setOnClickListener { onItemClick(this.launchEntity) }
+                    binding.itemRecyclerview.setOnClickListener { onItemClick(this.launchModel) }
                 }
             }
             R.id.item_recyclerview_header -> {

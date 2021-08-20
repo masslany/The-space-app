@@ -3,7 +3,7 @@ package com.masslany.thespaceapp.domain.model
 import android.net.Uri
 import com.masslany.thespaceapp.data.remote.response.launches.Core
 
-data class LaunchEntity(
+data class LaunchModel(
     val id: String,
     val name: String,
     val details: String?,
@@ -16,5 +16,6 @@ data class LaunchEntity(
     val payloadsIds: List<String>,
     val webcast: Uri?,
     val article: Uri?,
-    val wikipedia: Uri?
+    val wikipedia: Uri?,
+    val updatedAt: Long = System.currentTimeMillis()
 )

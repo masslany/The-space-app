@@ -3,7 +3,7 @@ package com.masslany.thespaceapp.domain.model
 import android.net.Uri
 import com.masslany.thespaceapp.data.remote.response.rockets.*
 
-data class RocketEntity(
+data class RocketModel(
     val active: Boolean,
     val boosters: Int,
     val company: String,

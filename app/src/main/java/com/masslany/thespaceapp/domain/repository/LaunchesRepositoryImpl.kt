@@ -3,7 +3,8 @@ package com.masslany.thespaceapp.domain.repository
 import androidx.core.net.toUri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
-import com.masslany.thespaceapp.domain.model.LaunchEntity
+import com.masslany.thespaceapp.domain.model.LaunchModel
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,13 +14,13 @@ class LaunchesRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : LaunchesRepository {
-    override suspend fun fetchUpcomingLaunchesData(): Result<List<LaunchEntity>> {
+    override suspend fun fetchLaunchesData(): Resource<List<LaunchModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchLaunchesData()
-                val launches: List<LaunchEntity> = response
+                val launches: List<LaunchModel> = response
                     .map {
-                        LaunchEntity(
+                        LaunchModel(
                             id = it.id,
                             name = it.name,
                             details = it.details,
@@ -48,18 +49,18 @@ class LaunchesRepositoryImpl @Inject constructor(
                         )
                     }.sortedBy { it.date }
 
-                Result.Success(launches)
+                Resource.Success(launches)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }
 
-    override suspend fun fetchLaunchById(id: String): Result<LaunchEntity> {
+    override suspend fun fetchLaunchById(id: String): Result<LaunchModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchLaunchById(id)
-                val launch = LaunchEntity(
+                val launch = LaunchModel(
                     id = response.id,
                     name = response.name,
                     details = response.details,

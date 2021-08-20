@@ -16,7 +16,7 @@ import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.masslany.thespaceapp.di.DefaultDispatcher
-import com.masslany.thespaceapp.domain.model.LaunchEntity
+import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,13 +85,13 @@ class LaunchDetailsFragment : Fragment() {
         viewModel.getLaunchById(args.launchId)
     }
 
-    private fun fillUi(launchEntity: LaunchEntity) {
-        viewModel.fetchNotificationState(launchEntity)
+    private fun fillUi(launchModel: LaunchModel) {
+        viewModel.fetchNotificationState(launchModel)
         activity?.invalidateOptionsMenu()
 
-        binding.tvLaunchDetailsHeadline.text = launchEntity.name
+        binding.tvLaunchDetailsHeadline.text = launchModel.name
         binding.tvLaunchDetailsHeadline.isSelected = true // to enable marquee
-        binding.tvLaunchDetailsDate.text = launchEntity.date.toDateSting()
+        binding.tvLaunchDetailsDate.text = launchModel.date.toDateSting()
 
         // Countdown
         lifecycleScope.launch(defaultDispatcher) {
@@ -99,32 +99,32 @@ class LaunchDetailsFragment : Fragment() {
                 while (true) {
                     withContext(Dispatchers.Main) {
                         binding.tvLaunchDetailsCountdown.text =
-                            launchEntity.date.toCountdownString()
+                            launchModel.date.toCountdownString()
                     }
                     delay(1000)
                 }
             }
         }
 
-        launchEntity.details?.let { details ->
+        launchModel.details?.let { details ->
             binding.tvLaunchDetailsDescription.text = details
             binding.cvLaunchDetailsDescription.makeVisible()
         }
 
 
-        launchEntity.article?.let { uri ->
+        launchModel.article?.let { uri ->
             binding.tvArticleLabel.enable()
             binding.tvArticleLabel.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
         }
-        launchEntity.webcast?.let { uri ->
+        launchModel.webcast?.let { uri ->
             binding.ivWebcast.enable()
             binding.ivWebcast.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
         }
-        launchEntity.wikipedia?.let { uri ->
+        launchModel.wikipedia?.let { uri ->
             binding.ivWikipedia.enable()
             binding.ivWikipedia.setOnClickListener {
                 startActivity(Intent(Intent.ACTION_VIEW, uri))
@@ -132,7 +132,7 @@ class LaunchDetailsFragment : Fragment() {
         }
 
 
-        launchEntity.rocketId?.let { rocketId ->
+        launchModel.rocketId?.let { rocketId ->
             binding.cardRocketInfo.cvRocket.makeVisible()
 
             binding.cardRocketInfo.cvRocket.setOnClickListener {
@@ -140,7 +140,7 @@ class LaunchDetailsFragment : Fragment() {
             }
         }
 
-        launchEntity.launchpadId?.let { launchpadId ->
+        launchModel.launchpadId?.let { launchpadId ->
             binding.cardLaunchpadInfo.cvLaunchpad.makeVisible()
 
             // TODO: Navigate to LaunchpadDetailsFragment
@@ -154,7 +154,7 @@ class LaunchDetailsFragment : Fragment() {
             }
         }
 
-        if (launchEntity.payloadsIds.isNotEmpty()) {
+        if (launchModel.payloadsIds.isNotEmpty()) {
             binding.cardPayloadInfo.cvPayload.makeVisible()
 
             // TODO: Navigate to LaunchpadDetailsFragment
@@ -169,7 +169,7 @@ class LaunchDetailsFragment : Fragment() {
         }
 
         glide
-            .load(launchEntity.image)
+            .load(launchModel.image)
             .placeholder(R.drawable.ic_launch_placeholder)
             .into(binding.ivLaunchDetails)
     }

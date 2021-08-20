@@ -6,19 +6,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewBinding
-import com.masslany.thespaceapp.domain.model.RocketEntity
+import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.presentation.rockets.RocketsAdapter.RocketsViewHolder
 
 class RocketsAdapter(
     private val glide: RequestManager,
-    private val onItemClick: (RocketEntity) -> Unit
+    private val onItemClick: (RocketModel) -> Unit
 ) : RecyclerView.Adapter<RocketsViewHolder>() {
 
     inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
 
-    var rockets = listOf<RocketEntity>()
+    var rockets = listOf<RocketModel>()
         set(value) {
             field = value
             notifyDataSetChanged()

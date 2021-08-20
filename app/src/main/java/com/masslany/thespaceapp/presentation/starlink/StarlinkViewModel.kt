@@ -2,23 +2,29 @@ package com.masslany.thespaceapp.presentation.starlink
 
 import androidx.lifecycle.*
 import com.masslany.thespaceapp.di.DefaultDispatcher
-import com.masslany.thespaceapp.domain.model.StarlinkEntity
+import com.masslany.thespaceapp.domain.model.StarlinkModel
 import com.masslany.thespaceapp.domain.usecase.FetchStarlinksUseCase
 import com.masslany.thespaceapp.domain.usecase.GetStarlinkPreferencesUseCase
 import com.masslany.thespaceapp.domain.usecase.UpdateStarlinkPreferencesUseCase
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.State
-import com.masslany.thespaceapp.utils.State.*
+import com.masslany.thespaceapp.utils.State.Loading
+import com.masslany.thespaceapp.utils.State.Success
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.PI
 import kotlin.math.tan
 
 @HiltViewModel
+@ExperimentalCoroutinesApi
 class StarlinkViewModel @Inject constructor(
     private val fetchStarlinksUseCase: FetchStarlinksUseCase,
     getStarlinkPreferencesUseCase: GetStarlinkPreferencesUseCase,
@@ -34,34 +40,45 @@ class StarlinkViewModel @Inject constructor(
 
     val settings = getStarlinkPreferencesUseCase.execute().asLiveData()
 
-    private val starlinkEntities: MutableList<StarlinkEntity> = mutableListOf()
+    private val starlinkModels: MutableList<StarlinkModel> = mutableListOf()
 
     init {
-        fetchStarlinks()
+        fetchStarlinks(false)
     }
 
     fun onRetryClicked() {
-        fetchStarlinks()
+        fetchStarlinks(true)
     }
 
+    private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch() {
 
-    private fun fetchStarlinks() = viewModelScope.launch() {
-        _starlinks.value = Loading
-
-        when (val result = fetchStarlinksUseCase.execute()) {
-            is Result.Success -> {
-                starlinkEntities.clear()
-                starlinkEntities.addAll(result.data)
-
-                convertToStarlinkMarkerMap(result.data)
+        fetchStarlinksUseCase.execute(
+            forceRefresh = forceRefresh,
+            onFetchSuccess = {
+                starlinkModels.clear()
+            },
+            onFetchFailed = {
+                _starlinks.value = State.Error(it)
             }
-            is Result.Error<*> -> {
-                _starlinks.value = Error(result.exception)
+        ).stateIn(viewModelScope, SharingStarted.Lazily, null)
+            .collect { resource ->
+                when (resource) {
+                    Resource.Loading -> {
+                        _starlinks.value = Loading
+                    }
+                    is Resource.Success -> {
+                        starlinkModels.clear()
+                        starlinkModels.addAll(resource.data)
+                        convertToStarlinkMarkerMap(resource.data)
+                    }
+                    is Resource.Error -> {
+                        _starlinks.value = State.Error(resource.throwable)
+                    }
+                }
             }
-        }
     }
 
-    private fun convertToStarlinkMarkerMap(data: List<StarlinkEntity>) =
+    private fun convertToStarlinkMarkerMap(data: List<StarlinkModel>) =
         viewModelScope.launch(defaultDispatcher) {
             val tempMap = mutableMapOf<String, StarlinkMarker>()
 
@@ -93,7 +110,7 @@ class StarlinkViewModel @Inject constructor(
 
     fun calculatePosition() {
         val markers = mutableListOf<StarlinkMarker>()
-        starlinkEntities.forEach { starlink ->
+        starlinkModels.forEach { starlink ->
             val predicted = TlePredictionEngine.getSatellitePosition(
                 starlink.TLELine1,
                 starlink.TLELine2,

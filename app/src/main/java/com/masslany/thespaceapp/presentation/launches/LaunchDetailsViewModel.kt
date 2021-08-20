@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.masslany.thespaceapp.domain.model.LaunchEntity
+import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
 import com.masslany.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
 import com.masslany.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
@@ -22,8 +22,8 @@ class LaunchDetailsViewModel @Inject constructor(
     private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
 ) : ViewModel() {
 
-    private val _launch = MutableLiveData<State<LaunchEntity>>()
-    val launch: LiveData<State<LaunchEntity>> = _launch
+    private val _launch = MutableLiveData<State<LaunchModel>>()
+    val launch: LiveData<State<LaunchModel>> = _launch
 
     private val _notificationState = MutableLiveData<Boolean>()
     val notificationState: LiveData<Boolean> = _notificationState
@@ -47,17 +47,17 @@ class LaunchDetailsViewModel @Inject constructor(
         }
     }
 
-    fun fetchNotificationState(launchEntity: LaunchEntity) {
+    fun fetchNotificationState(launchModel: LaunchModel) {
         viewModelScope.launch {
-            val result = getLaunchNotificationStateUseCase.execute(launchEntity)
+            val result = getLaunchNotificationStateUseCase.execute(launchModel)
             result.collect { state ->
                 _notificationState.value = state
             }
         }
     }
 
-    private fun shouldShowNotificationToggle(launchEntity: LaunchEntity): Boolean {
-        return launchEntity.date > System.currentTimeMillis() / 1000
+    private fun shouldShowNotificationToggle(launchModel: LaunchModel): Boolean {
+        return launchModel.date > System.currentTimeMillis() / 1000
     }
 
     fun getLaunchById(id: String) {
