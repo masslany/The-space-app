@@ -102,7 +102,9 @@ class LaunchesViewModel @Inject constructor(
             fetchLaunchesDataUseCase.execute(
                 forceRefresh = forceRefresh,
                 onFetchSuccess = {},
-                onFetchFailed = {}
+                onFetchFailed = {
+                    _launches.value = State.Error(it)
+                }
             ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
                 .collect { resource ->
                     when (resource) {
