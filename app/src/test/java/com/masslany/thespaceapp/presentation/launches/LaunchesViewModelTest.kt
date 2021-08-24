@@ -8,7 +8,6 @@ import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.repository.LaunchesRepository
 import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
 import com.masslany.thespaceapp.utils.MainCoroutineRule
-import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.State
 import com.masslany.thespaceapp.utils.getOrAwaitValue
 import io.mockk.MockKAnnotations
@@ -21,6 +20,7 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.io.IOException
 import java.util.*
 
 
@@ -47,7 +47,7 @@ class LaunchesViewModelTest {
     fun emptyResponseShouldContainsFourItems() = runBlockingTest {
         // Given
         every { repository.getCachedLaunches() } returns flowOf(emptyList())
-        coEvery { repository.fetchLaunchesData() } returns Resource.Success(emptyList())
+        coEvery { repository.fetchLaunchesData() } returns emptyList()
         coEvery { repository.saveFetchedLaunches(emptyList()) } returns Unit
         viewModel = LaunchesViewModel(
             FetchLaunchesDataUseCase(repository)
@@ -71,7 +71,7 @@ class LaunchesViewModelTest {
             null, null, emptyList(), emptyList(), emptyList(),
             null, null, null
         )
-        coEvery { repository.fetchLaunchesData() } returns Resource.Success(listOf(item))
+        coEvery { repository.fetchLaunchesData() } returns listOf(item)
         coEvery { repository.saveFetchedLaunches(listOf(toLaunchEntity(item))) } returns Unit
         every { repository.getCachedLaunches() } returns flowOf(listOf(item))
         viewModel = LaunchesViewModel(
@@ -92,5 +92,20 @@ class LaunchesViewModelTest {
         assertThat((result as State.Success).data).contains(expectedItem)
     }
 
+    @Test
+    fun errorResponseShouldBeHandled() = runBlockingTest {
+        coEvery { repository.fetchLaunchesData() } throws IOException()
+        coEvery { repository.saveFetchedLaunches(emptyList()) } returns Unit
+        every { repository.getCachedLaunches() } returns flowOf(emptyList())
+        viewModel = LaunchesViewModel(
+            FetchLaunchesDataUseCase(repository)
+        )
 
+        // When
+        viewModel.fetchUpcomingLaunchesData(true)
+
+        //Then
+        val result = viewModel.launches.getOrAwaitValue()
+        assertThat(result).isInstanceOf(State.Error::class.java)
+    }
 }

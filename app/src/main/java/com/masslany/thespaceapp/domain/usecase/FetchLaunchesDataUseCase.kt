@@ -30,12 +30,10 @@ class FetchLaunchesDataUseCase @Inject constructor(
                 launchesRepository.fetchLaunchesData()
             },
             saveFetchResult = { result ->
-                if(result is Resource.Success) {
-                    val entities = result.data.map {
-                        toLaunchEntity(it)
-                    }
-                    launchesRepository.saveFetchedLaunches(entities)
+                val entities = result.map {
+                    toLaunchEntity(it)
                 }
+                launchesRepository.saveFetchedLaunches(entities)
             },
             shouldFetch = { cachedLaunches ->
                 if (forceRefresh) {
@@ -57,7 +55,6 @@ class FetchLaunchesDataUseCase @Inject constructor(
                     throw t
                 }
                 onFetchFailed(t)
-
             }
 
         )
