@@ -94,6 +94,7 @@ class LaunchesViewModelTest {
 
     @Test
     fun errorResponseShouldBeHandled() = runBlockingTest {
+        // Given
         coEvery { repository.fetchLaunchesData() } throws IOException()
         coEvery { repository.saveFetchedLaunches(emptyList()) } returns Unit
         every { repository.getCachedLaunches() } returns flowOf(emptyList())
