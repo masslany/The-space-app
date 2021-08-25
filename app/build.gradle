@@ -146,4 +146,5 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
     testImplementation "io.mockk:mockk:1.12.0"
     androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }
