@@ -1,11 +1,8 @@
 package com.masslany.thespaceapp.presentation.launches
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.utils.launchFragmentInHiltContainer
@@ -18,11 +15,8 @@ import org.hamcrest.Matchers.anyOf
 class LaunchesFragmentTestRobot {
 
     companion object {
-        private val searchMenuItem = onView(ViewMatchers.withId(R.id.search_item))
-        private val noItemsFoundView = onView(ViewMatchers.withId(R.id.item_recyclerview_empty))
+        private val searchMenuItem = onView(withId(R.id.search_item))
     }
-
-    private val targetContext = ApplicationProvider.getApplicationContext<Context>()
 
     fun setupFragment() = apply {
         launchFragmentInHiltContainer<LaunchesFragment> {
@@ -39,7 +33,7 @@ class LaunchesFragmentTestRobot {
     }
 
     fun assertItemIsVisible() = apply {
-        onView(ViewMatchers.withText("Starlink A")).check(matches(isDisplayed()))
+        onView(withText("Starlink A")).check(matches(isDisplayed()))
     }
 
     fun assertNoItemsFoundMessageVisible() = apply {
