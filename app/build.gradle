@@ -19,7 +19,7 @@ android {
         versionCode 1
         versionName "1.1"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.masslany.thespaceapp.HiltTestRunner"
     }
 
     buildTypes {
@@ -140,8 +140,11 @@ dependencies {
     testImplementation "com.google.truth:truth:1.1.3"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     debugImplementation "androidx.fragment:fragment-testing:1.3.6"
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "io.mockk:mockk:1.12.0"
+    androidTestImplementation "io.mockk:mockk-android:1.12.0"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
 }

@@ -1,19 +1,21 @@
 package com.masslany.thespaceapp.di
 
-import com.masslany.thespaceapp.data.local.cache.CacheDatabase
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.domain.repository.*
+import com.masslany.thespaceapp.fakes.FakeLaunchesRepository
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import dagger.hilt.testing.TestInstallIn
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
-@InstallIn(ViewModelComponent::class)
-class RepositoryModule {
-
+@TestInstallIn(
+    components = [ViewModelComponent::class],
+    replaces = [RepositoryModule::class]
+)
+class FakeRepositoryModule {
     @ViewModelScoped
     @Provides
     fun provideRoadsterRepository(
@@ -28,16 +30,8 @@ class RepositoryModule {
 
     @ViewModelScoped
     @Provides
-    fun provideLaunchesRepository(
-        apiService: SpacexApiService,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher,
-        cacheDatabase: CacheDatabase,
-    ): LaunchesRepository {
-        return LaunchesRepositoryImpl(
-            apiService,
-            ioDispatcher,
-            cacheDatabase
-        )
+    fun provideLaunchesRepository(): LaunchesRepository {
+        return FakeLaunchesRepository()
     }
 
     @ViewModelScoped

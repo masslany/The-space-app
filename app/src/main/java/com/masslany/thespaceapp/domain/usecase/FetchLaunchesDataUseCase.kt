@@ -1,26 +1,20 @@
 package com.masslany.thespaceapp.domain.usecase
 
-import androidx.room.withTransaction
-import com.masslany.thespaceapp.data.local.cache.CacheDatabase
 import com.masslany.thespaceapp.data.local.cache.entities.toLaunchEntity
-import com.masslany.thespaceapp.data.local.cache.entities.toLaunchModel
 import com.masslany.thespaceapp.data.utils.networkBoundResource
 import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.repository.LaunchesRepository
 import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FetchLaunchesDataUseCase @Inject constructor(
-    private val launchesRepository: LaunchesRepository,
-    private val database: CacheDatabase
+    private val launchesRepository: LaunchesRepository
 ) {
-    private val launchesDao = database.launchesDao()
 
     @ExperimentalCoroutinesApi
     fun execute(
@@ -30,22 +24,16 @@ class FetchLaunchesDataUseCase @Inject constructor(
     ): Flow<Resource<List<LaunchModel>>> =
         networkBoundResource(
             query = {
-                launchesDao.getLaunches().map {
-                    toLaunchModel(it)
-                }
+                launchesRepository.getCachedLaunches()
             },
             fetch = {
                 launchesRepository.fetchLaunchesData()
             },
             saveFetchResult = { result ->
-                val data = (result as Resource.Success).data
-                val entities = data.map {
+                val entities = result.map {
                     toLaunchEntity(it)
                 }
-                database.withTransaction {
-                    launchesDao.deleteLaunches()
-                    launchesDao.insertLaunches(entities)
-                }
+                launchesRepository.saveFetchedLaunches(entities)
             },
             shouldFetch = { cachedLaunches ->
                 if (forceRefresh) {
@@ -67,7 +55,6 @@ class FetchLaunchesDataUseCase @Inject constructor(
                     throw t
                 }
                 onFetchFailed(t)
-
             }
 
         )
