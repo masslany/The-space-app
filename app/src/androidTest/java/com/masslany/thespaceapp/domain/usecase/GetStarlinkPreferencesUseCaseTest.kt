@@ -45,6 +45,7 @@ class GetStarlinkPreferencesUseCaseTest {
         // When
         val useCase = getStarlinkPreferencesUseCase.execute()
 
+        // Then
         scope.launch {
             val result = useCase.last()
             val expected = CirclePreferencesModel()
