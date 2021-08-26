@@ -1,6 +1,5 @@
 package com.masslany.thespaceapp.domain.repository
 
-import android.net.Uri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.masslany.thespaceapp.di.IoDispatcher
@@ -29,7 +28,7 @@ class DragonsRepositoryImpl @Inject constructor(
                         firstFlight = it.firstFlight,
                         flickrImages = it.flickrImages,
                         id = it.id,
-                        wikipedia = Uri.parse(it.wikipedia),
+                        wikipedia = it.wikipedia,
                         heightWTrunk = it.heightWTrunk.meters,
                         payloadInfo = PayloadInfo(
                             launchMass = it.launchPayloadMass.kg,
@@ -63,7 +62,7 @@ class DragonsRepositoryImpl @Inject constructor(
                     firstFlight = response.firstFlight,
                     flickrImages = response.flickrImages,
                     id = response.id,
-                    wikipedia = Uri.parse(response.wikipedia),
+                    wikipedia = response.wikipedia,
                     heightWTrunk = response.heightWTrunk.meters,
                     payloadInfo = PayloadInfo(
                         launchMass = response.launchPayloadMass.kg,

@@ -1,6 +1,5 @@
 package com.masslany.thespaceapp.domain.model
 
-import android.net.Uri
 import com.masslany.thespaceapp.data.remote.response.dragons.HeatShield
 import com.masslany.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.masslany.thespaceapp.data.remote.response.dragons.Thruster
@@ -15,7 +14,7 @@ data class DragonModel(
     val firstFlight: String,
     val flickrImages: List<String>,
     val id: String,
-    val wikipedia: Uri,
+    val wikipedia: String,
     val heightWTrunk: Double,
     val payloadInfo: PayloadInfo,
     val heatShield: HeatShield,
