@@ -68,10 +68,12 @@ class RepositoryModule {
     @Provides
     fun provideStarlinksRepository(
         apiService: SpacexApiService,
+        cacheDatabase: CacheDatabase,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): StarlinkRepository {
         return StarlinksRepositoryImpl(
             apiService,
+            cacheDatabase,
             ioDispatcher
         )
     }

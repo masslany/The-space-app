@@ -1,5 +1,6 @@
 package com.masslany.thespaceapp.di
 
+import com.masslany.thespaceapp.data.local.cache.CacheDatabase
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.domain.repository.*
 import com.masslany.thespaceapp.fakes.FakeLaunchesRepository
@@ -62,10 +63,12 @@ class FakeRepositoryModule {
     @Provides
     fun provideStarlinksRepository(
         apiService: SpacexApiService,
+        cacheDatabase: CacheDatabase,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): StarlinkRepository {
         return StarlinksRepositoryImpl(
             apiService,
+            cacheDatabase,
             ioDispatcher
         )
     }
