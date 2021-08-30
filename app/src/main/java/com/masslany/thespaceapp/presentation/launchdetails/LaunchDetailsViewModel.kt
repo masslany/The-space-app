@@ -69,7 +69,7 @@ class LaunchDetailsViewModel @Inject constructor(
                     _shouldShowNotificationToggle.value = shouldShowNotificationToggle(res.data)
                     _launch.value = State.Success(res.data)
                 }
-                is Result.Error<*> -> {
+                is Result.Error -> {
                     _launch.value = State.Error(res.exception)
                 }
             }

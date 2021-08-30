@@ -33,7 +33,7 @@ class RocketDetailsViewModel @Inject constructor(
                 is Result.Success -> {
                     _rocket.value = Success(result.data)
                 }
-                is Result.Error<*> -> {
+                is Result.Error -> {
                     _rocket.value = Error(result.exception)
                 }
             }

@@ -45,7 +45,7 @@ class RocketsRepositoryImp @Inject constructor(
                 }
                 Result.Success(rockets)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Result.Error(e)
             }
         }
     }
@@ -81,7 +81,7 @@ class RocketsRepositoryImp @Inject constructor(
 
                 Result.Success(rocket)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Result.Error(e)
             }
         }
     }

@@ -40,7 +40,7 @@ class DragonsSharedViewModel @Inject constructor(
                 is Result.Success -> {
                     _dragons.value = State.Success(res.data)
                 }
-                is Result.Error<*> -> {
+                is Result.Error -> {
                     _dragons.value = State.Error(res.exception)
                 }
             }

@@ -95,7 +95,7 @@ class LaunchesRepositoryImpl @Inject constructor(
 
                 Result.Success(launch)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Result.Error(e)
             }
         }
     }

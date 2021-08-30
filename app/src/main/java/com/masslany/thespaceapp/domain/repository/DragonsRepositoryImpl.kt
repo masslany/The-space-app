@@ -43,7 +43,7 @@ class DragonsRepositoryImpl @Inject constructor(
 
                 Result.Success(dragons)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Result.Error(e)
             }
         }
     }
@@ -76,7 +76,7 @@ class DragonsRepositoryImpl @Inject constructor(
 
                 Result.Success(dragons)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Result.Error(e)
             }
         }
     }
