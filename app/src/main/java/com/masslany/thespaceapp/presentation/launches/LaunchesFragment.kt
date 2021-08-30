@@ -58,8 +58,6 @@ class LaunchesFragment : Fragment() {
         setupListeners()
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.launches_menu, menu)
 
