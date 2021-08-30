@@ -10,8 +10,8 @@ fun Long.toDateSting(): String {
     return sdf.format(date)
 }
 
-fun Long.toCountdownString(): String {
-    val dateNow = System.currentTimeMillis() / 1000
+fun Long.toCountdownString(currentTimeInMillis: Long = System.currentTimeMillis()): String {
+    val dateNow = currentTimeInMillis / 1000
     val diff = this - dateNow
 
     val format = if (diff > 0) "T-%s:%s:%s:%s" else "T+%s:%s:%s:%s"
