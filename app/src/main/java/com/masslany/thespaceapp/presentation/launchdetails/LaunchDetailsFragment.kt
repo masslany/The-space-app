@@ -1,4 +1,4 @@
-package com.masslany.thespaceapp.presentation.launches
+package com.masslany.thespaceapp.presentation.launchdetails
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,12 +13,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
+import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.masslany.thespaceapp.di.DefaultDispatcher
 import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.utils.*
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject

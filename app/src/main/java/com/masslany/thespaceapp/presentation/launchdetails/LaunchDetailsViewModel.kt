@@ -1,4 +1,4 @@
-package com.masslany.thespaceapp.presentation.launches
+package com.masslany.thespaceapp.presentation.launchdetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
