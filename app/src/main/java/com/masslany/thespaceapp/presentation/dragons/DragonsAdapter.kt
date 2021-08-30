@@ -25,8 +25,7 @@ class DragonsAdapter constructor(
     }
 
     inner class LaunchViewHolder(val binding: ItemRecyclerviewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LaunchViewHolder {
         val binding = ItemRecyclerviewBinding

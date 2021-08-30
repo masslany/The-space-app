@@ -23,8 +23,7 @@ class RoadsterImagesAdapter constructor(
     }
 
     inner class RoadsterViewHolder(val binding: ItemRoadsterImageBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoadsterViewHolder {
         val binding = ItemRoadsterImageBinding

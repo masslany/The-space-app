@@ -26,8 +26,7 @@ class RocketsAdapter(
     }
 
     inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-    }
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder {
         val binding = ItemRecyclerviewBinding
