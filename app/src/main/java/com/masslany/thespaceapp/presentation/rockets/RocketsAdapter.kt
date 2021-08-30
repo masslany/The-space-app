@@ -2,6 +2,8 @@ package com.masslany.thespaceapp.presentation.rockets
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
@@ -12,17 +14,20 @@ import com.masslany.thespaceapp.presentation.rockets.RocketsAdapter.RocketsViewH
 class RocketsAdapter(
     private val glide: RequestManager,
     private val onItemClick: (RocketModel) -> Unit
-) : RecyclerView.Adapter<RocketsViewHolder>() {
+) : ListAdapter<RocketModel, RocketsViewHolder>(DiffCallback()) {
+
+    private class DiffCallback : DiffUtil.ItemCallback<RocketModel>() {
+
+        override fun areItemsTheSame(oldItem: RocketModel, newItem: RocketModel) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: RocketModel, newItem: RocketModel) =
+            oldItem == newItem
+    }
 
     inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
     }
-
-    var rockets = listOf<RocketModel>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder {
         val binding = ItemRecyclerviewBinding
@@ -32,7 +37,7 @@ class RocketsAdapter(
 
     override fun onBindViewHolder(holder: RocketsViewHolder, position: Int) {
         with(holder) {
-            with(rockets[position]) {
+            with(currentList[position]) {
                 binding.tvItemHeadline.text = this.name
                 binding.tvItemCaption.text =
                     itemView.context.getString(R.string.first_launched, this.firstFlight)
@@ -46,5 +51,5 @@ class RocketsAdapter(
         }
     }
 
-    override fun getItemCount(): Int = rockets.size
+    override fun getItemCount(): Int = currentList.size
 }

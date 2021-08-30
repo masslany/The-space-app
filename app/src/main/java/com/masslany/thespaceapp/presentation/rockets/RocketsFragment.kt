@@ -30,6 +30,8 @@ class RocketsFragment : Fragment() {
     @Inject
     lateinit var glide: RequestManager
 
+    private lateinit var rocketsAdapter: RocketsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,12 +44,30 @@ class RocketsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = RocketsAdapter(glide) { rocket ->
+        setupRecyclerView()
+
+        setupObservers()
+
+        setupListeners()
+    }
+
+    private fun onItemClicked(rocket: RocketModel) {
+        findNavController().navigate(
+            RocketsFragmentDirections.actionRocketsFragmentToRocketDetailsFragment(
+                rocketId = rocket.id
+            )
+        )
+    }
+
+    private fun setupRecyclerView() {
+        rocketsAdapter = RocketsAdapter(glide) { rocket ->
             onItemClicked(rocket)
         }
-        binding.rvRockets.adapter = adapter
+        binding.rvRockets.adapter = rocketsAdapter
         binding.rvRockets.layoutManager = LinearLayoutManager(requireContext())
+    }
 
+    private fun setupObservers() {
         viewModel.rockets.observe(viewLifecycleOwner) { state ->
             when (state) {
                 State.Loading -> {
@@ -55,7 +75,7 @@ class RocketsFragment : Fragment() {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                 }
                 is State.Success -> {
-                    adapter.rockets = state.data
+                    rocketsAdapter.submitList(state.data)
                     binding.rvRockets.makeVisible()
 
                     binding.srlLaunches.isRefreshing = false
@@ -78,17 +98,11 @@ class RocketsFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun setupListeners() {
         binding.srlLaunches.setOnRefreshListener {
             viewModel.onRetryClicked()
         }
-    }
-
-    private fun onItemClicked(rocket: RocketModel) {
-        findNavController().navigate(
-            RocketsFragmentDirections.actionRocketsFragmentToRocketDetailsFragment(
-                rocketId = rocket.id
-            )
-        )
     }
 }
