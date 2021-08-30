@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.domain.usecase.FetchRocketByIdUseCase
-import com.masslany.thespaceapp.utils.Result
-import com.masslany.thespaceapp.utils.State
-import com.masslany.thespaceapp.utils.State.*
+import com.masslany.thespaceapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,25 +16,18 @@ class RocketDetailsViewModel @Inject constructor(
     private val fetchRocketByIdUseCase: FetchRocketByIdUseCase
 ) : ViewModel() {
 
-    private val _rocket = MutableLiveData<State<RocketModel>>()
-    val rocket: LiveData<State<RocketModel>> = _rocket
+    private val _rocket = MutableLiveData<Resource<RocketModel>>()
+    val rocket: LiveData<Resource<RocketModel>> = _rocket
 
     fun onRetryClicked(id: String) {
         fetchRocketById(id)
     }
 
     fun fetchRocketById(id: String) {
-        _rocket.value = Loading
+        _rocket.value = Resource.Loading
 
         viewModelScope.launch {
-            when (val result = fetchRocketByIdUseCase.execute(id)) {
-                is Result.Success -> {
-                    _rocket.value = Success(result.data)
-                }
-                is Result.Error<*> -> {
-                    _rocket.value = Error(result.exception)
-                }
-            }
+            _rocket.value = fetchRocketByIdUseCase.execute(id)
         }
     }
 }

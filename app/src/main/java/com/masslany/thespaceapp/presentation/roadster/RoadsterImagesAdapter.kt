@@ -2,6 +2,8 @@ package com.masslany.thespaceapp.presentation.roadster
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
@@ -9,17 +11,19 @@ import com.masslany.thespaceapp.databinding.ItemRoadsterImageBinding
 
 class RoadsterImagesAdapter constructor(
     private val glide: RequestManager
-) : RecyclerView.Adapter<RoadsterImagesAdapter.RoadsterViewHolder>() {
+) : ListAdapter<String, RoadsterImagesAdapter.RoadsterViewHolder>(DiffCallback()) {
 
-    inner class RoadsterViewHolder(val binding: ItemRoadsterImageBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private class DiffCallback : DiffUtil.ItemCallback<String>() {
+
+        override fun areItemsTheSame(oldItem: String, newItem: String) =
+            oldItem == newItem
+
+        override fun areContentsTheSame(oldItem: String, newItem: String) =
+            oldItem == newItem
     }
 
-    var images = listOf<String>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    inner class RoadsterViewHolder(val binding: ItemRoadsterImageBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoadsterViewHolder {
         val binding = ItemRoadsterImageBinding
@@ -29,7 +33,7 @@ class RoadsterImagesAdapter constructor(
 
     override fun onBindViewHolder(holder: RoadsterViewHolder, position: Int) {
         with(holder) {
-            with(images[position]) {
+            with(currentList[position]) {
                 glide
                     .load(this)
                     .placeholder(R.drawable.roadster_crop)
@@ -38,5 +42,5 @@ class RoadsterImagesAdapter constructor(
         }
     }
 
-    override fun getItemCount() = images.size
+    override fun getItemCount() = currentList.size
 }

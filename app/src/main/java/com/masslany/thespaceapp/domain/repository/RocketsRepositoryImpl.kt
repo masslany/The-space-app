@@ -4,7 +4,7 @@ import android.net.Uri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
 import com.masslany.thespaceapp.domain.model.RocketModel
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class RocketsRepositoryImp @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RocketsRepository {
-    override suspend fun fetchRocketsData(): Result<List<RocketModel>> {
+    override suspend fun fetchRocketsData(): Resource<List<RocketModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketsData()
@@ -43,14 +43,14 @@ class RocketsRepositoryImp @Inject constructor(
                         wikipedia = Uri.parse(data.wikipedia)
                     )
                 }
-                Result.Success(rockets)
+                Resource.Success(rockets)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }
 
-    override suspend fun fetchRocketById(id: String): Result<RocketModel> {
+    override suspend fun fetchRocketById(id: String): Resource<RocketModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketById(id)
@@ -79,9 +79,9 @@ class RocketsRepositoryImp @Inject constructor(
                     wikipedia = Uri.parse(response.wikipedia)
                 )
 
-                Result.Success(rocket)
+                Resource.Success(rocket)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

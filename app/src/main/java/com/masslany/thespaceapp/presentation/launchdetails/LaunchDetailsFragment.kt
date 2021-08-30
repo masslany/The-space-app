@@ -1,4 +1,4 @@
-package com.masslany.thespaceapp.presentation.launches
+package com.masslany.thespaceapp.presentation.launchdetails
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,12 +13,12 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
+import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentLaunchDetailsBinding
 import com.masslany.thespaceapp.di.DefaultDispatcher
 import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.utils.*
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -53,34 +53,7 @@ class LaunchDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel.launch.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is State.Success -> {
-                    binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.mlLaunchDetails?.makeVisible()
-                    binding.clContent?.makeVisible()
-                    binding.progressIndicator.makeGone()
-                    fillUi(state.data)
-                }
-                State.Loading -> {
-                    binding.errorLayout.errorConstraintLayout.makeGone()
-                    binding.clContent?.makeGone()
-                    binding.mlLaunchDetails?.makeGone()
-                    binding.progressIndicator.makeVisible()
-                }
-                is State.Error -> {
-                    binding.errorLayout.errorConstraintLayout.makeVisible()
-                    binding.errorLayout.btnRetry.makeVisible()
-                    binding.mlLaunchDetails?.makeGone()
-                    binding.clContent?.makeGone()
-                    binding.progressIndicator.makeGone()
-
-                    binding.errorLayout.btnRetry.setOnClickListener {
-                        viewModel.onRetryClicked(args.launchId)
-                    }
-                }
-            }
-        }
+        setupObservers()
 
         viewModel.getLaunchById(args.launchId)
     }
@@ -211,6 +184,37 @@ class LaunchDetailsFragment : Fragment() {
                 }
                 false -> {
                     setMenuVisibility(false)
+                }
+            }
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.launch.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is Resource.Success -> {
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.mlLaunchDetails?.makeVisible()
+                    binding.clContent?.makeVisible()
+                    binding.progressIndicator.makeGone()
+                    fillUi(state.data)
+                }
+                Resource.Loading -> {
+                    binding.errorLayout.errorConstraintLayout.makeGone()
+                    binding.clContent?.makeGone()
+                    binding.mlLaunchDetails?.makeGone()
+                    binding.progressIndicator.makeVisible()
+                }
+                is Resource.Error -> {
+                    binding.errorLayout.errorConstraintLayout.makeVisible()
+                    binding.errorLayout.btnRetry.makeVisible()
+                    binding.mlLaunchDetails?.makeGone()
+                    binding.clContent?.makeGone()
+                    binding.progressIndicator.makeGone()
+
+                    binding.errorLayout.btnRetry.setOnClickListener {
+                        viewModel.onRetryClicked(args.launchId)
+                    }
                 }
             }
         }

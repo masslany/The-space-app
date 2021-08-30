@@ -4,7 +4,7 @@ import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.data.remote.response.dragons.PayloadInfo
 import com.masslany.thespaceapp.di.IoDispatcher
 import com.masslany.thespaceapp.domain.model.DragonModel
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,7 +13,7 @@ class DragonsRepositoryImpl @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : DragonsRepository {
-    override suspend fun fetchDragonsData(): Result<List<DragonModel>> {
+    override suspend fun fetchDragonsData(): Resource<List<DragonModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchDragonsData()
@@ -41,14 +41,14 @@ class DragonsRepositoryImpl @Inject constructor(
                     )
                 }
 
-                Result.Success(dragons)
+                Resource.Success(dragons)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }
 
-    override suspend fun fetchDragonById(id: String): Result<DragonModel> {
+    override suspend fun fetchDragonById(id: String): Resource<DragonModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchDragonById(id)
@@ -74,9 +74,9 @@ class DragonsRepositoryImpl @Inject constructor(
                     thrusters = response.thrusters
                 )
 
-                Result.Success(dragons)
+                Resource.Success(dragons)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

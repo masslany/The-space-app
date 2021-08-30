@@ -8,7 +8,7 @@ import com.masslany.thespaceapp.data.local.cache.entities.toLaunchModel
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
 import com.masslany.thespaceapp.domain.model.LaunchModel
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -60,8 +60,7 @@ class LaunchesRepositoryImpl @Inject constructor(
         }
     }
 
-
-    override suspend fun fetchLaunchById(id: String): Result<LaunchModel> {
+    override suspend fun fetchLaunchById(id: String): Resource<LaunchModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchLaunchById(id)
@@ -93,9 +92,9 @@ class LaunchesRepositoryImpl @Inject constructor(
                     }
                 )
 
-                Result.Success(launch)
+                Resource.Success(launch)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

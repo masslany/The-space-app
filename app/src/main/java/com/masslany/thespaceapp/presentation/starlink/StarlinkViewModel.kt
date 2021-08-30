@@ -7,9 +7,6 @@ import com.masslany.thespaceapp.domain.usecase.FetchStarlinksUseCase
 import com.masslany.thespaceapp.domain.usecase.GetStarlinkPreferencesUseCase
 import com.masslany.thespaceapp.domain.usecase.UpdateStarlinkPreferencesUseCase
 import com.masslany.thespaceapp.utils.Resource
-import com.masslany.thespaceapp.utils.State
-import com.masslany.thespaceapp.utils.State.Loading
-import com.masslany.thespaceapp.utils.State.Success
 import com.neosensory.tlepredictionengine.TlePredictionEngine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,8 +29,8 @@ class StarlinkViewModel @Inject constructor(
     @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val _starlinks = MutableLiveData<State<List<StarlinkMarker>>>()
-    val starlinks: LiveData<State<List<StarlinkMarker>>> = _starlinks
+    private val _starlinks = MutableLiveData<Resource<List<StarlinkMarker>>>()
+    val starlinks: LiveData<Resource<List<StarlinkMarker>>> = _starlinks
 
     private val _markersMap = MutableLiveData<Map<String, StarlinkMarker?>>()
     val markersMap: LiveData<Map<String, StarlinkMarker?>> = _markersMap
@@ -50,7 +47,7 @@ class StarlinkViewModel @Inject constructor(
         fetchStarlinks(true)
     }
 
-    private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch() {
+    private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch {
 
         fetchStarlinksUseCase.execute(
             forceRefresh = forceRefresh,
@@ -58,13 +55,13 @@ class StarlinkViewModel @Inject constructor(
                 starlinkModels.clear()
             },
             onFetchFailed = {
-                _starlinks.value = State.Error(it)
+                _starlinks.value = Resource.Error(it)
             }
         ).stateIn(viewModelScope, SharingStarted.Lazily, null)
             .collect { resource ->
                 when (resource) {
                     Resource.Loading -> {
-                        _starlinks.value = Loading
+                        _starlinks.value = Resource.Loading
                     }
                     is Resource.Success -> {
                         starlinkModels.clear()
@@ -72,7 +69,7 @@ class StarlinkViewModel @Inject constructor(
                         convertToStarlinkMarkerMap(resource.data)
                     }
                     is Resource.Error -> {
-                        _starlinks.value = State.Error(resource.throwable)
+                        _starlinks.value = Resource.Error(resource.throwable)
                     }
                 }
             }
@@ -127,7 +124,7 @@ class StarlinkViewModel @Inject constructor(
                 )
             )
         }
-        _starlinks.postValue(Success(markers))
+        _starlinks.postValue(Resource.Success(markers))
     }
 
     fun onSliderChanged(value: Float) {

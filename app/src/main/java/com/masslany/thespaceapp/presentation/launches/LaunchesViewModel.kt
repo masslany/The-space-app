@@ -8,7 +8,6 @@ import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
 import com.masslany.thespaceapp.utils.Resource
-import com.masslany.thespaceapp.utils.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,8 +22,8 @@ class LaunchesViewModel @Inject constructor(
     private val fetchLaunchesDataUseCase: FetchLaunchesDataUseCase
 ) : ViewModel() {
 
-    private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
-    val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
+    private val _launches = MutableLiveData<Resource<List<LaunchAdapterItem>>>()
+    val launches: LiveData<Resource<List<LaunchAdapterItem>>> = _launches
 
     private var allLaunches: List<LaunchModel> = emptyList()
 
@@ -103,22 +102,22 @@ class LaunchesViewModel @Inject constructor(
                 forceRefresh = forceRefresh,
                 onFetchSuccess = {},
                 onFetchFailed = {
-                    _launches.value = State.Error(it)
+                    _launches.value = Resource.Error(it)
                 }
             ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
                 .collect { resource ->
                     when (resource) {
                         Resource.Loading -> {
-                            _launches.value = State.Loading
+                            _launches.value = Resource.Loading
                         }
                         is Resource.Success -> {
                             val converted = convertLaunchesToAdapterItems(resource.data)
                             allLaunches = resource.data
-                            _launches.value = State.Success(converted)
+                            _launches.value = Resource.Success(converted)
                         }
 
                         is Resource.Error -> {
-                            _launches.value = State.Error(resource.throwable)
+                            _launches.value = Resource.Error(resource.throwable)
                         }
                     }
                 }
@@ -126,11 +125,11 @@ class LaunchesViewModel @Inject constructor(
     }
 
     fun onQueryTextChange() {
-        if (launches.value is State.Success) {
+        if (launches.value is Resource.Success) {
             val filtered =
                 allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
             val result = convertLaunchesToAdapterItems(filtered)
-            _launches.value = State.Success(result)
+            _launches.value = Resource.Success(result)
         }
     }
 

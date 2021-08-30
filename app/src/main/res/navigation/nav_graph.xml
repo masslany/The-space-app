@@ -83,7 +83,7 @@
 
         <fragment
             android:id="@+id/launchDetailsFragment"
-            android:name="com.masslany.thespaceapp.presentation.launches.LaunchDetailsFragment"
+            android:name="com.masslany.thespaceapp.presentation.launchdetails.LaunchDetailsFragment"
             android:label="Launch details"
             tools:layout="@layout/fragment_launch_details">
             <argument

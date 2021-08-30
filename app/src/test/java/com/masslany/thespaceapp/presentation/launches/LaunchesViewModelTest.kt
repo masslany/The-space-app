@@ -8,7 +8,7 @@ import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.repository.LaunchesRepository
 import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
 import com.masslany.thespaceapp.utils.MainCoroutineRule
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -58,9 +58,9 @@ class LaunchesViewModelTest {
 
         // Then
         val result = viewModel.launches.getOrAwaitValue()
-        assertThat(result).isInstanceOf(State.Success::class.java)
+        assertThat(result).isInstanceOf(Resource.Success::class.java)
         // Upcoming header - No items message - Past header - No items message
-        assertThat((result as State.Success).data.size).isEqualTo(4)
+        assertThat((result as Resource.Success).data.size).isEqualTo(4)
     }
 
     @Test
@@ -88,8 +88,8 @@ class LaunchesViewModelTest {
             header = null,
             launchModel = item
         )
-        assertThat(result).isInstanceOf(State.Success::class.java)
-        assertThat((result as State.Success).data).contains(expectedItem)
+        assertThat(result).isInstanceOf(Resource.Success::class.java)
+        assertThat((result as Resource.Success).data).contains(expectedItem)
     }
 
     @Test
@@ -107,6 +107,6 @@ class LaunchesViewModelTest {
 
         //Then
         val result = viewModel.launches.getOrAwaitValue()
-        assertThat(result).isInstanceOf(State.Error::class.java)
+        assertThat(result).isInstanceOf(Resource.Error::class.java)
     }
 }
