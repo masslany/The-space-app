@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentRocketDetailsBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,25 +49,26 @@ class RocketDetailsFragment : Fragment() {
     private fun observeUi() {
         viewModel.rocket.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Error -> {
+                is Resource.Error -> {
                     binding.mlRocketDetails?.makeGone()
                     binding.clContent?.makeGone()
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                     binding.errorLayout.btnRetry.makeVisible()
                     binding.progressIndicator.makeGone()
                 }
-                State.Loading -> {
+
+                Resource.Loading -> {
                     binding.mlRocketDetails?.makeGone()
                     binding.clContent?.makeGone()
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.progressIndicator.makeVisible()
                 }
-                is State.Success -> {
+
+                is Resource.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.mlRocketDetails?.makeVisible()
                     binding.clContent?.makeVisible()
                     binding.progressIndicator.makeGone()
-
 
                     val rocketInfo = state.data
                     with(binding) {
@@ -131,7 +132,6 @@ class RocketDetailsFragment : Fragment() {
                             )
                         cardSecondStage.tvPayload.text =
                             rocketInfo.secondStage.payloads.option1
-
 
                     }
                 }

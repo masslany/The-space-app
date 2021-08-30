@@ -15,7 +15,7 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentLaunchesBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -156,13 +156,13 @@ class LaunchesFragment : Fragment() {
     private fun setupObservers() {
         viewModel.launches.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Success<List<LaunchAdapterItem>> -> {
+                is Resource.Success<List<LaunchAdapterItem>> -> {
                     launchesAdapter.submitList(state.data)
 
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.srlLaunches.isRefreshing = false
                 }
-                is State.Error -> {
+                is Resource.Error -> {
                     Snackbar.make(
                         binding.srlLaunches,
                         state.throwable.message ?: "Error!",
@@ -172,7 +172,7 @@ class LaunchesFragment : Fragment() {
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                     binding.srlLaunches.isRefreshing = false
                 }
-                is State.Loading -> {
+                is Resource.Loading -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.srlLaunches.isRefreshing = true
                 }

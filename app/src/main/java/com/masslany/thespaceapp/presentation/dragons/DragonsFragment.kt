@@ -14,7 +14,7 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentDragonsBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,17 +73,17 @@ class DragonsFragment : Fragment() {
     private fun setupObservers() {
         viewModel.dragons.observe(viewLifecycleOwner) { state ->
             when (state) {
-                State.Loading -> {
+                Resource.Loading -> {
                     binding.srlDragons.isRefreshing = true
                     binding.errorLayout.errorConstraintLayout.makeGone()
                 }
-                is State.Success -> {
+                is Resource.Success -> {
                     binding.srlDragons.isRefreshing = false
                     binding.rvDragons.makeVisible()
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     dragonsAdapter.submitList(state.data)
                 }
-                is State.Error -> {
+                is Resource.Error -> {
                     val snackbar = Snackbar.make(
                         binding.srlDragons,
                         state.throwable.message ?: getString(R.string.an_error_occurred),

@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.masslany.thespaceapp.domain.model.RoadsterModel
 import com.masslany.thespaceapp.domain.usecase.FetchRoadsterDataUseCase
 import com.masslany.thespaceapp.utils.Resource
-import com.masslany.thespaceapp.utils.State
-import com.masslany.thespaceapp.utils.State.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,8 +21,8 @@ class RoadsterDetailsViewModel @Inject constructor(
     private val fetchRoadsterDataUseCase: FetchRoadsterDataUseCase
 ) : ViewModel() {
 
-    private val _roadsterEntity = MutableLiveData<State<RoadsterModel>>()
-    val roadsterModel: LiveData<State<RoadsterModel>> = _roadsterEntity
+    private val _roadsterEntity = MutableLiveData<Resource<RoadsterModel>>()
+    val roadsterModel: LiveData<Resource<RoadsterModel>> = _roadsterEntity
 
     init {
         viewModelScope.launch {
@@ -45,21 +43,11 @@ class RoadsterDetailsViewModel @Inject constructor(
             onFetchSuccess = {
             },
             onFetchFailed = {
-
+                _roadsterEntity.value = Resource.Error(it)
             }
         ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
             .collect { resource ->
-                when (resource) {
-                    Resource.Loading -> {
-                        _roadsterEntity.value = Loading
-                    }
-                    is Resource.Success -> {
-                        _roadsterEntity.value = Success(resource.data)
-                    }
-                    is Resource.Error -> {
-                        _roadsterEntity.value = Error(resource.throwable)
-                    }
-                }
+                _roadsterEntity.value = resource
             }
     }
 }

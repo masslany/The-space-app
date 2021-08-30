@@ -8,8 +8,7 @@ import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.usecase.FetchLaunchByIdUseCase
 import com.masslany.thespaceapp.domain.usecase.GetLaunchNotificationStateUseCase
 import com.masslany.thespaceapp.domain.usecase.ToggleLaunchNotificationUseCase
-import com.masslany.thespaceapp.utils.Result
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,8 +21,8 @@ class LaunchDetailsViewModel @Inject constructor(
     private val getLaunchNotificationStateUseCase: GetLaunchNotificationStateUseCase,
 ) : ViewModel() {
 
-    private val _launch = MutableLiveData<State<LaunchModel>>()
-    val launch: LiveData<State<LaunchModel>> = _launch
+    private val _launch = MutableLiveData<Resource<LaunchModel>>()
+    val launch: LiveData<Resource<LaunchModel>> = _launch
 
     private val _notificationState = MutableLiveData<Boolean>()
     val notificationState: LiveData<Boolean> = _notificationState
@@ -38,9 +37,9 @@ class LaunchDetailsViewModel @Inject constructor(
 
     fun onNotificationToggleClicked() {
         viewModelScope.launch {
-            if (launch.value is State.Success) {
+            if (launch.value is Resource.Success) {
                 launch.value?.let {
-                    val entity = (it as State.Success).data
+                    val entity = (it as Resource.Success).data
                     toggleLaunchNotificationUseCase.execute(entity)
                 }
             }
@@ -61,16 +60,16 @@ class LaunchDetailsViewModel @Inject constructor(
     }
 
     fun getLaunchById(id: String) {
-        _launch.value = State.Loading
+        _launch.value = Resource.Loading
 
         viewModelScope.launch {
             when (val res = fetchLaunchByIdUseCase.execute(id)) {
-                is Result.Success -> {
+                is Resource.Success -> {
                     _shouldShowNotificationToggle.value = shouldShowNotificationToggle(res.data)
-                    _launch.value = State.Success(res.data)
+                    _launch.value = Resource.Success(res.data)
                 }
-                is Result.Error -> {
-                    _launch.value = State.Error(res.exception)
+                is Resource.Error -> {
+                    _launch.value = Resource.Error(res.throwable)
                 }
             }
         }

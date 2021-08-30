@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentRocketsBinding
 import com.masslany.thespaceapp.domain.model.RocketModel
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,18 +70,18 @@ class RocketsFragment : Fragment() {
     private fun setupObservers() {
         viewModel.rockets.observe(viewLifecycleOwner) { state ->
             when (state) {
-                State.Loading -> {
+                Resource.Loading -> {
                     binding.srlLaunches.isRefreshing = true
                     binding.errorLayout.errorConstraintLayout.makeGone()
                 }
-                is State.Success -> {
+                is Resource.Success -> {
                     rocketsAdapter.submitList(state.data)
                     binding.rvRockets.makeVisible()
 
                     binding.srlLaunches.isRefreshing = false
                     binding.errorLayout.errorConstraintLayout.makeGone()
                 }
-                is State.Error -> {
+                is Resource.Error -> {
                     val snackbar = Snackbar.make(
                         binding.srlLaunches,
                         state.throwable.message ?: getString(R.string.an_error_occurred),

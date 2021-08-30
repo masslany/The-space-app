@@ -9,8 +9,7 @@ import com.masslany.thespaceapp.domain.model.DragonModel
 import com.masslany.thespaceapp.domain.repository.DragonsRepository
 import com.masslany.thespaceapp.domain.usecase.FetchDragonsUseCase
 import com.masslany.thespaceapp.utils.MainCoroutineRule
-import com.masslany.thespaceapp.utils.Result
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.getOrAwaitValue
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -43,15 +42,15 @@ internal class DragonsSharedViewModelTest {
     fun emptyResponseShouldReturnSuccessWithEmptyList() {
         // Given
         val data = emptyList<DragonModel>()
-        coEvery { repository.fetchDragonsData() } returns Result.Success(data)
+        coEvery { repository.fetchDragonsData() } returns Resource.Success(data)
         viewModel = DragonsSharedViewModel(
             FetchDragonsUseCase(repository)
         )
 
         // Then
         val result = viewModel.dragons.getOrAwaitValue()
-        Truth.assertThat(result).isInstanceOf(State.Success::class.java)
-        Truth.assertThat((result as State.Success).data).isEqualTo(data)
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        Truth.assertThat((result as Resource.Success).data).isEqualTo(data)
     }
 
     @Test
@@ -62,29 +61,29 @@ internal class DragonsSharedViewModelTest {
             createDragonModel(name = "Dragon 2"),
             createDragonModel(name = "Dragon 3")
         )
-        coEvery { repository.fetchDragonsData() } returns Result.Success(data)
+        coEvery { repository.fetchDragonsData() } returns Resource.Success(data)
         viewModel = DragonsSharedViewModel(
             FetchDragonsUseCase(repository)
         )
 
         // Then
         val result = viewModel.dragons.getOrAwaitValue()
-        Truth.assertThat(result).isInstanceOf(State.Success::class.java)
-        Truth.assertThat((result as State.Success).data).isEqualTo(data)
+        Truth.assertThat(result).isInstanceOf(Resource.Success::class.java)
+        Truth.assertThat((result as Resource.Success).data).isEqualTo(data)
     }
 
     @Test
     fun errorResponseShouldReturnErrorWithException() {
         val exception = IOException()
-        coEvery { repository.fetchDragonsData() } returns Result.Error<Exception>(exception)
+        coEvery { repository.fetchDragonsData() } returns Resource.Error(exception)
         viewModel = DragonsSharedViewModel(
             FetchDragonsUseCase(repository)
         )
 
         // Then
         val result = viewModel.dragons.getOrAwaitValue()
-        Truth.assertThat(result).isInstanceOf(State.Error::class.java)
-        Truth.assertThat((result as State.Error).throwable).isEqualTo(exception)
+        Truth.assertThat(result).isInstanceOf(Resource.Error::class.java)
+        Truth.assertThat((result as Resource.Error).throwable).isEqualTo(exception)
     }
 
     private fun createDragonModel(

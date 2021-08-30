@@ -17,7 +17,7 @@ import com.masslany.thespaceapp.databinding.FragmentMapStarlinkBinding
 import com.masslany.thespaceapp.di.DefaultDispatcher
 import com.masslany.thespaceapp.di.MainDispatcher
 import com.masslany.thespaceapp.domain.model.CirclePreferencesModel
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -125,13 +125,13 @@ class StarlinkMapFragment : Fragment(), OnMapReadyCallback {
         viewModel.starlinks.observe(viewLifecycleOwner) { state ->
 
             when (state) {
-                is State.Error -> {
+                is Resource.Error -> {
                 }
 
-                State.Loading -> {
+                Resource.Loading -> {
                 }
 
-                is State.Success -> {
+                is Resource.Success -> {
 
                     if (!isIdle) {
                         return@observe

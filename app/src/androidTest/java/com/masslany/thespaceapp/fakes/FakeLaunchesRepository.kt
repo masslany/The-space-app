@@ -5,7 +5,7 @@ import com.masslany.thespaceapp.data.local.cache.entities.LaunchEntity
 import com.masslany.thespaceapp.data.remote.response.launches.Core
 import com.masslany.thespaceapp.domain.model.LaunchModel
 import com.masslany.thespaceapp.domain.repository.LaunchesRepository
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -21,12 +21,12 @@ class FakeLaunchesRepository : LaunchesRepository {
         return launches
     }
 
-    override suspend fun fetchLaunchById(id: String): Result<LaunchModel> {
+    override suspend fun fetchLaunchById(id: String): Resource<LaunchModel> {
         val launch = launches.find { it.id == id }
         return if (launch != null) {
-            Result.Success(launch)
+            Resource.Success(launch)
         } else {
-            Result.Error<Exception>(NullPointerException())
+            Resource.Error(NullPointerException())
         }
     }
 

@@ -192,20 +192,20 @@ class LaunchDetailsFragment : Fragment() {
     private fun setupObservers() {
         viewModel.launch.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Success -> {
+                is Resource.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.mlLaunchDetails?.makeVisible()
                     binding.clContent?.makeVisible()
                     binding.progressIndicator.makeGone()
                     fillUi(state.data)
                 }
-                State.Loading -> {
+                Resource.Loading -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
                     binding.clContent?.makeGone()
                     binding.mlLaunchDetails?.makeGone()
                     binding.progressIndicator.makeVisible()
                 }
-                is State.Error -> {
+                is Resource.Error -> {
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                     binding.errorLayout.btnRetry.makeVisible()
                     binding.mlLaunchDetails?.makeGone()

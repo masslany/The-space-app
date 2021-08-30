@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentRoadsterDetailsBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,7 +67,7 @@ class RoadsterDetailsFragment : Fragment() {
     private fun setupObservers() {
         viewModel.roadsterModel.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Error -> {
+                is Resource.Error -> {
                     with(binding) {
                         lottieLoading.makeGone()
                         errorLayout.errorConstraintLayout.makeVisible()
@@ -76,7 +76,7 @@ class RoadsterDetailsFragment : Fragment() {
                         clContent?.makeGone()
                     }
                 }
-                State.Loading -> {
+                Resource.Loading -> {
                     with(binding) {
                         errorLayout.errorConstraintLayout.makeGone()
 
@@ -86,7 +86,7 @@ class RoadsterDetailsFragment : Fragment() {
                         lottieLoading.makeVisible()
                     }
                 }
-                is State.Success -> {
+                is Resource.Success -> {
                     with(binding) {
 
                         clContent?.makeVisible()

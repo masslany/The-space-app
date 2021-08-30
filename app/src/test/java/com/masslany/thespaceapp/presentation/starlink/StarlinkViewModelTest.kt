@@ -8,7 +8,7 @@ import com.masslany.thespaceapp.domain.usecase.FetchStarlinksUseCase
 import com.masslany.thespaceapp.domain.usecase.GetStarlinkPreferencesUseCase
 import com.masslany.thespaceapp.domain.usecase.UpdateStarlinkPreferencesUseCase
 import com.masslany.thespaceapp.utils.MainCoroutineRule
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.getOrAwaitValue
 import io.mockk.coEvery
 import io.mockk.every
@@ -131,7 +131,7 @@ internal class StarlinkViewModelTest {
         // Then
         val starlinks = viewModel.starlinks.getOrAwaitValue()
         // Converted all starlinks into markers
-        assertThat(starlinks).isInstanceOf(State.Error::class.java)
+        assertThat(starlinks).isInstanceOf(Resource.Error::class.java)
     }
 
     private fun createStarlinkModel(
