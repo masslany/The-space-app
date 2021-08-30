@@ -50,7 +50,7 @@ class StarlinkViewModel @Inject constructor(
         fetchStarlinks(true)
     }
 
-    private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch() {
+    private fun fetchStarlinks(forceRefresh: Boolean) = viewModelScope.launch {
 
         fetchStarlinksUseCase.execute(
             forceRefresh = forceRefresh,
