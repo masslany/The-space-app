@@ -31,6 +31,8 @@ class DragonsFragment : Fragment() {
     @Inject
     lateinit var glide: RequestManager
 
+    private lateinit var dragonsAdapter: DragonsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +45,15 @@ class DragonsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dragonsAdapter = DragonsAdapter(glide) { dragon ->
+        setupRecyclerView()
+
+        setupObservers()
+
+        setupListeners()
+    }
+    
+    private fun setupRecyclerView() {
+        dragonsAdapter = DragonsAdapter(glide) { dragon ->
             findNavController().navigate(
                 DragonsFragmentDirections.actionDragonsFragmentToDragonDetailsFragment(dragon.id)
             )
@@ -58,7 +68,9 @@ class DragonsFragment : Fragment() {
                 binding.rvDragons.layoutManager = LinearLayoutManager(requireContext())
             }
         }
+    }
 
+    private fun setupObservers() {
         viewModel.dragons.observe(viewLifecycleOwner) { state ->
             when (state) {
                 State.Loading -> {
@@ -69,7 +81,7 @@ class DragonsFragment : Fragment() {
                     binding.srlDragons.isRefreshing = false
                     binding.rvDragons.makeVisible()
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    dragonsAdapter.dragons = state.data
+                    dragonsAdapter.submitList(state.data)
                 }
                 is State.Error -> {
                     val snackbar = Snackbar.make(
@@ -88,7 +100,9 @@ class DragonsFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun setupListeners() {
         binding.srlDragons.setOnRefreshListener {
             viewModel.onRetryClicked()
         }
