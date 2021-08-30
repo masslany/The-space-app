@@ -2,6 +2,8 @@ package com.masslany.thespaceapp.presentation.launches
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.RequestManager
@@ -15,10 +17,15 @@ import com.masslany.thespaceapp.utils.toDateSting
 class LaunchesAdapter constructor(
     private val glide: RequestManager,
     private val onItemClick: (LaunchModel) -> Unit
-) : RecyclerView.Adapter<LaunchesAdapter.BaseLaunchViewHolder>() {
+) : ListAdapter<LaunchAdapterItem, LaunchesAdapter.BaseLaunchViewHolder>(DiffCallback()) {
 
-    override fun getItemViewType(position: Int): Int {
-        return launches[position].type
+    private class DiffCallback : DiffUtil.ItemCallback<LaunchAdapterItem>() {
+
+        override fun areItemsTheSame(oldItem: LaunchAdapterItem, newItem: LaunchAdapterItem) =
+            oldItem.launchModel?.id == newItem.launchModel?.id
+
+        override fun areContentsTheSame(oldItem: LaunchAdapterItem, newItem: LaunchAdapterItem) =
+            oldItem == newItem
     }
 
     abstract class BaseLaunchViewHolder(val binding: ViewBinding) :
@@ -32,13 +39,6 @@ class LaunchesAdapter constructor(
 
     inner class LaunchEmptyViewHolder(binding: ItemRecyclerviewEmptyBinding) :
         BaseLaunchViewHolder(binding)
-
-
-    var launches: List<LaunchAdapterItem> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseLaunchViewHolder {
         when (viewType) {
@@ -71,7 +71,7 @@ class LaunchesAdapter constructor(
             R.id.item_recyclerview -> {
                 val binding: ItemRecyclerviewBinding = holder.binding as ItemRecyclerviewBinding
 
-                with(launches[position]) {
+                with(currentList[position]) {
                     if (this.launchModel == null) {
                         return
                     }
@@ -89,15 +89,19 @@ class LaunchesAdapter constructor(
                 val binding: ItemRecyclerviewHeaderBinding =
                     holder.binding as ItemRecyclerviewHeaderBinding
 
-                with(launches[position]) {
+                with(currentList[position]) {
                     binding.tvItemHeadline.text = this.header
                 }
             }
             R.id.item_recyclerview_empty -> {
-                
+                // No action
             }
         }
     }
 
-    override fun getItemCount() = launches.size
+    override fun getItemCount() = currentList.size
+
+    override fun getItemViewType(position: Int): Int {
+        return currentList[position].type
+    }
 }
