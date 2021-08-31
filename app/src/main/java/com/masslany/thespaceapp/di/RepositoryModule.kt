@@ -1,5 +1,6 @@
 package com.masslany.thespaceapp.di
 
+import com.masslany.thespaceapp.data.local.cache.CacheDatabase
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.domain.repository.*
 import dagger.Module
@@ -29,11 +30,13 @@ class RepositoryModule {
     @Provides
     fun provideLaunchesRepository(
         apiService: SpacexApiService,
-        @IoDispatcher ioDispatcher: CoroutineDispatcher
+        @IoDispatcher ioDispatcher: CoroutineDispatcher,
+        cacheDatabase: CacheDatabase,
     ): LaunchesRepository {
         return LaunchesRepositoryImpl(
             apiService,
-            ioDispatcher
+            ioDispatcher,
+            cacheDatabase
         )
     }
 
@@ -65,10 +68,12 @@ class RepositoryModule {
     @Provides
     fun provideStarlinksRepository(
         apiService: SpacexApiService,
+        cacheDatabase: CacheDatabase,
         @IoDispatcher ioDispatcher: CoroutineDispatcher
     ): StarlinkRepository {
         return StarlinksRepositoryImpl(
             apiService,
+            cacheDatabase,
             ioDispatcher
         )
     }

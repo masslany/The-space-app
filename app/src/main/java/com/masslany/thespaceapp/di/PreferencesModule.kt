@@ -1,10 +1,10 @@
 package com.masslany.thespaceapp.di
 
 import android.content.Context
-import com.masslany.thespaceapp.data.local.launches.LaunchesPreferences
-import com.masslany.thespaceapp.data.local.launches.LaunchesPreferencesImpl
-import com.masslany.thespaceapp.data.local.launches.StarlinkPreferences
-import com.masslany.thespaceapp.data.local.launches.StarlinkPreferencesImpl
+import com.masslany.thespaceapp.data.local.preferences.LaunchesPreferences
+import com.masslany.thespaceapp.data.local.preferences.LaunchesPreferencesImpl
+import com.masslany.thespaceapp.data.local.preferences.StarlinkPreferences
+import com.masslany.thespaceapp.data.local.preferences.StarlinkPreferencesImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -2,27 +2,31 @@ package com.masslany.thespaceapp.presentation.rockets
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.ItemRecyclerviewBinding
-import com.masslany.thespaceapp.domain.model.RocketEntity
+import com.masslany.thespaceapp.domain.model.RocketModel
 import com.masslany.thespaceapp.presentation.rockets.RocketsAdapter.RocketsViewHolder
 
 class RocketsAdapter(
     private val glide: RequestManager,
-    private val onItemClick: (RocketEntity) -> Unit
-) : RecyclerView.Adapter<RocketsViewHolder>() {
+    private val onItemClick: (RocketModel) -> Unit
+) : ListAdapter<RocketModel, RocketsViewHolder>(DiffCallback()) {
 
-    inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    private class DiffCallback : DiffUtil.ItemCallback<RocketModel>() {
+
+        override fun areItemsTheSame(oldItem: RocketModel, newItem: RocketModel) =
+            oldItem.id == newItem.id
+
+        override fun areContentsTheSame(oldItem: RocketModel, newItem: RocketModel) =
+            oldItem == newItem
     }
 
-    var rockets = listOf<RocketEntity>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
+    inner class RocketsViewHolder(val binding: ItemRecyclerviewBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RocketsViewHolder {
         val binding = ItemRecyclerviewBinding
@@ -32,7 +36,7 @@ class RocketsAdapter(
 
     override fun onBindViewHolder(holder: RocketsViewHolder, position: Int) {
         with(holder) {
-            with(rockets[position]) {
+            with(currentList[position]) {
                 binding.tvItemHeadline.text = this.name
                 binding.tvItemCaption.text =
                     itemView.context.getString(R.string.first_launched, this.firstFlight)
@@ -46,5 +50,5 @@ class RocketsAdapter(
         }
     }
 
-    override fun getItemCount(): Int = rockets.size
+    override fun getItemCount(): Int = currentList.size
 }

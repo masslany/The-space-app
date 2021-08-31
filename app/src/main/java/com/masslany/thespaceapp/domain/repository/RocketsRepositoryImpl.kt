@@ -3,8 +3,8 @@ package com.masslany.thespaceapp.domain.repository
 import android.net.Uri
 import com.masslany.thespaceapp.data.remote.api.SpacexApiService
 import com.masslany.thespaceapp.di.IoDispatcher
-import com.masslany.thespaceapp.domain.model.RocketEntity
-import com.masslany.thespaceapp.utils.Result
+import com.masslany.thespaceapp.domain.model.RocketModel
+import com.masslany.thespaceapp.utils.Resource
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,12 +13,12 @@ class RocketsRepositoryImp @Inject constructor(
     private val apiService: SpacexApiService,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher
 ) : RocketsRepository {
-    override suspend fun fetchRocketsData(): Result<List<RocketEntity>> {
+    override suspend fun fetchRocketsData(): Resource<List<RocketModel>> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketsData()
                 val rockets = response.map { data ->
-                    RocketEntity(
+                    RocketModel(
                         active = data.active,
                         boosters = data.boosters,
                         company = data.company,
@@ -43,18 +43,18 @@ class RocketsRepositoryImp @Inject constructor(
                         wikipedia = Uri.parse(data.wikipedia)
                     )
                 }
-                Result.Success(rockets)
+                Resource.Success(rockets)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }
 
-    override suspend fun fetchRocketById(id: String): Result<RocketEntity> {
+    override suspend fun fetchRocketById(id: String): Resource<RocketModel> {
         return withContext(ioDispatcher) {
             try {
                 val response = apiService.fetchRocketById(id)
-                val rocket = RocketEntity(
+                val rocket = RocketModel(
                     active = response.active,
                     boosters = response.boosters,
                     company = response.company,
@@ -79,9 +79,9 @@ class RocketsRepositoryImp @Inject constructor(
                     wikipedia = Uri.parse(response.wikipedia)
                 )
 
-                Result.Success(rocket)
+                Resource.Success(rocket)
             } catch (e: Exception) {
-                Result.Error<Any>(e)
+                Resource.Error(e)
             }
         }
     }

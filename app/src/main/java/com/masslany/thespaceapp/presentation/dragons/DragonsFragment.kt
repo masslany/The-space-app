@@ -14,7 +14,7 @@ import com.bumptech.glide.RequestManager
 import com.google.android.material.snackbar.Snackbar
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentDragonsBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +31,8 @@ class DragonsFragment : Fragment() {
     @Inject
     lateinit var glide: RequestManager
 
+    private lateinit var dragonsAdapter: DragonsAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +45,15 @@ class DragonsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dragonsAdapter = DragonsAdapter(glide) { dragon ->
+        setupRecyclerView()
+
+        setupObservers()
+
+        setupListeners()
+    }
+    
+    private fun setupRecyclerView() {
+        dragonsAdapter = DragonsAdapter(glide) { dragon ->
             findNavController().navigate(
                 DragonsFragmentDirections.actionDragonsFragmentToDragonDetailsFragment(dragon.id)
             )
@@ -58,20 +68,22 @@ class DragonsFragment : Fragment() {
                 binding.rvDragons.layoutManager = LinearLayoutManager(requireContext())
             }
         }
+    }
 
+    private fun setupObservers() {
         viewModel.dragons.observe(viewLifecycleOwner) { state ->
             when (state) {
-                State.Loading -> {
+                Resource.Loading -> {
                     binding.srlDragons.isRefreshing = true
                     binding.errorLayout.errorConstraintLayout.makeGone()
                 }
-                is State.Success -> {
+                is Resource.Success -> {
                     binding.srlDragons.isRefreshing = false
                     binding.rvDragons.makeVisible()
                     binding.errorLayout.errorConstraintLayout.makeGone()
-                    dragonsAdapter.dragons = state.data
+                    dragonsAdapter.submitList(state.data)
                 }
-                is State.Error -> {
+                is Resource.Error -> {
                     val snackbar = Snackbar.make(
                         binding.srlDragons,
                         state.throwable.message ?: getString(R.string.an_error_occurred),
@@ -88,7 +100,9 @@ class DragonsFragment : Fragment() {
                 }
             }
         }
+    }
 
+    private fun setupListeners() {
         binding.srlDragons.setOnRefreshListener {
             viewModel.onRetryClicked()
         }

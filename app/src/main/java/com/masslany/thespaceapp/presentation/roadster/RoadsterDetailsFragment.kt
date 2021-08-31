@@ -1,6 +1,5 @@
 package com.masslany.thespaceapp.presentation.roadster
 
-import LinePagerIndicatorDecoration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,15 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentRoadsterDetailsBinding
-import com.masslany.thespaceapp.utils.State.*
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class RoadsterDetailsFragment : Fragment() {
 
@@ -29,6 +30,8 @@ class RoadsterDetailsFragment : Fragment() {
 
     @Inject
     lateinit var glide: RequestManager
+
+    private lateinit var roadsterImagesAdapter: RoadsterImagesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +46,15 @@ class RoadsterDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val roadsterImagesAdapter = RoadsterImagesAdapter(glide)
+        setupRecyclerView()
+
+        setupObservers()
+
+        setupListeners()
+    }
+
+    private fun setupRecyclerView() {
+        roadsterImagesAdapter = RoadsterImagesAdapter(glide)
         binding.rvRoadsterImages.adapter = roadsterImagesAdapter
         binding.rvRoadsterImages.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -51,10 +62,12 @@ class RoadsterDetailsFragment : Fragment() {
         val snapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.rvRoadsterImages)
         binding.rvRoadsterImages.addItemDecoration(LinePagerIndicatorDecoration())
+    }
 
-        viewModel.roadsterEntity.observe(viewLifecycleOwner) { state ->
+    private fun setupObservers() {
+        viewModel.roadsterModel.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is Error -> {
+                is Resource.Error -> {
                     with(binding) {
                         lottieLoading.makeGone()
                         errorLayout.errorConstraintLayout.makeVisible()
@@ -63,18 +76,17 @@ class RoadsterDetailsFragment : Fragment() {
                         clContent?.makeGone()
                     }
                 }
-                Loading -> {
+                Resource.Loading -> {
                     with(binding) {
                         errorLayout.errorConstraintLayout.makeGone()
 
                         mlContent?.makeGone()
                         clContent?.makeGone()
 
-
                         lottieLoading.makeVisible()
                     }
                 }
-                is Success -> {
+                is Resource.Success -> {
                     with(binding) {
 
                         clContent?.makeVisible()
@@ -93,12 +105,14 @@ class RoadsterDetailsFragment : Fragment() {
                             getString(R.string.distance, state.data.distanceFromMars)
                         tvDescription.text = state.data.description
 
-                        // TODO: fill recyclerview with data
-                        roadsterImagesAdapter.images = state.data.images
+                        roadsterImagesAdapter.submitList(state.data.images)
                     }
                 }
             }
         }
+    }
+
+    private fun setupListeners() {
         binding.errorLayout.btnRetry.setOnClickListener {
             viewModel.onRetryClicked()
         }

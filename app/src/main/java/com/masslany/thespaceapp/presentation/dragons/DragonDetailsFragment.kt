@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.RequestManager
 import com.masslany.thespaceapp.R
 import com.masslany.thespaceapp.databinding.FragmentDragonDetailsBinding
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.utils.Resource
 import com.masslany.thespaceapp.utils.makeGone
 import com.masslany.thespaceapp.utils.makeVisible
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,13 +48,13 @@ class DragonDetailsFragment : Fragment() {
     private fun observeUi() {
         viewModel.dragon.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is State.Error -> {
+                is Resource.Error -> {
                     binding.errorLayout.errorConstraintLayout.makeVisible()
                 }
-                State.Loading -> {
-
+                Resource.Loading -> {
+                    // No action for now
                 }
-                is State.Success -> {
+                is Resource.Success -> {
                     binding.errorLayout.errorConstraintLayout.makeGone()
 
                     val dragon = state.data
@@ -102,7 +102,6 @@ class DragonDetailsFragment : Fragment() {
                         )
                     }
                 }
-
             }
         }
     }

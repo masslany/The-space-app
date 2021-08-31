@@ -5,23 +5,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.masslany.thespaceapp.R
-import com.masslany.thespaceapp.domain.model.LaunchEntity
-import com.masslany.thespaceapp.domain.usecase.FetchUpcomingLaunchesDataUseCase
-import com.masslany.thespaceapp.utils.Result
-import com.masslany.thespaceapp.utils.State
+import com.masslany.thespaceapp.domain.model.LaunchModel
+import com.masslany.thespaceapp.domain.usecase.FetchLaunchesDataUseCase
+import com.masslany.thespaceapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class LaunchesViewModel @Inject constructor(
-    private val fetchUpcomingLaunchesDataUseCase: FetchUpcomingLaunchesDataUseCase
+    private val fetchLaunchesDataUseCase: FetchLaunchesDataUseCase
 ) : ViewModel() {
 
-    private val _launches = MutableLiveData<State<List<LaunchAdapterItem>>>()
-    val launches: LiveData<State<List<LaunchAdapterItem>>> = _launches
+    private val _launches = MutableLiveData<Resource<List<LaunchAdapterItem>>>()
+    val launches: LiveData<Resource<List<LaunchAdapterItem>>> = _launches
 
-    private var allLaunches: List<LaunchEntity> = emptyList()
+    private var allLaunches: List<LaunchModel> = emptyList()
 
     private var _query = MutableLiveData("")
     val query: LiveData<String> = _query
@@ -30,18 +34,18 @@ class LaunchesViewModel @Inject constructor(
     val isSearchExpanded: LiveData<Boolean> = _isSearchExpanded
 
     init {
-        fetchUpcomingLaunchesData()
+        fetchUpcomingLaunchesData(false)
     }
 
     fun onRetryClicked() {
-        fetchUpcomingLaunchesData()
+        fetchUpcomingLaunchesData(true)
     }
 
-    private fun convertLaunchesToAdapterItems(launchEntities: List<LaunchEntity>): List<LaunchAdapterItem> {
+    private fun convertLaunchesToAdapterItems(launchModels: List<LaunchModel>): List<LaunchAdapterItem> {
         val upcomingHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Upcoming", null)
         val pastHeader = LaunchAdapterItem(R.id.item_recyclerview_header, "Past", null)
 
-        val (upcoming, past) = launchEntities.partition {
+        val (upcoming, past) = launchModels.partition {
             it.date >= System.currentTimeMillis() / 1000
         }
 
@@ -54,7 +58,7 @@ class LaunchesViewModel @Inject constructor(
                     LaunchAdapterItem(
                         type = R.id.item_recyclerview,
                         header = null,
-                        launchEntity = it
+                        launchModel = it
                     )
                 })
         } else {
@@ -62,7 +66,7 @@ class LaunchesViewModel @Inject constructor(
                 LaunchAdapterItem(
                     type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = null
+                    launchModel = null
                 )
             )
         }
@@ -74,7 +78,7 @@ class LaunchesViewModel @Inject constructor(
                     LaunchAdapterItem(
                         type = R.id.item_recyclerview,
                         header = null,
-                        launchEntity = it
+                        launchModel = it
                     )
                 }.reversed() // to sort most recent date
             )
@@ -83,7 +87,7 @@ class LaunchesViewModel @Inject constructor(
                 LaunchAdapterItem(
                     type = R.id.item_recyclerview_empty,
                     header = null,
-                    launchEntity = null
+                    launchModel = null
                 )
             )
         }
@@ -91,28 +95,41 @@ class LaunchesViewModel @Inject constructor(
         return converted
     }
 
-    fun fetchUpcomingLaunchesData() {
-        _launches.value = State.Loading
+    fun fetchUpcomingLaunchesData(forceRefresh: Boolean) {
 
         viewModelScope.launch {
-            when (val res = fetchUpcomingLaunchesDataUseCase.execute()) {
-                is Result.Success -> {
-                    val converted = convertLaunchesToAdapterItems(res.data)
-                    allLaunches = res.data
-                    _launches.value = State.Success(converted)
+            fetchLaunchesDataUseCase.execute(
+                forceRefresh = forceRefresh,
+                onFetchSuccess = {},
+                onFetchFailed = {
+                    _launches.value = Resource.Error(it)
                 }
-                is Result.Error<*> -> {
-                    _launches.value = State.Error(res.exception)
+            ).stateIn(viewModelScope, SharingStarted.Lazily, Resource.Loading)
+                .collect { resource ->
+                    when (resource) {
+                        Resource.Loading -> {
+                            _launches.value = Resource.Loading
+                        }
+                        is Resource.Success -> {
+                            val converted = convertLaunchesToAdapterItems(resource.data)
+                            allLaunches = resource.data
+                            _launches.value = Resource.Success(converted)
+                        }
+
+                        is Resource.Error -> {
+                            _launches.value = Resource.Error(resource.throwable)
+                        }
+                    }
                 }
-            }
         }
     }
 
     fun onQueryTextChange() {
-        if (launches.value is State.Success) {
-            val filtered = allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
+        if (launches.value is Resource.Success) {
+            val filtered =
+                allLaunches.filter { it.name.contains(query.value ?: "", ignoreCase = true) }
             val result = convertLaunchesToAdapterItems(filtered)
-            _launches.value = State.Success(result)
+            _launches.value = Resource.Success(result)
         }
     }
 
